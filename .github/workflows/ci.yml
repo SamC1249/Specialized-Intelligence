@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint (ruff) + custom hooks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dev deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install ".[dev]"
+      - name: Ruff lint
+        run: ruff check .
+      - name: Ruff format check
+        run: ruff format --check .
+      - name: Run forbid-youtube-domains hook
+        run: |
+          # Iterate over tracked, non-doc files.
+          mapfile -t FILES < <(git ls-files | grep -Ev '^(docs/|README\.md$|AGENTS\.md$|plan\.md$|db_structured\.md$)' || true)
+          if [ ${#FILES[@]} -gt 0 ]; then
+            python scripts/precommit_forbid_youtube.py "${FILES[@]}"
+          fi
+      - name: Run forbid-paid-source-keywords hook
+        run: |
+          mapfile -t FILES < <(git ls-files | grep -Ev '^docs/' || true)
+          if [ ${#FILES[@]} -gt 0 ]; then
+            python scripts/precommit_forbid_paid_sources.py "${FILES[@]}"
+          fi
+
+  unit:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: |
+          python -m pip install --upgrade pip
+          pip install ".[dev]"
+      - run: pytest tests/unit -q
+
+  e2e:
+    name: E2E pipeline dry run
+    runs-on: ubuntu-latest
+    needs: [lint, unit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: |
+          python -m pip install --upgrade pip
+          pip install ".[dev]"
+      - name: Run pipeline dry run
+        run: |
+          mkdir -p artifacts
+          python scripts/pipeline_dry_run.py --out artifacts/manifests
+      - name: E2E tests
+        run: pytest tests/e2e -q
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dry-run-manifests
+          path: artifacts/manifests/
+          if-no-files-found: error
+
+  manifest-lint:
+    name: Manifest schema lint
+    runs-on: ubuntu-latest
+    needs: [unit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: |
+          python -m pip install --upgrade pip
+          pip install ".[dev]"
+      - run: pytest tests/e2e/test_manifest_lint.py -q

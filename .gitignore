@@ -1,0 +1,29 @@
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+build/
+dist/
+.venv/
+.env
+
+# CI artifacts (top-level only; do NOT exclude docs/artifacts/)
+/artifacts/
+
+# Local data/working dirs we don't want to commit
+data/
+
+# pytest / ruff / coverage
+.pytest_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# detect-secrets baseline is committed
+
+# editor noise
+.vscode/
+.idea/
+*.swp
+.DS_Store

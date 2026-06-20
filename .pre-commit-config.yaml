@@ -1,0 +1,39 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+        args: ["--maxkb=1024"]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.10
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+      - id: ruff-format
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+
+  - repo: local
+    hooks:
+      - id: forbid-youtube-domains
+        name: forbid YouTube domains in non-doc files
+        entry: scripts/precommit_forbid_youtube.py
+        language: python
+        types: [text]
+        # docs/ is allowed to discuss YouTube; everywhere else is not.
+        exclude: '^(docs/|\.git/|README\.md$)'
+      - id: forbid-paid-source-keywords
+        name: forbid paid-source keywords (e.g. proxy rotation)
+        entry: scripts/precommit_forbid_paid_sources.py
+        language: python
+        types: [text]
+        exclude: '^(docs/|\.git/)'
