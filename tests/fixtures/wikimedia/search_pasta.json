@@ -1,0 +1,59 @@
+{
+  "query": {
+    "pages": {
+      "12345": {
+        "pageid": 12345,
+        "title": "File:Cooking pasta carbonara.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/a/a1/Cooking_pasta_carbonara.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Cooking_pasta_carbonara.webm",
+            "mime": "video/webm",
+            "duration": 312.4,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY-SA 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by-sa/4.0"},
+              "Artist": {"value": "Jane Cook"},
+              "DateTimeOriginal": {"value": "2024-03-12T10:00:00Z"}
+            }
+          }
+        ]
+      },
+      "67890": {
+        "pageid": 67890,
+        "title": "File:Knife skills demo.ogv",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Knife_skills_demo.ogv",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Knife_skills_demo.ogv",
+            "mime": "video/ogg",
+            "duration": 45.0,
+            "width": 1280,
+            "height": 720,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/publicdomain/zero/1.0/"},
+              "Artist": {"value": "Public Kitchen"}
+            }
+          }
+        ]
+      },
+      "11111": {
+        "pageid": 11111,
+        "title": "File:Some_image.jpg",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Some_image.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Some_image.jpg",
+            "mime": "image/jpeg",
+            "width": 800,
+            "height": 600,
+            "extmetadata": {"LicenseShortName": {"value": "CC0"}}
+          }
+        ]
+      }
+    }
+  }
+}
