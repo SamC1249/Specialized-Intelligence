@@ -1,0 +1,32 @@
+{
+  "cuisine_counts": {
+    "baking": 2,
+    "italian": 1,
+    "other": 4
+  },
+  "duration_by_cuisine_s": {
+    "baking": 822.0,
+    "italian": 312.4,
+    "other": 1617.0
+  },
+  "duration_total_s": 2751.4,
+  "language_counts": {
+    "en": 1,
+    "eng": 3,
+    "und": 3
+  },
+  "license_counts": {
+    "CC-BY": 1,
+    "CC-BY-SA": 2,
+    "CC0": 2,
+    "PUBLIC_DOMAIN": 1,
+    "RESTRICTED": 1
+  },
+  "n_records": 7,
+  "n_with_language_declared": 4,
+  "source_counts": {
+    "archive_org": 3,
+    "peertube": 2,
+    "wikimedia": 2
+  }
+}
