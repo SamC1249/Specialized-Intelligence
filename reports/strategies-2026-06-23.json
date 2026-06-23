@@ -1,0 +1,128 @@
+{
+  "k": 5,
+  "overlap_jaccard": {
+    "license_confidence": {
+      "license_confidence": 1.0,
+      "license_then_wm": 1.0,
+      "quality_metadata": 1.0,
+      "random_baseline": 0.42857142857142855,
+      "wm_utility": 1.0
+    },
+    "license_then_wm": {
+      "license_confidence": 1.0,
+      "license_then_wm": 1.0,
+      "quality_metadata": 1.0,
+      "random_baseline": 0.42857142857142855,
+      "wm_utility": 1.0
+    },
+    "quality_metadata": {
+      "license_confidence": 1.0,
+      "license_then_wm": 1.0,
+      "quality_metadata": 1.0,
+      "random_baseline": 0.42857142857142855,
+      "wm_utility": 1.0
+    },
+    "random_baseline": {
+      "license_confidence": 0.42857142857142855,
+      "license_then_wm": 0.42857142857142855,
+      "quality_metadata": 0.42857142857142855,
+      "random_baseline": 1.0,
+      "wm_utility": 0.42857142857142855
+    },
+    "wm_utility": {
+      "license_confidence": 1.0,
+      "license_then_wm": 1.0,
+      "quality_metadata": 1.0,
+      "random_baseline": 0.42857142857142855,
+      "wm_utility": 1.0
+    }
+  },
+  "seed": 1729,
+  "strategies": [
+    {
+      "k": 5,
+      "license_clean_ratio": 1.0,
+      "mean_license_confidence": 0.96,
+      "mean_quality": 0.5835966666666667,
+      "mean_wm_utility": 0.4541966666666667,
+      "selected_ids": [
+        "archive_org:ChefDemo2018",
+        "archive_org:PrelingerCookingShow1952",
+        "peertube:framatube.org:abcd-1234",
+        "wikimedia:12345",
+        "wikimedia:67890"
+      ],
+      "strategy": "license_confidence",
+      "total_duration_s": 2391.4,
+      "unique_authors": 5
+    },
+    {
+      "k": 5,
+      "license_clean_ratio": 1.0,
+      "mean_license_confidence": 0.96,
+      "mean_quality": 0.5835966666666667,
+      "mean_wm_utility": 0.4541966666666667,
+      "selected_ids": [
+        "archive_org:ChefDemo2018",
+        "archive_org:PrelingerCookingShow1952",
+        "peertube:framatube.org:abcd-1234",
+        "wikimedia:12345",
+        "wikimedia:67890"
+      ],
+      "strategy": "license_then_wm",
+      "total_duration_s": 2391.4,
+      "unique_authors": 5
+    },
+    {
+      "k": 5,
+      "license_clean_ratio": 1.0,
+      "mean_license_confidence": 0.96,
+      "mean_quality": 0.5835966666666667,
+      "mean_wm_utility": 0.4541966666666667,
+      "selected_ids": [
+        "archive_org:ChefDemo2018",
+        "archive_org:PrelingerCookingShow1952",
+        "peertube:framatube.org:abcd-1234",
+        "wikimedia:12345",
+        "wikimedia:67890"
+      ],
+      "strategy": "quality_metadata",
+      "total_duration_s": 2391.4,
+      "unique_authors": 5
+    },
+    {
+      "k": 5,
+      "license_clean_ratio": 0.8,
+      "mean_license_confidence": 0.76,
+      "mean_quality": 0.41202500000000003,
+      "mean_wm_utility": 0.37315,
+      "selected_ids": [
+        "archive_org:ChefDemo2018",
+        "archive_org:PrelingerCookingShow1952",
+        "archive_org:RestrictedRecipe",
+        "peertube:framatube.org:ijkl-9012",
+        "wikimedia:67890"
+      ],
+      "strategy": "random_baseline",
+      "total_duration_s": 1797.0,
+      "unique_authors": 5
+    },
+    {
+      "k": 5,
+      "license_clean_ratio": 1.0,
+      "mean_license_confidence": 0.96,
+      "mean_quality": 0.5835966666666667,
+      "mean_wm_utility": 0.4541966666666667,
+      "selected_ids": [
+        "archive_org:ChefDemo2018",
+        "archive_org:PrelingerCookingShow1952",
+        "peertube:framatube.org:abcd-1234",
+        "wikimedia:12345",
+        "wikimedia:67890"
+      ],
+      "strategy": "wm_utility",
+      "total_duration_s": 2391.4,
+      "unique_authors": 5
+    }
+  ]
+}
