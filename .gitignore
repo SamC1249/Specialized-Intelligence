@@ -10,8 +10,9 @@ dist/
 # CI artifacts (top-level only; do NOT exclude docs/artifacts/)
 /artifacts/
 
-# Local data/working dirs we don't want to commit
-data/
+# Local data/working dirs we don't want to commit (but blocklists ARE committed)
+data/*
+!data/blocklists/
 
 # pytest / ruff / coverage
 .pytest_cache/

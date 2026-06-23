@@ -1,0 +1,5 @@
+# Seed blocklist for the v0 contamination gate. Real entries are populated by
+# `scripts/build_eval_blocklist.py` from YouCook2 / EPIC-KITCHENS keyframes
+# *outside* of git; this file is only the format / smoke fixture.
+{"phash64": "0000000000000000", "source": "youcook2_seed", "note": "placeholder; replace before training"}
+{"phash64": "ffffffffffffffff", "source": "epic_kitchens_seed", "note": "placeholder; replace before training"}
