@@ -1,0 +1,16 @@
+{
+  "extra": {
+    "license_norm_counts": {
+      "CC_BY": 1,
+      "CC_BY_NC": 4,
+      "UNKNOWN": 1
+    }
+  },
+  "finished_at": "2026-06-23T17:00:01+00:00",
+  "git_sha": "fixture",
+  "rows_in": 6,
+  "rows_out": 6,
+  "stage_name": "fixture.dirty",
+  "stage_version": "0.0.1",
+  "started_at": "2026-06-23T17:00:00+00:00"
+}
