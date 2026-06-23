@@ -1,0 +1,29 @@
+# byte-compiled
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+.venv/
+venv/
+.env
+.envrc
+
+# data — NEVER commit
+data/
+*.mp4
+*.mkv
+*.webm
+*.parquet
+
+# editor
+.vscode/
+.idea/
+.DS_Store
+
+# OS
+Thumbs.db

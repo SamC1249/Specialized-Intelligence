@@ -1,0 +1,36 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=512"]
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.10
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: file-length
+        name: enforce 800 LOC max per file
+        entry: python scripts/check_file_length.py
+        language: system
+        types: [python]
+        pass_filenames: true
+
+      - id: docs-sync
+        name: AGENTS.md / db_structured.md / plan.md must exist
+        entry: python scripts/check_docs_sync.py
+        language: system
+        pass_filenames: false
+        always_run: true
