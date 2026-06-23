@@ -1,0 +1,37 @@
+{
+  "response": {
+    "docs": [
+      {
+        "identifier": "PrelingerCookingShow1952",
+        "title": "Family Cooking Show 1952",
+        "description": "A vintage cooking demonstration in the Prelinger Archives.",
+        "creator": "Prelinger Archives",
+        "subject": ["cooking", "1950s", "demonstration"],
+        "language": "eng",
+        "licenseurl": "https://creativecommons.org/publicdomain/mark/1.0/",
+        "runtime": "0:18:42",
+        "publicdate": "2003-05-12T00:00:00Z"
+      },
+      {
+        "identifier": "ChefDemo2018",
+        "title": "Modern Chef Demonstration",
+        "description": "A short knife-skills demo released CC-BY.",
+        "creator": "Open Kitchen Collective",
+        "subject": "cooking",
+        "language": "eng",
+        "licenseurl": "https://creativecommons.org/licenses/by/4.0/",
+        "runtime": "0:04:30",
+        "publicdate": "2018-09-04T00:00:00Z"
+      },
+      {
+        "identifier": "RestrictedRecipe",
+        "title": "Restricted Recipe",
+        "description": "Non-commercial only.",
+        "creator": "Some Person",
+        "language": "eng",
+        "licenseurl": "https://creativecommons.org/licenses/by-nc/4.0/",
+        "runtime": "0:03:00"
+      }
+    ]
+  }
+}

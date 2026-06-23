@@ -41,17 +41,24 @@ jobs:
           fi
 
   unit:
-    name: Unit tests
+    name: Unit tests (py${{ matrix.python-version }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: ${{ matrix.python-version }}
       - run: |
           python -m pip install --upgrade pip
           pip install ".[dev]"
-      - run: pytest tests/unit -q
+      - name: Unit tests (components layer)
+        run: pytest tests/unit -q
+      - name: Source-adapter + records + quality + CLI tests
+        run: pytest tests/test_records.py tests/test_quality.py tests/test_cli.py tests/test_sources_archive_org.py tests/test_sources_common_crawl.py tests/test_sources_peertube.py tests/test_sources_wikimedia.py -q
 
   e2e:
     name: E2E pipeline dry run
@@ -69,8 +76,10 @@ jobs:
         run: |
           mkdir -p artifacts
           python scripts/pipeline_dry_run.py --out artifacts/manifests
-      - name: E2E tests
+      - name: E2E pipeline + manifest tests
         run: pytest tests/e2e -q
+      - name: E2E source-comparison harness (offline, fixture-driven)
+        run: pytest tests/test_e2e_compare.py -q
       - uses: actions/upload-artifact@v4
         with:
           name: dry-run-manifests
