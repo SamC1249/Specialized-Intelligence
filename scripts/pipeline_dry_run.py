@@ -15,7 +15,8 @@ input set, then runs:
   3. segment        -> clip.jsonl (whole-video splitter)
   4. score          -> phash64 on a synthetic frame
   5. dedup          -> drop duplicates within Hamming 4
-  6. curate         -> shard.jsonl with purpose=pretrain
+  6. contamination_gate -> reject clips inside the eval-set blocklist
+  7. curate         -> shard.jsonl with purpose=pretrain
 
 Determinism: given the same code, the manifests are byte-identical
 across runs (no wall-clock time in fixed fields except `collected_at`,
@@ -195,6 +196,24 @@ def dedup(clips: list[dict], threshold: int = 4) -> list[dict]:
     return out
 
 
+def contamination_gate(clips: list[dict], blocklist_path: Path | None = None) -> list[dict]:
+    """Reject clips whose pHash falls inside the eval-set blocklist (default radius 8)."""
+    if blocklist_path is None or not blocklist_path.exists():
+        return clips
+    # Imported lazily so the script keeps a small import surface.
+    from specint.contamination import Blocklist
+
+    bl = Blocklist.load_jsonl(blocklist_path, max_distance=8)
+    out: list[dict] = []
+    for c in clips:
+        c2 = dict(c)
+        if not c2["excluded"] and c2.get("phash64") and bl.contains(c2["phash64"]):
+            c2["excluded"] = True
+            c2["exclusion_reason"] = "matches eval-set blocklist (contamination gate)"
+        out.append(c2)
+    return out
+
+
 def curate(clips: list[dict]) -> dict:
     keep_ids = [c["clip_id"] for c in clips if not c["excluded"]]
     return {
@@ -217,29 +236,36 @@ def _write_jsonl(path: Path, rows: list[dict]) -> None:
             fh.write(json.dumps(_strip_internal(r), sort_keys=True) + "\n")
 
 
-def run(out_dir: Path) -> None:
+def run(out_dir: Path, blocklist_path: Path | None = None) -> None:
     raw = license_check(discover())
     for r in raw:
         validate_row(RAW_VIDEO_SCHEMA, _strip_internal(r))
 
     clips = score(segment(raw))
     deduped = dedup(clips)
-    for c in deduped:
+    gated = contamination_gate(deduped, blocklist_path)
+    for c in gated:
         validate_row(CLIP_SCHEMA, _strip_internal(c))
 
-    shard = curate(deduped)
+    shard = curate(gated)
     validate_row(SHARD_SCHEMA, shard)
 
     _write_jsonl(out_dir / "raw_video.jsonl", raw)
-    _write_jsonl(out_dir / "clip.jsonl", deduped)
+    _write_jsonl(out_dir / "clip.jsonl", gated)
     _write_jsonl(out_dir / "shard.jsonl", [shard])
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", required=True, type=Path)
+    ap.add_argument(
+        "--blocklist",
+        type=Path,
+        default=REPO_ROOT / "data" / "blocklists" / "eval_seed.jsonl",
+        help="JSONL eval-set blocklist for the contamination gate.",
+    )
     args = ap.parse_args()
-    run(args.out)
+    run(args.out, args.blocklist if args.blocklist.exists() else None)
     return 0
 
 
