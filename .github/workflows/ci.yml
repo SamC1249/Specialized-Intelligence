@@ -45,12 +45,33 @@ jobs:
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
 
+      - name: E2E ablation (fixtures)
+        run: |
+          python -m specint ablate --fixtures --terms cooking recipe \
+            --output reports/ci-ablation.json
+          test -s reports/ci-ablation.json
+
+      - name: Pipeline dry run (fixtures, determinism)
+        run: |
+          python scripts/pipeline_dry_run.py \
+            --fixtures tests/fixtures \
+            --manifest data/manifests/dry-run-ci.jsonl \
+            --report reports/dry-run-ci.json
+          python scripts/manifest_lint.py data/manifests/
+
+      - name: Forbid YouTube URLs (repo-wide)
+        run: python scripts/precommit_forbid_youtube.py
+
       - name: Upload comparison report
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: compare-report
-          path: reports/ci-compare.json
+          path: |
+            reports/ci-compare.json
+            reports/ci-ablation.json
+            reports/dry-run-ci.json
+            data/manifests/dry-run-ci.jsonl
 
   precommit:
     runs-on: ubuntu-latest

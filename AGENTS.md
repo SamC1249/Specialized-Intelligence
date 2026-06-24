@@ -63,11 +63,28 @@ functions, type-annotate public APIs, avoid narrating-the-code comments.
 Any new collection method or filter must:
 
 - emit a `BenchmarkResult` row (see `src/specint/compare/harness.py`),
-- be runnable via `python -m specint compare --source <name>`,
+- be runnable via `python -m specint compare --only <slug>`,
 - and the resulting JSON must be committed under `reports/`.
+
+Any **change to quality weights** or addition of a new component to
+`src/specint/quality/metrics.py:WEIGHTS` must also ship an ablation
+report (`python -m specint ablate --fixtures --output reports/...json`)
+demonstrating the per-component delta on `mean_quality` and
+`n_license_clean`.
 
 If you cannot beat the current baseline on a defensible metric, document
 **why the experiment was still informative** in your plan summary.
+
+## Pre-commit hard hooks
+
+- `scripts/precommit_forbid_youtube.py` — fails any commit that adds a
+  `youtube.com` / `youtu.be` URL outside `docs/`. Mirrors hard-constraint
+  #1 (no DMCA-§1201 anti-circumvention exposure).
+- `scripts/manifest_lint.py` — every `*.jsonl` under `data/manifests/`
+  must round-trip through `specint.records.VideoRecord`.
+- `scripts/pipeline_dry_run.py` — fixture-driven end-to-end pipeline run;
+  manifest + report are required to be byte-stable across two
+  invocations (see `tests/test_e2e_pipeline.py`).
 
 ## Legal Source Allowlist (current)
 

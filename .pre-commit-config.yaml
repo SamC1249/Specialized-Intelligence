@@ -16,6 +16,16 @@ repos:
       - id: ruff-format
   - repo: local
     hooks:
+      - id: forbid-youtube-urls
+        name: forbid YouTube URLs outside docs/
+        entry: python3 scripts/precommit_forbid_youtube.py
+        language: system
+        types: [text]
+      - id: manifest-lint
+        name: manifest_lint (data/manifests/*.jsonl)
+        entry: python3 scripts/manifest_lint.py --allow-empty data/manifests
+        language: system
+        pass_filenames: false
       - id: pytest-quick
         name: pytest (offline)
         entry: pytest -q
