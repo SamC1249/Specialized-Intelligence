@@ -4,8 +4,12 @@
 The project's hard constraint is that we never download bytes from
 YouTube (DMCA-§1201 anti-circumvention exposure per
 ``docs/plan-2026-06-20.md``). To enforce this at the lowest level, we
-fail any commit that introduces a ``youtube.com`` or ``youtu.be`` URL in
-a tracked file that is *not* under ``docs/``.
+fail any commit that introduces an ``http(s)://...`` URL whose host is
+``youtube.com`` / ``youtu.be`` in a tracked file that is *not* under
+``docs/``.
+
+A line containing ``noqa: forbid-youtube`` is exempt (used for the
+script's own self-documentation; do not abuse).
 
 The hook is invoked by pre-commit with the staged file paths as
 arguments. It also works standalone — without arguments it scans every
@@ -19,7 +23,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-YOUTUBE_RE = re.compile(r"(?:https?://)?(?:www\.|m\.)?(?:youtube\.com|youtu\.be)\b")
+YOUTUBE_RE = re.compile(r"https?://(?:www\.|m\.)?(?:youtube\.com|youtu\.be)\b")
+NOQA_RE = re.compile(r"noqa:\s*forbid-youtube", flags=re.IGNORECASE)
 
 ALLOWED_DIRS = ("docs/", "docs\\")
 
@@ -50,7 +55,7 @@ def check_files(files: list[str]) -> int:
         if not p.is_file() or not _is_text(p):
             continue
         for lineno, line in enumerate(p.read_text(encoding="utf-8").splitlines(), 1):
-            if YOUTUBE_RE.search(line):
+            if YOUTUBE_RE.search(line) and not NOQA_RE.search(line):
                 failures.append((relpath, lineno, line.strip()))
     for relpath, lineno, line in failures:
         print(f"::error file={relpath},line={lineno}::YouTube URL forbidden: {line}")
