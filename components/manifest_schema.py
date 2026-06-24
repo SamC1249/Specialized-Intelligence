@@ -140,7 +140,7 @@ SHARD_SCHEMA: dict[str, Any] = {
         "clip_ids": {
             "type": "array",
             "items": {"type": "string", "pattern": "^[0-9a-f]{16}$"},
-            "minItems": 1,
+            "minItems": 0,
         },
         "purpose": {"type": "string", "enum": ALLOWED_PURPOSES},
         "created_at": {"type": "string"},

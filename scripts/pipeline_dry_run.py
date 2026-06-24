@@ -36,6 +36,8 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from components.eval_blocklist import BlockList, load_blocklist  # noqa: E402
+from components.eval_blocklist import apply as apply_blocklist  # noqa: E402
 from components.manifest_schema import (  # noqa: E402
     CLIP_SCHEMA,
     RAW_VIDEO_SCHEMA,
@@ -44,7 +46,7 @@ from components.manifest_schema import (  # noqa: E402
 )
 from components.phash import hamming, phash64  # noqa: E402
 
-PIPELINE_VERSION = "0.0.1"
+PIPELINE_VERSION = "0.0.2"
 
 
 def _now() -> str:
@@ -217,13 +219,20 @@ def _write_jsonl(path: Path, rows: list[dict]) -> None:
             fh.write(json.dumps(_strip_internal(r), sort_keys=True) + "\n")
 
 
-def run(out_dir: Path) -> None:
+def run(out_dir: Path, blocklist_path: Path | None = None) -> None:
     raw = license_check(discover())
     for r in raw:
         validate_row(RAW_VIDEO_SCHEMA, _strip_internal(r))
 
     clips = score(segment(raw))
     deduped = dedup(clips)
+
+    if blocklist_path is not None and blocklist_path.exists():
+        # DataComp-style step-3 (eval-set decontamination).
+        # Threshold=4 mirrors our intra-pool dedup threshold for v0.
+        bl = BlockList(load_blocklist(blocklist_path), threshold=4)
+        deduped = apply_blocklist(deduped, bl)
+
     for c in deduped:
         validate_row(CLIP_SCHEMA, _strip_internal(c))
 
@@ -238,8 +247,14 @@ def run(out_dir: Path) -> None:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", required=True, type=Path)
+    ap.add_argument(
+        "--eval-blocklist",
+        type=Path,
+        default=None,
+        help="Optional JSONL of phash64 entries; clips within Hamming 4 are excluded.",
+    )
     args = ap.parse_args()
-    run(args.out)
+    run(args.out, blocklist_path=args.eval_blocklist)
     return 0
 
 

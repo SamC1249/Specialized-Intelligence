@@ -80,7 +80,7 @@ A curated subset for downstream training/eval. Pure pointers + metadata.
 | field           | type        |
 |-----------------|-------------|
 | `shard_id`      | str         |
-| `clip_ids`      | list[str]   |
+| `clip_ids`      | list[str]   | may be empty; an empty shard is the canonical signal "this run produced zero shippable clips for this purpose" (e.g. all candidates collided with the eval blocklist) |
 | `purpose`       | enum str    | one of `pretrain`, `eval`, `probe`, `held_out` |
 | `created_at`    | str         |
 | `notes`         | str \| null |

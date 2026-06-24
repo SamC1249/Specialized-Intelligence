@@ -118,8 +118,17 @@ def test_clip_rejects_inconsistent_duration():
         validate_row(CLIP_SCHEMA, row)
 
 
-def test_shard_requires_at_least_one_clip():
+def test_shard_allows_empty_clip_ids():
+    """Updated 2026-06-24: an empty shard is the canonical signal that the
+    run produced zero shippable clips (e.g. all candidates collided with
+    the eval blocklist). See db_structured.md §2.3."""
     row = _good_shard()
     row["clip_ids"] = []
+    validate_row(SHARD_SCHEMA, row)
+
+
+def test_shard_rejects_malformed_clip_id():
+    row = _good_shard()
+    row["clip_ids"] = ["not-a-hex-16"]
     with pytest.raises(ValidationError):
         validate_row(SHARD_SCHEMA, row)
