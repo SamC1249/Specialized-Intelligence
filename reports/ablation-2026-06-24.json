@@ -1,0 +1,83 @@
+{
+  "baseline": {
+    "mean_quality": 0.38609756944444446,
+    "n_license_clean": 6,
+    "n_records": 8,
+    "notes": "fixture-ablation-2026-06-24|baseline",
+    "p50_quality": 0.43378055555555556,
+    "p90_quality": 0.4839583333333333,
+    "query_terms": [
+      "cooking",
+      "recipe"
+    ],
+    "source": "__total__",
+    "total_duration_s": 3021.4,
+    "unique_authors": 8
+  },
+  "components": {
+    "duration": {
+      "delta_license_clean": 0,
+      "delta_mean": -0.03797835648148151,
+      "mean_quality": 0.34811921296296294,
+      "n_license_clean": 6,
+      "p50_quality": 0.37125,
+      "p90_quality": 0.47027777777777774
+    },
+    "has_steps": {
+      "delta_license_clean": 0,
+      "delta_mean": 0.02901084104938273,
+      "mean_quality": 0.4151084104938272,
+      "n_license_clean": 6,
+      "p50_quality": 0.4425,
+      "p90_quality": 0.4869444444444444
+    },
+    "license_clean": {
+      "delta_license_clean": 0,
+      "delta_mean": -0.12917247023809525,
+      "mean_quality": 0.2569250992063492,
+      "n_license_clean": 6,
+      "p50_quality": 0.19749999999999998,
+      "p90_quality": 0.3625436507936508
+    },
+    "procedural_density": {
+      "delta_license_clean": 0,
+      "delta_mean": 0.10981030092592592,
+      "mean_quality": 0.4959078703703704,
+      "n_license_clean": 6,
+      "p50_quality": 0.531,
+      "p90_quality": 0.5843333333333333
+    },
+    "resolution": {
+      "delta_license_clean": 0,
+      "delta_mean": -0.015688664215686265,
+      "mean_quality": 0.3704089052287582,
+      "n_license_clean": 6,
+      "p50_quality": 0.41161764705882353,
+      "p90_quality": 0.4557843137254902
+    },
+    "text_density": {
+      "delta_license_clean": 0,
+      "delta_mean": 0.03274347993827159,
+      "mean_quality": 0.41884104938271605,
+      "n_license_clean": 6,
+      "p50_quality": 0.4773950617283951,
+      "p90_quality": 0.5037037037037038
+    }
+  },
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  },
+  "weights": {
+    "duration": 0.1,
+    "has_steps": 0.1,
+    "license_clean": 0.3,
+    "procedural_density": 0.25,
+    "resolution": 0.15,
+    "text_density": 0.1
+  }
+}

@@ -1,0 +1,34 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ["--maxkb=512"]
+      - id: check-merge-conflict
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.5.0
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+      - id: ruff-format
+  - repo: local
+    hooks:
+      - id: forbid-youtube-urls
+        name: forbid YouTube URLs outside docs/
+        entry: python3 scripts/precommit_forbid_youtube.py
+        language: system
+        types: [text]
+      - id: manifest-lint
+        name: manifest_lint (data/manifests/*.jsonl)
+        entry: python3 scripts/manifest_lint.py --allow-empty data/manifests
+        language: system
+        pass_filenames: false
+      - id: pytest-quick
+        name: pytest (offline)
+        entry: pytest -q
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
