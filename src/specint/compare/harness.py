@@ -63,12 +63,19 @@ def run_comparison(
     query: SourceQuery,
     by_source: Mapping[str, list[VideoRecord]],
     notes: str = "",
+    weights: Mapping[str, float] | None = None,
 ) -> list[BenchmarkResult]:
-    """Score, aggregate per source, and append a `__total__` row."""
+    """Score, aggregate per source, and append a ``__total__`` row.
+
+    ``weights`` is forwarded to :func:`specint.quality.score_records`. When
+    ``None`` the module-level production weights apply; the ablation
+    harness uses this to systematically zero one component at a time.
+    """
     rows: list[BenchmarkResult] = []
     all_scored: list[VideoRecord] = []
+    w = dict(weights) if weights is not None else None
     for source, records in sorted(by_source.items()):
-        scored = score_records(records)
+        scored = score_records(records, weights=w)
         all_scored.extend(scored)
         rows.append(aggregate(source, query.terms, scored, notes=notes))
     rows.append(aggregate("__total__", query.terms, all_scored, notes=notes))

@@ -56,16 +56,12 @@ def run_ablation(
     for component in WEIGHTS:
         weights = dict(WEIGHTS)
         weights[component] = 0.0
-        # Re-score *records* with the modified weights then re-aggregate.
-        # We achieve this without mutating WEIGHTS by re-scoring inline.
-        rescored = {
-            slug: [
-                r.with_quality(_score(r, weights))
-                for r in records
-            ]
-            for slug, records in by_source.items()
-        }
-        rows = run_comparison(query, rescored, notes=f"{notes}|drop:{component}")
+        rows = run_comparison(
+            query,
+            by_source,
+            notes=f"{notes}|drop:{component}",
+            weights=weights,
+        )
         total = _total(rows)
         components[component] = {
             "mean_quality": total.mean_quality,
@@ -81,9 +77,3 @@ def run_ablation(
         "components": components,
         "weights": dict(WEIGHTS),
     }
-
-
-def _score(record: VideoRecord, weights: dict[str, float]) -> float:
-    from specint.quality.metrics import score_record
-
-    return score_record(record, weights=weights)

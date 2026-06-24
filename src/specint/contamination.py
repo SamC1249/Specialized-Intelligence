@@ -10,7 +10,7 @@ The blocklist is a JSONL file. One blocklist entry per line, each of the
 form::
 
     {"kind": "title_norm",  "value": "knife skills"}
-    {"kind": "url",         "value": "https://youtube.com/watch?v=..."}
+    {"kind": "url",         "value": "https://example.test/clip-1234"}
     {"kind": "native_id",   "value": "<source-native-id>"}
     {"kind": "phash16",     "value": "abc123..."}   # reserved for v1
 
@@ -143,18 +143,14 @@ class Blocklist:
         """Return True if any matcher trips on ``record``.
 
         ``phash16`` is reserved for the byte-level dedup module and is a
-        no-op until a record carries a `phash16` annotation — see the
+        no-op until a record carries a ``phash16`` annotation — see the
         module docstring.
         """
-        if self.urls:
-            u = str(record.url).strip().rstrip("/")
-            if u in self.urls:
-                return True
+        if self.urls and str(record.url).strip().rstrip("/") in self.urls:
+            return True
         if self.native_ids and record.source_native_id in self.native_ids:
             return True
-        if self.titles and normalize_title(record.title) in self.titles:
-            return True
-        return False
+        return bool(self.titles and normalize_title(record.title) in self.titles)
 
     def is_empty(self) -> bool:
         return not (self.titles or self.urls or self.native_ids or self.phash16)

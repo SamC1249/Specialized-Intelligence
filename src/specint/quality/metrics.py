@@ -6,7 +6,7 @@ we can rank a backlog of millions of candidates before deciding which to
 actually download.
 
 Components (current):
-  - license_clean      : ``is_redistributable × license_confidence``.
+  - license_clean      : ``is_redistributable * license_confidence``.
   - duration           : peaks at 5 minutes (procedural sweet spot).
   - resolution         : >=720p ramps from 0 to 1.
   - text_density       : combined length of title + description + recipe_steps.
@@ -123,9 +123,7 @@ def _score_has_steps(record: VideoRecord) -> float:
 
 
 def _score_procedural_density(record: VideoRecord) -> float:
-    text_for_verbs = " ".join(
-        [record.title, record.description, " ".join(record.recipe_steps)]
-    )
+    text_for_verbs = " ".join([record.title, record.description, " ".join(record.recipe_steps)])
     verbs = len(_VERB_RE.findall(text_for_verbs))
     step_marker = 1.0 if _STEP_MARKER_RE.search(text_for_verbs) else 0.0
     steps_component = min(1.0, len(record.recipe_steps) / 6.0)

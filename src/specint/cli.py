@@ -11,6 +11,7 @@ from pathlib import Path
 
 from specint.compare import run_ablation, run_comparison
 from specint.contamination import Blocklist, filter_contaminated
+from specint.fixtures import parse_fixtures
 from specint.records import SourceQuery
 from specint.sources import REGISTRY
 
@@ -30,11 +31,11 @@ def _cmd_compare(args: argparse.Namespace) -> int:
 
     by_source: dict[str, list] = {}
     if args.fixtures:
-        for slug in REGISTRY:
+        parsed = parse_fixtures(query)
+        for slug, records in parsed.items():
             if only and slug not in only:
                 continue
-            by_source[slug] = []
-        # No live calls in --fixtures mode; the harness reports zeros so CI is reproducible.
+            by_source[slug] = records
     elif os.environ.get("SPECINT_RUN_INTEGRATION") != "1":
         print(
             "refusing to hit live network without SPECINT_RUN_INTEGRATION=1; pass --fixtures for an offline dry run.",
@@ -89,10 +90,11 @@ def _cmd_ablate(args: argparse.Namespace) -> int:
 
     by_source: dict[str, list] = {}
     if args.fixtures:
-        for slug in REGISTRY:
+        parsed = parse_fixtures(query)
+        for slug, records in parsed.items():
             if only and slug not in only:
                 continue
-            by_source[slug] = []
+            by_source[slug] = records
     else:
         for slug, cls in REGISTRY.items():
             if only and slug not in only:
