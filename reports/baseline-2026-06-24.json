@@ -1,0 +1,87 @@
+{
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  },
+  "rows": [
+    {
+      "mean_quality": 0.2834305555555556,
+      "n_license_clean": 2,
+      "n_records": 3,
+      "notes": "fixture-baseline-2026-06-24",
+      "p50_quality": 0.3874166666666667,
+      "p90_quality": 0.39825,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "archive_org",
+      "total_duration_s": 1572.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.4839583333333333,
+      "n_license_clean": 0,
+      "n_records": 1,
+      "notes": "fixture-baseline-2026-06-24",
+      "p50_quality": 0.4839583333333333,
+      "p90_quality": 0.4839583333333333,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "common_crawl",
+      "total_duration_s": 270.0,
+      "unique_authors": 1
+    },
+    {
+      "mean_quality": 0.44125000000000003,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-baseline-2026-06-24",
+      "p50_quality": 0.349875,
+      "p90_quality": 0.532625,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "peertube",
+      "total_duration_s": 822.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.43601527777777777,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-baseline-2026-06-24",
+      "p50_quality": 0.43378055555555556,
+      "p90_quality": 0.43825,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "wikimedia",
+      "total_duration_s": 357.4,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.38609756944444446,
+      "n_license_clean": 6,
+      "n_records": 8,
+      "notes": "fixture-baseline-2026-06-24",
+      "p50_quality": 0.43378055555555556,
+      "p90_quality": 0.4839583333333333,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "__total__",
+      "total_duration_s": 3021.4,
+      "unique_authors": 8
+    }
+  ]
+}
