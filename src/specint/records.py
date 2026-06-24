@@ -69,6 +69,7 @@ class VideoRecord(BaseModel):
     height: int | None = None
     fps: float | None = None
     license: License = License.UNKNOWN
+    license_confidence: float = Field(default=1.0, ge=0.0, le=1.0)
     license_url: AnyHttpUrl | None = None
     author: str | None = None
     published_at: datetime | None = None

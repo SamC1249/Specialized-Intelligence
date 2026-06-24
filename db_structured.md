@@ -33,6 +33,7 @@ redefine them locally.**
 | `height`          | `int \| None`    | Pixels.                                                                                  |
 | `fps`             | `float \| None`  | Frames per second.                                                                       |
 | `license`         | `License`        | See enum above. Defaults to `UNKNOWN`.                                                   |
+| `license_confidence` | `float`       | In [0, 1]; per-adapter posterior that `license` is correctly recovered. Defaults to 1.0. |
 | `license_url`     | `HttpUrl \| None`| Direct link to license page or upstream license metadata.                                |
 | `author`          | `str \| None`    | Required attribution string for CC-BY*.                                                  |
 | `published_at`    | `datetime \| None`| UTC.                                                                                    |

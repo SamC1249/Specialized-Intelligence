@@ -79,6 +79,7 @@ class PeerTubeSource(BaseSource):
             host = v.get("account", {}).get("host") or instance.replace("https://", "")
             url = f"https://{host}/videos/watch/{uuid}"
             license_enum = _peertube_license(licence)
+            license_conf = 0.95 if license_enum is not License.UNKNOWN else 0.0
             files = v.get("files") or []
             media_url = files[0].get("fileUrl") if files else None
             language = (v.get("language") or {}).get("id")
@@ -99,6 +100,7 @@ class PeerTubeSource(BaseSource):
                 else None,
                 fps=None,
                 license=license_enum,
+                license_confidence=license_conf,
                 license_url=None,
                 author=(v.get("account") or {}).get("displayName"),
                 published_at=_parse_iso(v.get("publishedAt")),

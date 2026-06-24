@@ -133,6 +133,7 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             height=int(v["height"]) if isinstance(v.get("height"), (int, float)) else None,
             fps=None,
             license=License.UNKNOWN,
+            license_confidence=0.2,
             license_url=None,
             author=_safe_str(
                 (v.get("author") or {}).get("name")

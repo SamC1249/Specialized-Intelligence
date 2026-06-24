@@ -18,21 +18,29 @@ from specint.sources.base import BaseSource
 SEARCH_URL = "https://archive.org/advancedsearch.php"
 
 
-def _license_from_url(url: str | None) -> License:
+def _license_from_url(url: str | None) -> tuple[License, float]:
+    """Return ``(license, confidence)`` for an Internet Archive ``licenseurl``.
+
+    Confidence is 1.0 only when the URL host is ``creativecommons.org`` —
+    the only domain we trust to declare the licence canonically. A
+    ``publicdomain`` or ``cc0`` URL on a third-party host drops to 0.7.
+    """
     if not url:
-        return License.UNKNOWN
+        return License.UNKNOWN, 0.0
     u = url.lower()
+    on_cc = "creativecommons.org" in u
+    base = 1.0 if on_cc else 0.7
     if "publicdomain/zero" in u or "cc0" in u:
-        return License.CC0
-    if "by-sa" in u:
-        return License.CC_BY_SA
+        return License.CC0, base
     if "by-nc" in u or "by-nd" in u:
-        return License.RESTRICTED
+        return License.RESTRICTED, base
+    if "by-sa" in u:
+        return License.CC_BY_SA, base
     if "/by/" in u or u.endswith("/by") or "creativecommons.org/licenses/by/" in u:
-        return License.CC_BY
+        return License.CC_BY, base
     if "publicdomain" in u:
-        return License.PUBLIC_DOMAIN
-    return License.UNKNOWN
+        return License.PUBLIC_DOMAIN, base
+    return License.UNKNOWN, 0.0
 
 
 def _parse_iso(value: str | None) -> datetime | None:
@@ -62,7 +70,7 @@ class ArchiveOrgSource(BaseSource):
             if not identifier:
                 continue
             license_url = d.get("licenseurl")
-            license_enum = _license_from_url(license_url)
+            license_enum, license_conf = _license_from_url(license_url)
             url = f"https://archive.org/details/{identifier}"
             media_url = (
                 f"https://archive.org/download/{identifier}/{identifier}.mp4"
@@ -101,6 +109,7 @@ class ArchiveOrgSource(BaseSource):
                 height=None,
                 fps=None,
                 license=license_enum,
+                license_confidence=license_conf,
                 license_url=license_url if license_url else None,
                 author=d.get("creator") if isinstance(d.get("creator"), str) else None,
                 published_at=_parse_iso(d.get("publicdate") or d.get("date")),
