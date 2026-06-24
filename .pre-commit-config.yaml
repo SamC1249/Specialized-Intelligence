@@ -37,3 +37,9 @@ repos:
         language: python
         types: [text]
         exclude: '^(docs/|\.git/)'
+      - id: require-license-confidence-in-adapters
+        name: require license_confidence field in every source adapter
+        entry: scripts/precommit_require_license_field.py
+        language: python
+        types: [python]
+        files: '^components/sources/.*\.py$'

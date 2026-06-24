@@ -39,15 +39,25 @@ jobs:
           if [ ${#FILES[@]} -gt 0 ]; then
             python scripts/precommit_forbid_paid_sources.py "${FILES[@]}"
           fi
+      - name: Run require-license-confidence-in-adapters hook
+        run: |
+          mapfile -t FILES < <(git ls-files 'components/sources/*.py' || true)
+          if [ ${#FILES[@]} -gt 0 ]; then
+            python scripts/precommit_require_license_field.py "${FILES[@]}"
+          fi
 
   unit:
-    name: Unit tests
+    name: Unit tests (py${{ matrix.python-version }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: ${{ matrix.python-version }}
       - run: |
           python -m pip install --upgrade pip
           pip install ".[dev]"
