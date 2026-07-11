@@ -1,0 +1,63 @@
+{
+  "query": {
+    "pages": {
+      "20001": {
+        "pageid": 20001,
+        "title": "File:Fancy_chef_montage.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Fancy_chef_montage.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Fancy_chef_montage.webm",
+            "mime": "video/webm",
+            "duration": 120.0,
+            "width": 1280,
+            "height": 720,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY-NC 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by-nc/4.0"},
+              "Artist": {"value": "Someone NC"}
+            }
+          }
+        ]
+      },
+      "20002": {
+        "pageid": 20002,
+        "title": "File:Recipe_no_derivs.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Recipe_no_derivs.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Recipe_no_derivs.webm",
+            "mime": "video/webm",
+            "duration": 220.0,
+            "width": 1280,
+            "height": 720,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY-ND 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by-nd/4.0"},
+              "Artist": {"value": "Someone ND"}
+            }
+          }
+        ]
+      },
+      "20003": {
+        "pageid": 20003,
+        "title": "File:Trailer_for_something.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Trailer_for_something.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Trailer_for_something.webm",
+            "mime": "video/webm",
+            "duration": 32.0,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by/4.0"},
+              "Artist": {"value": "Trailer Studios"}
+            }
+          }
+        ]
+      }
+    }
+  }
+}

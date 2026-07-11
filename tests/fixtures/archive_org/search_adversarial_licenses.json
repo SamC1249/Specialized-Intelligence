@@ -1,0 +1,38 @@
+{
+  "response": {
+    "docs": [
+      {
+        "identifier": "NCTeaser2025",
+        "title": "Cooking Teaser 2025",
+        "description": "A promotional teaser.",
+        "creator": "Teaser Studios",
+        "subject": ["cooking"],
+        "language": "eng",
+        "licenseurl": "https://creativecommons.org/licenses/by-nc/4.0/",
+        "runtime": "0:00:45",
+        "publicdate": "2025-01-01T00:00:00Z"
+      },
+      {
+        "identifier": "NDCompilation2024",
+        "title": "Best Chef Compilation 2024",
+        "description": "A no-derivatives compilation.",
+        "creator": "Highlights Reel Studio",
+        "subject": ["cooking"],
+        "language": "eng",
+        "licenseurl": "https://creativecommons.org/licenses/by-nd/4.0/",
+        "runtime": "0:12:00",
+        "publicdate": "2024-01-01T00:00:00Z"
+      },
+      {
+        "identifier": "MysteryLicense",
+        "title": "Mystery License Video",
+        "description": "No license URL provided.",
+        "creator": "Nobody",
+        "subject": ["cooking"],
+        "language": "eng",
+        "runtime": "0:05:00",
+        "publicdate": "2020-01-01T00:00:00Z"
+      }
+    ]
+  }
+}
