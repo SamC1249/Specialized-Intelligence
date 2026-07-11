@@ -12,7 +12,7 @@ from typing import Any
 from pydantic import AnyHttpUrl, BaseModel, ConfigDict, Field
 
 
-class License(str, Enum):  # noqa: UP042 - keep classic str+Enum for Pydantic compatibility
+class License(str, Enum):  # - keep classic str+Enum for Pydantic compatibility
     CC0 = "CC0"
     CC_BY = "CC-BY"
     CC_BY_SA = "CC-BY-SA"
@@ -47,10 +47,18 @@ class SourceQuery(BaseModel):
     terms: list[str] = Field(default_factory=list)
     max_results: int = 50
     language: str | None = None
+    languages: list[str] = Field(default_factory=list)
 
     def serialize(self) -> str:
         terms = "|".join(self.terms)
-        return f"terms={terms};max={self.max_results};lang={self.language or ''}"
+        langs = "|".join(self.languages) if self.languages else (self.language or "")
+        return f"terms={terms};max={self.max_results};lang={langs}"
+
+    @property
+    def effective_languages(self) -> list[str]:
+        if self.languages:
+            return list(self.languages)
+        return [self.language] if self.language else []
 
 
 class VideoRecord(BaseModel):

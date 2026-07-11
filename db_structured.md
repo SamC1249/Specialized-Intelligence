@@ -55,7 +55,10 @@ redefine them locally.**
 | ---------- | ----------- | ------------------------------------------- |
 | `terms`    | `list[str]` | Free-text search terms, OR-ed at the API.   |
 | `max_results` | `int`    | Hard cap per source per query.              |
-| `language` | `str \| None`| Optional language hint (BCP-47).           |
+| `language` | `str \| None`| Optional single-language hint (BCP-47). Kept for backwards-compat. |
+| `languages`| `list[str]` | Multilingual seed. When non-empty, adapters expand cooking terms via `specint.sources.terms.expand_terms` and pass per-language filters to APIs that support them. |
+
+Use `query.effective_languages` to read the merged, deduplicated language list.
 
 ## `BenchmarkResult` (Pydantic model)
 

@@ -110,13 +110,19 @@ class PeerTubeSource(BaseSource):
         return out
 
     def search(self, query: SourceQuery) -> Iterable[VideoRecord]:
+        from specint.sources.terms import expand_terms
+
+        terms = expand_terms(query) or list(query.terms)
         all_records: list[VideoRecord] = []
         for instance in self.instances:
-            params = {
-                "search": " ".join(query.terms),
+            params: dict[str, Any] = {
+                "search": " ".join(terms),
                 "count": str(min(query.max_results, 25)),
                 "licenceOneOf[]": [str(i) for i in sorted(ALLOWED_LICENCE_IDS)],
             }
+            langs = query.effective_languages
+            if langs:
+                params["languageOneOf[]"] = list(langs)
             try:
                 resp = self.client().get(f"{instance}/api/v1/search/videos", params=params)
                 resp.raise_for_status()
