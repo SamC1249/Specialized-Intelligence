@@ -41,6 +41,9 @@ testpaths = ["tests"]
 markers = [
     "integration: hits live network; skipped unless SPECINT_RUN_INTEGRATION=1",
 ]
+filterwarnings = [
+    "ignore::DeprecationWarning:pydantic",
+]
 
 [tool.ruff]
 line-length = 100
