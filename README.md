@@ -23,8 +23,23 @@ pytest -q
 python -m specint compare --fixtures --terms cooking recipe \
   --output reports/example.json
 
+# Head-to-head scorer benchmark (v1 vs v2), offline:
+python -m specint compare --fixtures --head-to-head \
+  --output reports/scorers.json
+
+# License-clean yield estimate from listing totals, offline:
+python -m specint yield --fixtures-dir tests/fixtures \
+  --output reports/yield.json
+
+# Multilingual seed-term expansion (fr + es cooking corpora):
+python -m specint compare --fixtures --languages fr es \
+  --output reports/multilang.json
+
 # Live comparison (only with explicit opt-in):
 SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
+
+# Live integration test suite (skipped by default):
+SPECINT_RUN_INTEGRATION=1 pytest -q -m integration
 ```
 
 ## Layout
@@ -37,10 +52,13 @@ SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
 | `db_structured.md`              | Canonical schemas (single source of truth).           |
 | `src/specint/records.py`        | Pydantic models matching `db_structured.md`.          |
 | `src/specint/sources/`          | Per-upstream adapters (BaseSource subclasses).        |
-| `src/specint/quality/`          | Metadata-only quality scorers.                        |
-| `src/specint/compare/`          | Systematic benchmark harness.                         |
-| `src/specint/cli.py`            | `python -m specint`.                                  |
-| `tests/`                        | Offline-only pytest suite + fixtures.                 |
+| `src/specint/quality/`          | Metadata-only quality scorers (`v1`, `v2`).           |
+| `src/specint/compare/`          | Systematic benchmark harness (head-to-head).          |
+| `src/specint/pipeline/`         | Post-collection dedup + join filters.                 |
+| `src/specint/yield_estimator.py`| Legal-yield projections from listing totals.          |
+| `src/specint/cli.py`            | `python -m specint {sources,compare,yield,...}`.      |
+| `tests/`                        | Offline pytest suite + fixtures.                      |
+| `tests/integration/`            | Live network suite, gated by env var.                 |
 | `.github/workflows/ci.yml`      | Lint, types, unit, e2e-fixture tests.                 |
 
 ## License & contribution
