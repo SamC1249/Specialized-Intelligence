@@ -1,5 +1,6 @@
 {
   "response": {
+    "numFound": 1234,
     "docs": [
       {
         "identifier": "PrelingerCookingShow1952",
