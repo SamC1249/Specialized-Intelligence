@@ -45,7 +45,7 @@ redefine them locally.**
 | Field            | Type        | Notes                                                |
 | ---------------- | ----------- | ---------------------------------------------------- |
 | `extractor`      | `str`       | Module path, e.g. `specint.sources.wikimedia`.       |
-| `extractor_git`  | `str`       | Short git SHA at extraction time (or `dev`).         |
+| `extractor_git`  | `str`       | Short git SHA (default from `specint.records.extractor_git_sha()`; override with env `SPECINT_EXTRACTOR_GIT`). Falls back to `dev` when git is unavailable. |
 | `fetched_at`     | `datetime`  | UTC instant the upstream blob was retrieved.         |
 | `query`          | `str`       | Serialized `SourceQuery`.                            |
 
@@ -74,6 +74,9 @@ pair plus an aggregate `total` row. Stored under
 | `p50_quality`           | `float`   | Median quality.                             |
 | `p90_quality`           | `float`   |                                             |
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
+| `n_unique_across_sources` | `int \| None` | Records surviving cross-source dedup. Added 2026-07-11. |
+| `duplicate_rate`        | `float \| None` | `1 - n_unique_across_sources / n_records`. Added 2026-07-11. |
+| `unique_duration_s`     | `float \| None` | Sum of dedup-winner durations. Added 2026-07-11. |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
 
 ## Frontend / API contract (placeholder)

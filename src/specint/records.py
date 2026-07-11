@@ -5,8 +5,12 @@ Every other module imports types from here. Do not redefine these locally.
 
 from __future__ import annotations
 
+import os
+import subprocess
 from datetime import UTC, datetime
 from enum import Enum
+from functools import lru_cache
+from pathlib import Path
 from typing import Any
 
 from pydantic import AnyHttpUrl, BaseModel, ConfigDict, Field
@@ -32,11 +36,47 @@ class License(str, Enum):  # noqa: UP042 - keep classic str+Enum for Pydantic co
         }
 
 
+@lru_cache(maxsize=1)
+def extractor_git_sha() -> str:
+    """Return the short SHA of the extractor repository, or ``"dev"``.
+
+    Result is cached for the process lifetime. We look up the SHA once at
+    first call to keep every ``Provenance`` reproducibly stamped without
+    forking ``git`` per record.
+
+    Precedence:
+      1. Environment variable ``SPECINT_EXTRACTOR_GIT`` — used by
+         reproducibility-critical CI runs.
+      2. ``git rev-parse --short HEAD`` executed against the repo that
+         contains this file.
+      3. ``"dev"`` when no repo is available.
+    """
+    env = os.environ.get("SPECINT_EXTRACTOR_GIT")
+    if env:
+        return env.strip()[:12] or "dev"
+    try:
+        repo_dir = Path(__file__).resolve().parent
+        out = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=str(repo_dir),
+            stderr=subprocess.DEVNULL,
+            timeout=2.0,
+        )
+    except (
+        FileNotFoundError,
+        subprocess.CalledProcessError,
+        subprocess.TimeoutExpired,
+        OSError,
+    ):
+        return "dev"
+    return out.decode().strip() or "dev"
+
+
 class Provenance(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     extractor: str
-    extractor_git: str = "dev"
+    extractor_git: str = Field(default_factory=extractor_git_sha)
     fetched_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     query: str = ""
 
@@ -93,6 +133,11 @@ class BenchmarkResult(BaseModel):
     p50_quality: float
     p90_quality: float
     unique_authors: int
+    # Cross-source dedup metrics. Optional to keep the schema
+    # backward-compatible for pre-2026-07-11 reports.
+    n_unique_across_sources: int | None = None
+    duplicate_rate: float | None = None
+    unique_duration_s: float | None = None
     notes: str = ""
 
     @classmethod
@@ -107,6 +152,9 @@ class BenchmarkResult(BaseModel):
             p50_quality=0.0,
             p90_quality=0.0,
             unique_authors=0,
+            n_unique_across_sources=0,
+            duplicate_rate=0.0,
+            unique_duration_s=0.0,
             notes=notes,
         )
 
