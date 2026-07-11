@@ -55,6 +55,15 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
     for row in rows:
         assert row.n_license_clean <= row.n_records
 
+    # New cross-source dedup columns must be populated and sane.
+    for row in rows:
+        assert row.n_unique_across_sources is not None
+        assert row.duplicate_rate is not None
+        assert row.unique_duration_s is not None
+        assert 0 <= row.n_unique_across_sources <= row.n_records
+        assert 0.0 <= row.duplicate_rate <= 1.0
+        assert row.unique_duration_s <= row.total_duration_s + 1e-6
+
     # Persist a sample report to validate the JSON serialisation contract.
     payload = {
         "query": query.model_dump(mode="json"),
@@ -65,3 +74,30 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
     reloaded = json.loads(out.read_text())
     assert reloaded["query"]["terms"] == ["cooking", "recipe"]
     assert len(reloaded["rows"]) == 5
+
+
+def test_e2e_cross_source_dedup_actually_deduplicates(fixtures_dir: Path):
+    """If the same video ends up on two sources it must be deduped in `__total__`."""
+    query = SourceQuery(terms=["cooking"], max_results=25)
+    wiki_records = json.loads((fixtures_dir / "wikimedia/search_pasta.json").read_text())
+    parsed_wiki = json.loads((fixtures_dir / "wikimedia/search_pasta.json").read_text())
+    from specint.sources.wikimedia import WikimediaCommonsSource as W
+
+    orig = W().parse(wiki_records, query)
+    mirrored = W().parse(parsed_wiki, query)
+    # Rename mirrored to look like a different source's ids so aggregate
+    # treats them as distinct rows but dedup still catches them.
+    mirrored = [
+        r.model_copy(update={"id": f"archive_org:{r.source_native_id}", "source": "archive_org"})
+        for r in mirrored
+    ]
+    rows = run_comparison(
+        query,
+        {"wikimedia": orig, "archive_org": mirrored},
+        notes="dedup-e2e",
+    )
+    total = next(r for r in rows if r.source == "__total__")
+    assert total.n_records == len(orig) + len(mirrored)
+    assert total.n_unique_across_sources is not None
+    assert total.n_unique_across_sources < total.n_records
+    assert total.duplicate_rate and total.duplicate_rate > 0.0

@@ -91,8 +91,8 @@ class ArchiveOrgSource(BaseSource):
                 id=f"archive_org:{identifier}",
                 source="archive_org",
                 source_native_id=str(identifier),
-                url=url,
-                media_url=media_url,
+                url=url,  # type: ignore[arg-type]
+                media_url=media_url,  # type: ignore[arg-type]
                 title=str(d.get("title") or identifier),
                 description=str(d.get("description") or ""),
                 language=d.get("language") if isinstance(d.get("language"), str) else None,
@@ -101,7 +101,7 @@ class ArchiveOrgSource(BaseSource):
                 height=None,
                 fps=None,
                 license=license_enum,
-                license_url=license_url if license_url else None,
+                license_url=license_url if license_url else None,  # type: ignore[arg-type]
                 author=d.get("creator") if isinstance(d.get("creator"), str) else None,
                 published_at=_parse_iso(d.get("publicdate") or d.get("date")),
                 keywords=keywords,
@@ -113,7 +113,7 @@ class ArchiveOrgSource(BaseSource):
 
     def search(self, query: SourceQuery) -> Iterable[VideoRecord]:
         q = " AND ".join(f'"{t}"' for t in query.terms) + " AND mediatype:movies"
-        params: list[tuple[str, str]] = [
+        params: list[tuple[str, str | int | float | bool | None]] = [
             ("q", q),
             ("fl[]", "identifier"),
             ("fl[]", "title"),

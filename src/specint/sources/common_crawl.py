@@ -82,6 +82,15 @@ def _parse_iso(value: str | None) -> datetime | None:
         return None
 
 
+def _extract_keywords(recipe: dict[str, Any] | None) -> list[str]:
+    if not recipe:
+        return []
+    kw = recipe.get("keywords")
+    if not isinstance(kw, str):
+        return []
+    return [k for k in kw.split(",") if k.strip()]
+
+
 def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[VideoRecord]:
     soup = BeautifulSoup(html, "lxml")
     blocks: list[dict[str, Any]] = []
@@ -121,7 +130,7 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             id=f"common_crawl:{native_id}",
             source="common_crawl",
             source_native_id=native_id,
-            url=page_url,
+            url=page_url,  # type: ignore[arg-type]
             media_url=None,
             title=_safe_str(v.get("name") or (recipe.get("name") if recipe else "")),
             description=_safe_str(
@@ -141,15 +150,7 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             )
             or None,
             published_at=_parse_iso(_safe_str(v.get("uploadDate")) or None),
-            keywords=[
-                k
-                for k in (
-                    recipe.get("keywords").split(",")
-                    if recipe and isinstance(recipe.get("keywords"), str)
-                    else []
-                )
-                if k.strip()
-            ],
+            keywords=_extract_keywords(recipe),
             recipe_steps=[s for s in steps if s],
             provenance=prov,
         )

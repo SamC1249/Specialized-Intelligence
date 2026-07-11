@@ -87,8 +87,8 @@ class PeerTubeSource(BaseSource):
                 id=f"peertube:{host}:{uuid}",
                 source="peertube",
                 source_native_id=str(uuid),
-                url=url,
-                media_url=media_url if license_enum.is_redistributable else None,
+                url=url,  # type: ignore[arg-type]
+                media_url=media_url if license_enum.is_redistributable else None,  # type: ignore[arg-type]
                 title=str(v.get("name") or ""),
                 description=str(v.get("description") or ""),
                 language=language,
