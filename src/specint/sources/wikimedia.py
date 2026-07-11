@@ -106,11 +106,14 @@ class WikimediaCommonsSource(BaseSource):
         return out
 
     def search(self, query: SourceQuery) -> Iterable[VideoRecord]:
+        from specint.sources.terms import expand_terms
+
+        terms = expand_terms(query) or list(query.terms)
         params = {
             "action": "query",
             "format": "json",
             "generator": "search",
-            "gsrsearch": " ".join(query.terms) + " filetype:video",
+            "gsrsearch": " ".join(terms) + " filetype:video",
             "gsrnamespace": "6",
             "gsrlimit": str(min(query.max_results, 50)),
             "prop": "imageinfo",

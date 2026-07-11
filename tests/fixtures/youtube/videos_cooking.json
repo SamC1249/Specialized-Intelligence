@@ -1,0 +1,53 @@
+{
+  "items": [
+    {
+      "id": "yt_cook_001",
+      "snippet": {
+        "title": "How to Braise Short Ribs (CC-BY)",
+        "description": "A 12-minute CC-BY braising tutorial: sear, deglaze, simmer.",
+        "channelTitle": "Open Recipes",
+        "publishedAt": "2025-03-11T10:00:00Z",
+        "defaultLanguage": "en",
+        "tags": ["cooking", "braise", "beef"]
+      },
+      "contentDetails": {
+        "duration": "PT12M30S",
+        "definition": "hd",
+        "dimension": "2d"
+      },
+      "status": {"license": "creativeCommon"}
+    },
+    {
+      "id": "yt_cook_002",
+      "snippet": {
+        "title": "Standard Copyright Cooking Video",
+        "description": "This should be filtered out — not CC.",
+        "channelTitle": "Random Chef",
+        "publishedAt": "2025-01-04T00:00:00Z",
+        "defaultLanguage": "en",
+        "tags": ["cooking"]
+      },
+      "contentDetails": {
+        "duration": "PT6M",
+        "definition": "hd"
+      },
+      "status": {"license": "youtube"}
+    },
+    {
+      "id": "yt_cook_003",
+      "snippet": {
+        "title": "Recette de la ratatouille (CC-BY)",
+        "description": "Épluchez, tranchez, faites revenir puis mijotez.",
+        "channelTitle": "Cuisine Libre",
+        "publishedAt": "2024-06-15T09:00:00Z",
+        "defaultLanguage": "fr",
+        "tags": ["cuisine", "recette"]
+      },
+      "contentDetails": {
+        "duration": "PT9M15S",
+        "definition": "hd"
+      },
+      "status": {"license": "creativeCommon"}
+    }
+  ]
+}

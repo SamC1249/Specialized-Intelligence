@@ -1,0 +1,68 @@
+{
+  "estimates": [
+    {
+      "est_hours_landing_pages": 214.49,
+      "est_hours_redistributable": 214.49,
+      "est_license_clean_records": 4321,
+      "est_records": 4321,
+      "license_clean_rate": 1.0,
+      "mean_duration_s": 178.7,
+      "sample_size": 2,
+      "source": "wikimedia",
+      "upstream_total": 4321
+    },
+    {
+      "est_hours_landing_pages": 179.62,
+      "est_hours_redistributable": 119.79,
+      "est_license_clean_records": 823,
+      "est_records": 1234,
+      "license_clean_rate": 0.6667,
+      "mean_duration_s": 524.0,
+      "sample_size": 3,
+      "source": "archive_org",
+      "upstream_total": 1234
+    },
+    {
+      "est_hours_landing_pages": 0.23,
+      "est_hours_redistributable": 0.23,
+      "est_license_clean_records": 2,
+      "est_records": 2,
+      "license_clean_rate": 1.0,
+      "mean_duration_s": 411.0,
+      "sample_size": 2,
+      "source": "peertube",
+      "upstream_total": 2
+    },
+    {
+      "est_hours_landing_pages": 0.07,
+      "est_hours_redistributable": 0.0,
+      "est_license_clean_records": 0,
+      "est_records": 1,
+      "license_clean_rate": 0.0,
+      "mean_duration_s": 270.0,
+      "sample_size": 1,
+      "source": "common_crawl",
+      "upstream_total": 1
+    },
+    {
+      "est_hours_landing_pages": 0.46,
+      "est_hours_redistributable": 0.0,
+      "est_license_clean_records": 2,
+      "est_records": 3,
+      "license_clean_rate": 0.6667,
+      "mean_duration_s": 555.0,
+      "sample_size": 3,
+      "source": "youtube",
+      "upstream_total": 3
+    }
+  ],
+  "query": {
+    "language": null,
+    "languages": [],
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  }
+}
