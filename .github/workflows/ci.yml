@@ -31,19 +31,36 @@ jobs:
       - name: Format check (ruff)
         run: ruff format --check .
 
-      - name: Type check (mypy, best-effort)
-        run: mypy src || true
+      - name: Type check (mypy, strict on records + best-effort elsewhere)
+        run: |
+          mypy src
+          mypy --strict src/specint/records.py
 
       - name: Tests (offline)
         env:
           SPECINT_RUN_INTEGRATION: "0"
         run: pytest -q --cov=specint --cov-report=term-missing
 
-      - name: E2E compare (fixtures)
+      - name: E2E compare (fixtures, cooking domain)
         run: |
-          python -m specint compare --fixtures --terms cooking recipe \
-            --output reports/ci-compare.json
+          python -m specint compare --fixtures --domain cooking \
+            --terms cooking recipe --output reports/ci-compare.json
           test -s reports/ci-compare.json
+
+      - name: E2E compare (fixtures, surgery domain smoke test)
+        run: |
+          python -m specint compare --fixtures --domain surgery \
+            --output reports/ci-compare-surgery.json
+          test -s reports/ci-compare-surgery.json
+
+      - name: Domain registry lists all expected slugs
+        run: |
+          python -m specint domains | tee /tmp/domains.txt
+          grep -q "^cooking" /tmp/domains.txt
+          grep -q "^surgery" /tmp/domains.txt
+          grep -q "^lab" /tmp/domains.txt
+          grep -q "^sports" /tmp/domains.txt
+          grep -q "^manufacturing" /tmp/domains.txt
 
       - name: Upload comparison report
         if: matrix.python-version == '3.12'

@@ -85,8 +85,8 @@ class WikimediaCommonsSource(BaseSource):
                 id=f"wikimedia:{page_id}",
                 source="wikimedia",
                 source_native_id=str(page_id),
-                url=url,
-                media_url=media_url if license_enum.is_redistributable else None,
+                url=url,  # type: ignore[arg-type]
+                media_url=media_url if license_enum.is_redistributable else None,  # type: ignore[arg-type]
                 title=title,
                 description="",
                 language=None,
@@ -95,7 +95,7 @@ class WikimediaCommonsSource(BaseSource):
                 height=info.get("height"),
                 fps=None,
                 license=license_enum,
-                license_url=license_url if license_url else None,
+                license_url=license_url if license_url else None,  # type: ignore[arg-type]
                 author=artist,
                 published_at=published,
                 keywords=[],

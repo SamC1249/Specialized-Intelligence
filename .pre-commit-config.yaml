@@ -5,9 +5,14 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+      - id: check-json
+      - id: check-toml
       - id: check-added-large-files
         args: ["--maxkb=512"]
       - id: check-merge-conflict
+      - id: debug-statements
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.5.0
     hooks:
@@ -19,6 +24,12 @@ repos:
       - id: pytest-quick
         name: pytest (offline)
         entry: pytest -q
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+      - id: mypy-records-strict
+        name: mypy --strict on records.py (canonical schema)
+        entry: mypy --strict src/specint/records.py
         language: system
         pass_filenames: false
         stages: [pre-push]
