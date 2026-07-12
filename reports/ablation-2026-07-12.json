@@ -1,0 +1,71 @@
+{
+  "domain": "cooking",
+  "n_good": 2,
+  "n_records": 11,
+  "variants": {
+    "v1": {
+      "kendall_tau": 0.32727272727272727,
+      "mean_bad": 0.4842828703703704,
+      "mean_good": 0.8664479166666667,
+      "n": 11.0,
+      "n_good": 2.0,
+      "separation": 0.3821650462962963
+    },
+    "v2": {
+      "kendall_tau": 0.32727272727272727,
+      "mean_bad": 0.41576203703703707,
+      "mean_good": 0.7426666666666667,
+      "n": 11.0,
+      "n_good": 2.0,
+      "separation": 0.32690462962962963
+    },
+    "v2_drop_duration": {
+      "kendall_tau": 0.32727272727272727,
+      "mean_bad": 0.35534313725490196,
+      "mean_good": 0.7118382352941177,
+      "n": 11.0,
+      "n_good": 2.0,
+      "separation": 0.35649509803921575
+    },
+    "v2_drop_has_steps": {
+      "kendall_tau": 0.32727272727272727,
+      "mean_bad": 0.44961213991769544,
+      "mean_good": 0.7140740740740741,
+      "n": 11.0,
+      "n_good": 2.0,
+      "separation": 0.26446193415637864
+    },
+    "v2_drop_license_tier": {
+      "kendall_tau": 0.2909090909090909,
+      "mean_bad": 0.31775529100529104,
+      "mean_good": 0.685952380952381,
+      "n": 11.0,
+      "n_good": 2.0,
+      "separation": 0.36819708994708994
+    },
+    "v2_drop_procedural_density": {
+      "kendall_tau": 0.32727272727272727,
+      "mean_bad": 0.5092858796296296,
+      "mean_good": 0.8345833333333332,
+      "n": 11.0,
+      "n_good": 2.0,
+      "separation": 0.32529745370370367
+    },
+    "v2_drop_resolution": {
+      "kendall_tau": 0.32727272727272727,
+      "mean_bad": 0.39501416122004357,
+      "mean_good": 0.7149019607843138,
+      "n": 11.0,
+      "n_good": 2.0,
+      "separation": 0.3198877995642702
+    },
+    "v2_drop_text_density": {
+      "kendall_tau": 0.32727272727272727,
+      "mean_bad": 0.451664609053498,
+      "mean_good": 0.7890046296296296,
+      "n": 11.0,
+      "n_good": 2.0,
+      "separation": 0.3373400205761316
+    }
+  }
+}

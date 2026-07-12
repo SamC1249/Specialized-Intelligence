@@ -76,6 +76,50 @@ pair plus an aggregate `total` row. Stored under
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
 
+## `Domain` (Pydantic model)
+
+Registered in `specint.domains`. The pipeline is *domain-agnostic*; a
+Domain carries the minimum config needed to swap cooking → laboratory
+(or surgery / sports / manufacturing) without any code change.
+
+| Field                 | Type              | Notes                                                       |
+| --------------------- | ----------------- | ----------------------------------------------------------- |
+| `slug`                | `str`             | `^[a-z][a-z0-9_]*$`. Used in report file names and CLI.     |
+| `display_name`        | `str`             | Human-readable.                                             |
+| `seed_terms`          | `tuple[str, ...]` | Free-text search terms fed to each source's `search`.       |
+| `procedural_verbs`    | `tuple[str, ...]` | Lowercase, single-token verbs. Used by the v2 quality scorer's `procedural_density` component. |
+| `eval_blocklist_urls` | `tuple[str, ...]` | Placeholder for future decontamination against public evals. |
+
+Registered slugs (2026-07-12): `cooking`, `laboratory`, `surgery`,
+`sports`, `manufacturing`. Add a new domain by extending
+`specint.domains` — nothing else should hard-code domain vocabulary.
+
+## Deduplication
+
+Dedup is a *pipeline* concern, not a `VideoRecord` field. See
+`specint.pipeline.dedup.dedup_records` for the full contract. In
+brief:
+
+- We never mutate records; the dedup function returns a
+  `DedupResult(records, duplicates, counters)`.
+- Survivor selection is deterministic: highest license tier, longest
+  known duration, lexicographically smallest `id`.
+- Merge signals: canonical URL, media URL, and title-shingle Jaccard
+  ≥ 0.8 within a duration bucket.
+
+`BenchmarkResult` rows with source `"__total_deduped__"` reflect the
+dedup output.
+
+## Quality scorer versions
+
+| Version | Function            | Components                                                                              |
+| ------- | ------------------- | --------------------------------------------------------------------------------------- |
+| v1      | `score_record_v1`   | license_clean, duration, resolution, text_density, has_steps.                           |
+| v2      | `score_record_v2`   | v1 minus license_clean plus **license_tier** (graded) and **procedural_density** (domain-aware verb count). |
+
+v2 is the default (`score_record`). v1 is preserved for ablation and
+Kendall-τ continuity against `reports/baseline-2026-06-20.json`.
+
 ## Frontend / API contract (placeholder)
 
 There is no HTTP API yet. When one is added, all request/response bodies
