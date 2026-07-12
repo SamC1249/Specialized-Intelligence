@@ -9,10 +9,11 @@ sources are added.
 from __future__ import annotations
 
 import json
+from datetime import UTC, datetime
 from pathlib import Path
 
-from specint.compare import run_comparison
-from specint.records import SourceQuery
+from specint.compare import load_fixture_records, run_comparison
+from specint.records import License, Provenance, SourceQuery, VideoRecord
 from specint.sources.archive_org import ArchiveOrgSource
 from specint.sources.common_crawl import CommonCrawlRecipeSource
 from specint.sources.peertube import PeerTubeSource
@@ -55,6 +56,10 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
     for row in rows:
         assert row.n_license_clean <= row.n_records
 
+    # Every row must expose the new dedup counter.
+    for row in rows:
+        assert row.n_unique_after_dedup <= row.n_records
+
     # Persist a sample report to validate the JSON serialisation contract.
     payload = {
         "query": query.model_dump(mode="json"),
@@ -65,3 +70,37 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
     reloaded = json.loads(out.read_text())
     assert reloaded["query"]["terms"] == ["cooking", "recipe"]
     assert len(reloaded["rows"]) == 5
+
+
+def test_load_fixture_records_matches_manual_loading(fixtures_dir: Path):
+    query = SourceQuery(terms=["cooking", "recipe"], max_results=25)
+    by_source = load_fixture_records(query, fixtures_dir=fixtures_dir)
+    assert set(by_source) == {"wikimedia", "archive_org", "peertube", "common_crawl"}
+    assert sum(len(v) for v in by_source.values()) > 0
+
+
+def test_cross_source_dedup_collapses_injected_duplicate(fixtures_dir: Path):
+    query = SourceQuery(terms=["cooking", "recipe"], max_results=25)
+    by_source = load_fixture_records(query, fixtures_dir=fixtures_dir)
+
+    prov = Provenance(extractor="tests", fetched_at=datetime.now(UTC), query=query.serialize())
+    mirror = VideoRecord(
+        id="archive_org:mirror-wikimedia-carbonara",
+        source="archive_org",
+        source_native_id="mirror",
+        url="https://archive.org/details/mirror",
+        title="Cooking pasta carbonara",
+        duration_s=312.0,
+        author="Jane Cook",
+        license=License.CC_BY_SA,
+        provenance=prov,
+    )
+    by_source["archive_org"] = [*by_source["archive_org"], mirror]
+
+    rows = run_comparison(query, by_source, notes="dedup-injected")
+    total = next(r for r in rows if r.source == "__total__")
+    assert total.n_records == sum(r.n_records for r in rows if r.source != "__total__")
+    assert total.n_unique_after_dedup < total.n_records, (
+        "Cross-source duplicate must collapse in the __total__ row"
+    )
+    assert total.dedup_rate > 0.0

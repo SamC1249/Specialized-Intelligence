@@ -20,6 +20,22 @@ from specint.sources.base import BaseSource
 
 API_URL = "https://commons.wikimedia.org/w/api.php"
 
+_FILE_EXTENSIONS = (".webm", ".ogv", ".ogg", ".mp4", ".mkv", ".mov")
+
+
+def _strip_file_prefix(title: str) -> str:
+    stripped = title
+    for prefix in ("File:", "file:"):
+        if stripped.startswith(prefix):
+            stripped = stripped[len(prefix) :]
+            break
+    lowered = stripped.lower()
+    for ext in _FILE_EXTENSIONS:
+        if lowered.endswith(ext):
+            stripped = stripped[: -len(ext)]
+            break
+    return stripped.replace("_", " ").strip()
+
 
 def _parse_iso(value: str | None) -> datetime | None:
     if not value:
@@ -44,13 +60,14 @@ class WikimediaCommonsSource(BaseSource):
             query=query.serialize(),
         )
         for page_id, page in pages.items():
-            title = page.get("title") or ""
+            raw_title = page.get("title") or ""
+            title = _strip_file_prefix(raw_title)
             infos = page.get("imageinfo") or []
             if not infos:
                 continue
             info = infos[0]
             mime = (info.get("mime") or "").lower()
-            if not mime.startswith("video/") and not title.lower().endswith(
+            if not mime.startswith("video/") and not raw_title.lower().endswith(
                 (".webm", ".ogv", ".mp4")
             ):
                 continue
