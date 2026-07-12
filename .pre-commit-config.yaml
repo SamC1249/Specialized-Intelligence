@@ -5,9 +5,14 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+      - id: check-json
+      - id: check-toml
       - id: check-added-large-files
         args: ["--maxkb=512"]
       - id: check-merge-conflict
+      - id: debug-statements
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.5.0
     hooks:
@@ -22,3 +27,15 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
+      - id: sources-registered
+        name: every source module must be listed in specint.sources.REGISTRY
+        entry: python scripts/check_sources_registered.py
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+      - id: mypy-records-strict
+        name: mypy --strict on records/domains/quality
+        entry: mypy --strict src/specint/records.py src/specint/domains.py src/specint/quality/metrics.py
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]

@@ -1,0 +1,45 @@
+{
+  "query": {
+    "pages": {
+      "20001": {
+        "pageid": 20001,
+        "title": "File:Pipetting demonstration.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Pipetting_demonstration.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Pipetting_demonstration.webm",
+            "mime": "video/webm",
+            "duration": 245.0,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by/4.0/"},
+              "Artist": {"value": "OpenLab Contributors"},
+              "DateTimeOriginal": {"value": "2024-06-01T10:00:00Z"}
+            }
+          }
+        ]
+      },
+      "20002": {
+        "pageid": 20002,
+        "title": "File:Centrifuge protocol demo.ogv",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Centrifuge_protocol_demo.ogv",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Centrifuge_protocol_demo.ogv",
+            "mime": "video/ogg",
+            "duration": 178.0,
+            "width": 1280,
+            "height": 720,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/publicdomain/zero/1.0/"},
+              "Artist": {"value": "Public Wetlab"}
+            }
+          }
+        ]
+      }
+    }
+  }
+}

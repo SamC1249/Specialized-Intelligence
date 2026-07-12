@@ -1,0 +1,28 @@
+{
+  "response": {
+    "docs": [
+      {
+        "identifier": "OpenScienceProtocol1",
+        "title": "Wet-Lab Titration Protocol",
+        "description": "Titrate, mix, measure, and record a strong-acid strong-base neutralisation.",
+        "creator": "Open Science Collective",
+        "subject": ["chemistry", "protocol", "titration"],
+        "language": "eng",
+        "licenseurl": "https://creativecommons.org/licenses/by/4.0/",
+        "runtime": "0:14:20",
+        "publicdate": "2022-08-11T00:00:00Z"
+      },
+      {
+        "identifier": "PublicDomainCentrifuge",
+        "title": "Centrifuge Operation Public Domain",
+        "description": "Public-domain centrifuge operation walkthrough.",
+        "creator": "US Government",
+        "subject": ["centrifuge", "chemistry"],
+        "language": "eng",
+        "licenseurl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "runtime": "0:06:00",
+        "publicdate": "2005-05-05T00:00:00Z"
+      }
+    ]
+  }
+}

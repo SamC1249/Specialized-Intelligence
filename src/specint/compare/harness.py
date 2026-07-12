@@ -1,12 +1,16 @@
 """Systematic comparison harness.
 
-Given a `SourceQuery` and a set of (source_slug, list_of_records) pairs —
-typically produced by feeding offline fixtures or live `search()` calls
-through `quality.score_records` — emit a deterministic list of
-`BenchmarkResult` rows: one per source plus an aggregate `__total__`.
+Given a `SourceQuery`, a domain, and a set of `(source_slug, records)`
+pairs — typically produced by feeding offline fixtures or live
+`search()` calls through `quality.score_records` — emit a deterministic
+list of `BenchmarkResult` rows: one per source, one `__total__` (pre
+dedup), and one `__total_deduped__`.
 
 The CLI wraps this so `python -m specint compare` always produces a
 reproducible, JSON-serialisable artifact under `reports/`.
+
+Dedup runs on the combined `all-scored` list (not per-source) because
+cross-source dedup is where the real inflation happens.
 """
 
 from __future__ import annotations
@@ -14,6 +18,8 @@ from __future__ import annotations
 import statistics
 from collections.abc import Iterable, Mapping
 
+from specint.domains import DEFAULT_DOMAIN, Domain
+from specint.pipeline import dedup_records
 from specint.quality import score_records
 from specint.records import BenchmarkResult, License, SourceQuery, VideoRecord
 
@@ -63,13 +69,32 @@ def run_comparison(
     query: SourceQuery,
     by_source: Mapping[str, list[VideoRecord]],
     notes: str = "",
+    domain: Domain = DEFAULT_DOMAIN,
+    with_dedup: bool = True,
 ) -> list[BenchmarkResult]:
-    """Score, aggregate per source, and append a `__total__` row."""
+    """Score, aggregate per source, and append pre-/post-dedup totals.
+
+    Determinism: sources are iterated in sorted-slug order; the dedup
+    survivor selection is also deterministic (see `dedup_records`).
+    """
     rows: list[BenchmarkResult] = []
     all_scored: list[VideoRecord] = []
     for source, records in sorted(by_source.items()):
-        scored = score_records(records)
+        scored = score_records(records, domain=domain)
         all_scored.extend(scored)
         rows.append(aggregate(source, query.terms, scored, notes=notes))
     rows.append(aggregate("__total__", query.terms, all_scored, notes=notes))
+    if with_dedup:
+        deduped = dedup_records(all_scored)
+        rows.append(
+            aggregate(
+                "__total_deduped__",
+                query.terms,
+                deduped.records,
+                notes=f"{notes};n_dropped={len(all_scored) - len(deduped.records)}",
+            )
+        )
     return rows
+
+
+__all__ = ["aggregate", "run_comparison"]

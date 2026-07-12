@@ -1,0 +1,37 @@
+{
+  "__instance__": "https://framatube.org",
+  "total": 2,
+  "data": [
+    {
+      "id": 15001,
+      "uuid": "lab-abcd-1234",
+      "name": "PCR Setup Walkthrough",
+      "description": "Prepare, aliquot, and load a 96-well PCR plate step by step.",
+      "duration": 512,
+      "publishedAt": "2024-04-10T08:00:00Z",
+      "language": {"id": "en", "label": "English"},
+      "licence": {"id": 1, "label": "Attribution"},
+      "tags": ["pcr", "wetlab"],
+      "resolution": {"id": 1080, "label": "1080p"},
+      "files": [
+        {"fileUrl": "https://framatube.org/static/webseed/lab-abcd-1234.mp4"}
+      ],
+      "account": {"displayName": "OpenLab Channel", "host": "framatube.org"}
+    },
+    {
+      "id": 15002,
+      "uuid": "lab-efgh-5678",
+      "name": "Chromatography Column Prep",
+      "description": "Pack, wash, and equilibrate a chromatography column.",
+      "duration": 305,
+      "publishedAt": "2024-03-02T10:00:00Z",
+      "licence": {"id": 7, "label": "Public Domain Dedication"},
+      "tags": ["chemistry"],
+      "resolution": {"id": 720, "label": "720p"},
+      "files": [
+        {"fileUrl": "https://framatube.org/static/webseed/lab-efgh-5678.mp4"}
+      ],
+      "account": {"displayName": "Wetlab Videos", "host": "framatube.org"}
+    }
+  ]
+}

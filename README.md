@@ -20,11 +20,18 @@ pre-commit install
 pytest -q
 
 # Offline comparison harness (no network):
-python -m specint compare --fixtures --terms cooking recipe \
+python -m specint compare --fixtures --domain cooking \
   --output reports/example.json
 
+# List registered domains and sources:
+python -m specint domains
+python -m specint sources
+
+# Ablation of the v2 quality scorer on the fixture corpus:
+python -m specint ablate --output reports/ablation.json
+
 # Live comparison (only with explicit opt-in):
-SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
+SPECINT_RUN_INTEGRATION=1 python -m specint compare --domain cooking
 ```
 
 ## Layout
@@ -37,8 +44,10 @@ SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
 | `db_structured.md`              | Canonical schemas (single source of truth).           |
 | `src/specint/records.py`        | Pydantic models matching `db_structured.md`.          |
 | `src/specint/sources/`          | Per-upstream adapters (BaseSource subclasses).        |
-| `src/specint/quality/`          | Metadata-only quality scorers.                        |
-| `src/specint/compare/`          | Systematic benchmark harness.                         |
+| `src/specint/quality/`          | Metadata-only quality scorers (v1 + v2).              |
+| `src/specint/compare/`          | Systematic benchmark harness + ablation.              |
+| `src/specint/pipeline/`         | Pipeline stages (dedup, more coming).                 |
+| `src/specint/domains.py`        | Domain registry (cooking, lab, surgery, sports, ...). |
 | `src/specint/cli.py`            | `python -m specint`.                                  |
 | `tests/`                        | Offline-only pytest suite + fixtures.                 |
 | `.github/workflows/ci.yml`      | Lint, types, unit, e2e-fixture tests.                 |

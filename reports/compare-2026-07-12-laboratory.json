@@ -1,0 +1,103 @@
+{
+  "domain": "laboratory",
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "laboratory protocol",
+      "wet lab"
+    ]
+  },
+  "rows": [
+    {
+      "mean_quality": 0.5084583333333333,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-2026-07-12",
+      "p50_quality": 0.507625,
+      "p90_quality": 0.5092916666666667,
+      "query_terms": [
+        "laboratory protocol",
+        "wet lab"
+      ],
+      "source": "archive_org",
+      "total_duration_s": 1220.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.671875,
+      "n_license_clean": 1,
+      "n_records": 1,
+      "notes": "fixture-2026-07-12",
+      "p50_quality": 0.671875,
+      "p90_quality": 0.671875,
+      "query_terms": [
+        "laboratory protocol",
+        "wet lab"
+      ],
+      "source": "common_crawl",
+      "total_duration_s": 510.0,
+      "unique_authors": 1
+    },
+    {
+      "mean_quality": 0.6129166666666667,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-2026-07-12",
+      "p50_quality": 0.6045416666666666,
+      "p90_quality": 0.6212916666666667,
+      "query_terms": [
+        "laboratory protocol",
+        "wet lab"
+      ],
+      "source": "peertube",
+      "total_duration_s": 817.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.542375,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-2026-07-12",
+      "p50_quality": 0.538125,
+      "p90_quality": 0.546625,
+      "query_terms": [
+        "laboratory protocol",
+        "wet lab"
+      ],
+      "source": "wikimedia",
+      "total_duration_s": 423.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.5713392857142857,
+      "n_license_clean": 7,
+      "n_records": 7,
+      "notes": "fixture-2026-07-12",
+      "p50_quality": 0.546625,
+      "p90_quality": 0.6212916666666667,
+      "query_terms": [
+        "laboratory protocol",
+        "wet lab"
+      ],
+      "source": "__total__",
+      "total_duration_s": 2970.0,
+      "unique_authors": 7
+    },
+    {
+      "mean_quality": 0.5713392857142857,
+      "n_license_clean": 7,
+      "n_records": 7,
+      "notes": "fixture-2026-07-12;n_dropped=0",
+      "p50_quality": 0.546625,
+      "p90_quality": 0.6212916666666667,
+      "query_terms": [
+        "laboratory protocol",
+        "wet lab"
+      ],
+      "source": "__total_deduped__",
+      "total_duration_s": 2970.0,
+      "unique_authors": 7
+    }
+  ]
+}
