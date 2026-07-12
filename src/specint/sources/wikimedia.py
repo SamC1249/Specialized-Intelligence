@@ -14,27 +14,27 @@ from collections.abc import Iterable
 from datetime import datetime
 from typing import Any
 
-from specint.records import License, Provenance, SourceQuery, VideoRecord, utcnow
+from specint.quality.license_utils import classify
+from specint.records import Provenance, SourceQuery, VideoRecord, utcnow
 from specint.sources.base import BaseSource
 
 API_URL = "https://commons.wikimedia.org/w/api.php"
 
+_FILE_EXTENSIONS = (".webm", ".ogv", ".ogg", ".mp4", ".mkv", ".mov")
 
-def _coerce_license(short_name: str | None) -> License:
-    if not short_name:
-        return License.UNKNOWN
-    s = short_name.strip().upper().replace(" ", "")
-    if s.startswith("CC0"):
-        return License.CC0
-    if "BY-SA" in s or "BYSA" in s:
-        return License.CC_BY_SA
-    if "BY-NC" in s or "BYNC" in s or "BY-ND" in s or "BYND" in s:
-        return License.RESTRICTED
-    if "CC-BY" in s or "CCBY" in s:
-        return License.CC_BY
-    if "PUBLICDOMAIN" in s or s == "PD":
-        return License.PUBLIC_DOMAIN
-    return License.UNKNOWN
+
+def _strip_file_prefix(title: str) -> str:
+    stripped = title
+    for prefix in ("File:", "file:"):
+        if stripped.startswith(prefix):
+            stripped = stripped[len(prefix) :]
+            break
+    lowered = stripped.lower()
+    for ext in _FILE_EXTENSIONS:
+        if lowered.endswith(ext):
+            stripped = stripped[: -len(ext)]
+            break
+    return stripped.replace("_", " ").strip()
 
 
 def _parse_iso(value: str | None) -> datetime | None:
@@ -60,13 +60,14 @@ class WikimediaCommonsSource(BaseSource):
             query=query.serialize(),
         )
         for page_id, page in pages.items():
-            title = page.get("title") or ""
+            raw_title = page.get("title") or ""
+            title = _strip_file_prefix(raw_title)
             infos = page.get("imageinfo") or []
             if not infos:
                 continue
             info = infos[0]
             mime = (info.get("mime") or "").lower()
-            if not mime.startswith("video/") and not title.lower().endswith(
+            if not mime.startswith("video/") and not raw_title.lower().endswith(
                 (".webm", ".ogv", ".mp4")
             ):
                 continue
@@ -79,7 +80,7 @@ class WikimediaCommonsSource(BaseSource):
 
             url = info.get("descriptionurl") or f"https://commons.wikimedia.org/wiki/{title}"
             media_url = info.get("url")
-            license_enum = _coerce_license(license_value)
+            license_enum = classify(license_value, license_url)
 
             record = VideoRecord(
                 id=f"wikimedia:{page_id}",

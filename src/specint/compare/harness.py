@@ -15,6 +15,7 @@ import statistics
 from collections.abc import Iterable, Mapping
 
 from specint.quality import score_records
+from specint.quality.dedup import dedup_records
 from specint.records import BenchmarkResult, License, SourceQuery, VideoRecord
 
 
@@ -45,6 +46,8 @@ def aggregate(
     )
     authors = {r.author for r in items if r.author}
 
+    deduped, _clusters = dedup_records(items)
+
     return BenchmarkResult(
         source=source,
         query_terms=list(query_terms),
@@ -55,6 +58,7 @@ def aggregate(
         p50_quality=_percentile(qualities, 50),
         p90_quality=_percentile(qualities, 90),
         unique_authors=len(authors),
+        n_unique_after_dedup=len(deduped),
         notes=notes,
     )
 
@@ -64,7 +68,13 @@ def run_comparison(
     by_source: Mapping[str, list[VideoRecord]],
     notes: str = "",
 ) -> list[BenchmarkResult]:
-    """Score, aggregate per source, and append a `__total__` row."""
+    """Score, aggregate per source, and append a `__total__` row.
+
+    The `__total__` row's `n_unique_after_dedup` reflects the cross-source
+    deduped union: two identical records surfaced by both Wikimedia and
+    Internet Archive collapse to one, so the total row is a strictly
+    honest yield estimate rather than a naive sum.
+    """
     rows: list[BenchmarkResult] = []
     all_scored: list[VideoRecord] = []
     for source, records in sorted(by_source.items()):

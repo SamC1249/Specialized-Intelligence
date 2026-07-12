@@ -74,7 +74,14 @@ pair plus an aggregate `total` row. Stored under
 | `p50_quality`           | `float`   | Median quality.                             |
 | `p90_quality`           | `float`   |                                             |
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
+| `n_unique_after_dedup`  | `int`     | Records after metadata-only near-dup collapse. `n_unique_after_dedup <= n_records`. For the `__total__` row this reflects the cross-source deduped union. |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
+
+`BenchmarkResult` also exposes a derived property `dedup_rate`
+(`1 - n_unique_after_dedup / n_records`, or 0 when `n_records == 0`).
+Dedup is currently metadata-only; see
+`docs/plan-2026-07-12.md` (H2) and
+`src/specint/quality/dedup.py` for the key construction.
 
 ## Frontend / API contract (placeholder)
 

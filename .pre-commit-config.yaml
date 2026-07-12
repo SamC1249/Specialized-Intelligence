@@ -5,6 +5,8 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+      - id: check-json
+        files: "^reports/.*\\.json$"
       - id: check-added-large-files
         args: ["--maxkb=512"]
       - id: check-merge-conflict
@@ -14,11 +16,27 @@ repos:
       - id: ruff
         args: ["--fix"]
       - id: ruff-format
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0
+    hooks:
+      - id: mypy
+        additional_dependencies:
+          - "pydantic>=2.6,<3"
+          - "httpx>=0.27,<1"
+          - "beautifulsoup4>=4.12,<5"
+        args: ["--config-file=pyproject.toml"]
+        files: "^src/"
   - repo: local
     hooks:
       - id: pytest-quick
         name: pytest (offline)
         entry: pytest -q
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+      - id: precommit-compare
+        name: specint compare --fixtures smoke test
+        entry: python -m specint compare --fixtures --terms cooking recipe --output reports/.precommit.json --notes precommit
         language: system
         pass_filenames: false
         stages: [pre-push]

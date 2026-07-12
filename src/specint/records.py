@@ -93,7 +93,14 @@ class BenchmarkResult(BaseModel):
     p50_quality: float
     p90_quality: float
     unique_authors: int
+    n_unique_after_dedup: int = 0
     notes: str = ""
+
+    @property
+    def dedup_rate(self) -> float:
+        if self.n_records <= 0:
+            return 0.0
+        return 1.0 - (self.n_unique_after_dedup / self.n_records)
 
     @classmethod
     def empty(cls, source: str, query_terms: list[str], notes: str = "") -> BenchmarkResult:
@@ -107,6 +114,7 @@ class BenchmarkResult(BaseModel):
             p50_quality=0.0,
             p90_quality=0.0,
             unique_authors=0,
+            n_unique_after_dedup=0,
             notes=notes,
         )
 

@@ -15,5 +15,6 @@ venv/
 htmlcov/
 reports/ci-*.json
 reports/example*.json
+reports/.precommit*.json
 !reports/.gitkeep
 !reports/baseline-*.json

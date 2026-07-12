@@ -9,7 +9,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from specint.compare import run_comparison
+from specint.compare import load_fixture_records, run_comparison
 from specint.records import SourceQuery
 from specint.sources import REGISTRY
 
@@ -29,11 +29,7 @@ def _cmd_compare(args: argparse.Namespace) -> int:
 
     by_source: dict[str, list] = {}
     if args.fixtures:
-        for slug in REGISTRY:
-            if only and slug not in only:
-                continue
-            by_source[slug] = []
-        # No live calls in --fixtures mode; the harness reports zeros so CI is reproducible.
+        by_source = load_fixture_records(query, only=only)
     elif os.environ.get("SPECINT_RUN_INTEGRATION") != "1":
         print(
             "refusing to hit live network without SPECINT_RUN_INTEGRATION=1; pass --fixtures for an offline dry run.",

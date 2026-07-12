@@ -12,27 +12,11 @@ from collections.abc import Iterable
 from datetime import datetime
 from typing import Any
 
-from specint.records import License, Provenance, SourceQuery, VideoRecord, utcnow
+from specint.quality.license_utils import classify
+from specint.records import Provenance, SourceQuery, VideoRecord, utcnow
 from specint.sources.base import BaseSource
 
 SEARCH_URL = "https://archive.org/advancedsearch.php"
-
-
-def _license_from_url(url: str | None) -> License:
-    if not url:
-        return License.UNKNOWN
-    u = url.lower()
-    if "publicdomain/zero" in u or "cc0" in u:
-        return License.CC0
-    if "by-sa" in u:
-        return License.CC_BY_SA
-    if "by-nc" in u or "by-nd" in u:
-        return License.RESTRICTED
-    if "/by/" in u or u.endswith("/by") or "creativecommons.org/licenses/by/" in u:
-        return License.CC_BY
-    if "publicdomain" in u:
-        return License.PUBLIC_DOMAIN
-    return License.UNKNOWN
 
 
 def _parse_iso(value: str | None) -> datetime | None:
@@ -62,10 +46,10 @@ class ArchiveOrgSource(BaseSource):
             if not identifier:
                 continue
             license_url = d.get("licenseurl")
-            license_enum = _license_from_url(license_url)
+            license_enum = classify(license_url, d.get("rights"))
             url = f"https://archive.org/details/{identifier}"
             media_url = (
-                f"https://archive.org/download/{identifier}/{identifier}.mp4"
+                f"https://archive.org/download/{identifier}/format=h.264"
                 if license_enum.is_redistributable
                 else None
             )

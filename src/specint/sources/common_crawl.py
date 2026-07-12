@@ -21,7 +21,8 @@ from typing import Any
 
 from bs4 import BeautifulSoup
 
-from specint.records import License, Provenance, SourceQuery, VideoRecord, utcnow
+from specint.quality.license_utils import classify
+from specint.records import Provenance, SourceQuery, VideoRecord, utcnow
 from specint.sources.base import BaseSource
 
 ISO8601_DURATION_RE = re.compile(
@@ -95,6 +96,14 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
     recipes = [b for b in blocks if "Recipe" in _node_types(b)]
     recipe = recipes[0] if recipes else None
 
+    page_license_url: str | None = None
+    for link in soup.find_all("link", attrs={"rel": True}):
+        rel = link.get("rel")
+        rel_values = rel if isinstance(rel, list) else [rel]
+        if any(str(r).lower() == "license" for r in rel_values):
+            page_license_url = link.get("href")
+            break
+
     prov = Provenance(
         extractor=__name__,
         fetched_at=utcnow(),
@@ -105,6 +114,11 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
     for v in videos:
         embed = _safe_str(v.get("embedUrl") or v.get("contentUrl") or page_url)
         native_id = _safe_str(v.get("@id") or v.get("identifier") or embed)
+        license_enum = classify(
+            _safe_str(v.get("license")) or None,
+            _safe_str(recipe.get("license")) if recipe else None,
+            page_license_url,
+        )
         steps: list[str] = []
         if recipe:
             instructions = recipe.get("recipeInstructions")
@@ -132,8 +146,8 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             width=int(v["width"]) if isinstance(v.get("width"), (int, float)) else None,
             height=int(v["height"]) if isinstance(v.get("height"), (int, float)) else None,
             fps=None,
-            license=License.UNKNOWN,
-            license_url=None,
+            license=license_enum,
+            license_url=page_license_url,
             author=_safe_str(
                 (v.get("author") or {}).get("name")
                 if isinstance(v.get("author"), dict)

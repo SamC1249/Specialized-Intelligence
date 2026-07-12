@@ -21,6 +21,7 @@ from collections.abc import Iterable
 from datetime import datetime
 from typing import Any
 
+from specint.quality.license_utils import classify
 from specint.records import License, Provenance, SourceQuery, VideoRecord, utcnow
 from specint.sources.base import BaseSource
 
@@ -70,15 +71,21 @@ class PeerTubeSource(BaseSource):
         )
         out: list[VideoRecord] = []
         for v in data:
-            licence = (v.get("licence") or {}).get("id")
-            if licence not in ALLOWED_LICENCE_IDS:
+            licence_obj = v.get("licence") or {}
+            licence_id = licence_obj.get("id")
+            if licence_id not in ALLOWED_LICENCE_IDS:
                 continue
             uuid = v.get("uuid") or v.get("shortUUID") or v.get("id")
             if not uuid:
                 continue
             host = v.get("account", {}).get("host") or instance.replace("https://", "")
             url = f"https://{host}/videos/watch/{uuid}"
-            license_enum = _peertube_license(licence)
+            license_enum = _peertube_license(licence_id)
+            confirm = classify(licence_obj.get("label"))
+            if confirm is License.RESTRICTED:
+                continue
+            if confirm is not License.UNKNOWN and confirm.is_redistributable:
+                license_enum = confirm
             files = v.get("files") or []
             media_url = files[0].get("fileUrl") if files else None
             language = (v.get("language") or {}).get("id")
