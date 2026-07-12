@@ -42,6 +42,25 @@ markers = [
     "integration: hits live network; skipped unless SPECINT_RUN_INTEGRATION=1",
 ]
 
+[tool.coverage.run]
+source = ["specint"]
+branch = true
+
+[tool.coverage.report]
+# Floor is intentionally set to what the *offline* suite can reach today
+# without mocking httpx. Raising it further requires either real network
+# access (banned by AGENTS.md for tests) or dedicated respx/httpx-mock
+# fixtures; both should land alongside a new source adapter rather than
+# as churn on this threshold.
+fail_under = 80
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
+
 [tool.ruff]
 line-length = 100
 target-version = "py311"

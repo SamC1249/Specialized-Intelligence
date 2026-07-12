@@ -1,0 +1,59 @@
+name: Benchmark Guard
+
+# Enforces the "comparison-first" rule from AGENTS.md:
+# any PR that touches a data source or a quality metric MUST also
+# publish a new benchmark row under reports/, or opt out explicitly
+# with a NO-BENCHMARK-JUSTIFY: <>=20 chars> line in the PR body.
+
+on:
+  pull_request:
+    paths:
+      - "src/specint/sources/**"
+      - "src/specint/quality/**"
+      - "src/specint/compare/**"
+
+jobs:
+  benchmark-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect new/changed benchmark reports
+        id: reports
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          echo "Comparing against base: $BASE_SHA"
+          CHANGED=$(git diff --name-only --diff-filter=AM "$BASE_SHA"...HEAD -- 'reports/*.json' | wc -l)
+          echo "changed=$CHANGED" >> "$GITHUB_OUTPUT"
+          git diff --name-only --diff-filter=AM "$BASE_SHA"...HEAD -- 'reports/*.json' || true
+
+      - name: Check for opt-out justification
+        id: justify
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          if printf '%s' "$PR_BODY" | grep -Eq 'NO-BENCHMARK-JUSTIFY:.{20,}'; then
+            echo "justified=yes" >> "$GITHUB_OUTPUT"
+          else
+            echo "justified=no" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Enforce benchmark-first rule
+        if: steps.reports.outputs.changed == '0' && steps.justify.outputs.justified == 'no'
+        run: |
+          echo "::error::This PR touches src/specint/{sources,quality,compare}/** but"
+          echo "::error::did not add or modify a reports/*.json artefact. Either run"
+          echo "::error::'python -m specint compare --fixtures --output reports/<name>.json'"
+          echo "::error::and commit the file, or add a line 'NO-BENCHMARK-JUSTIFY: <reason (>=20 chars)>'"
+          echo "::error::to the PR description. See AGENTS.md \"Comparison-First Rule\"."
+          exit 1
+
+      - name: Success (report present)
+        if: steps.reports.outputs.changed != '0'
+        run: echo "Benchmark report update detected — comparison-first rule satisfied."
+
+      - name: Success (opt-out justified)
+        if: steps.justify.outputs.justified == 'yes'
+        run: echo "PR body includes a NO-BENCHMARK-JUSTIFY opt-out. Reviewer must audit."

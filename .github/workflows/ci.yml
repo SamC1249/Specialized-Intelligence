@@ -37,7 +37,9 @@ jobs:
       - name: Tests (offline)
         env:
           SPECINT_RUN_INTEGRATION: "0"
-        run: pytest -q --cov=specint --cov-report=term-missing
+        # Coverage floor is set in pyproject.toml [tool.coverage.report].fail_under;
+        # regressions must be argued for in the plan-of-day, not silently accepted.
+        run: pytest -q --cov=specint --cov-report=term-missing --cov-fail-under=80
 
       - name: E2E compare (fixtures)
         run: |
