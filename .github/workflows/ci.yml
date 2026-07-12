@@ -34,23 +34,40 @@ jobs:
       - name: Type check (mypy, best-effort)
         run: mypy src || true
 
+      - name: Type check (mypy strict on records + quality + domains)
+        run: mypy --strict src/specint/records.py src/specint/domains.py src/specint/quality/metrics.py
+
       - name: Tests (offline)
         env:
           SPECINT_RUN_INTEGRATION: "0"
-        run: pytest -q --cov=specint --cov-report=term-missing
+        run: pytest -q --cov=specint --cov-report=term-missing --cov-report=xml
 
-      - name: E2E compare (fixtures)
+      - name: E2E compare (fixtures, cooking)
         run: |
-          python -m specint compare --fixtures --terms cooking recipe \
-            --output reports/ci-compare.json
-          test -s reports/ci-compare.json
+          python -m specint compare --fixtures --domain cooking \
+            --output reports/ci-compare-cooking.json
+          test -s reports/ci-compare-cooking.json
 
-      - name: Upload comparison report
+      - name: E2E compare (fixtures, laboratory)
+        run: |
+          python -m specint compare --fixtures --domain laboratory \
+            --output reports/ci-compare-laboratory.json
+          test -s reports/ci-compare-laboratory.json
+
+      - name: E2E ablation on fixture corpus
+        run: |
+          python -m specint ablate --output reports/ci-ablation.json
+          test -s reports/ci-ablation.json
+
+      - name: Upload comparison reports
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
-          name: compare-report
-          path: reports/ci-compare.json
+          name: compare-reports
+          path: |
+            reports/ci-compare-cooking.json
+            reports/ci-compare-laboratory.json
+            reports/ci-ablation.json
 
   precommit:
     runs-on: ubuntu-latest
