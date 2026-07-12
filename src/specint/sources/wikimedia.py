@@ -14,27 +14,11 @@ from collections.abc import Iterable
 from datetime import datetime
 from typing import Any
 
-from specint.records import License, Provenance, SourceQuery, VideoRecord, utcnow
+from specint.quality.license_utils import classify
+from specint.records import Provenance, SourceQuery, VideoRecord, utcnow
 from specint.sources.base import BaseSource
 
 API_URL = "https://commons.wikimedia.org/w/api.php"
-
-
-def _coerce_license(short_name: str | None) -> License:
-    if not short_name:
-        return License.UNKNOWN
-    s = short_name.strip().upper().replace(" ", "")
-    if s.startswith("CC0"):
-        return License.CC0
-    if "BY-SA" in s or "BYSA" in s:
-        return License.CC_BY_SA
-    if "BY-NC" in s or "BYNC" in s or "BY-ND" in s or "BYND" in s:
-        return License.RESTRICTED
-    if "CC-BY" in s or "CCBY" in s:
-        return License.CC_BY
-    if "PUBLICDOMAIN" in s or s == "PD":
-        return License.PUBLIC_DOMAIN
-    return License.UNKNOWN
 
 
 def _parse_iso(value: str | None) -> datetime | None:
@@ -79,7 +63,7 @@ class WikimediaCommonsSource(BaseSource):
 
             url = info.get("descriptionurl") or f"https://commons.wikimedia.org/wiki/{title}"
             media_url = info.get("url")
-            license_enum = _coerce_license(license_value)
+            license_enum = classify(license_value, license_url)
 
             record = VideoRecord(
                 id=f"wikimedia:{page_id}",
