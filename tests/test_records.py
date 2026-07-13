@@ -6,6 +6,8 @@ from specint.records import (
     Provenance,
     SourceQuery,
     VideoRecord,
+    serialize_records,
+    utcnow,
 )
 
 
@@ -48,3 +50,23 @@ def test_benchmark_empty():
     assert row.n_records == 0
     assert row.mean_quality == 0.0
     assert row.notes == "hi"
+
+
+def test_utcnow_is_timezone_aware():
+    now = utcnow()
+    assert now.tzinfo is not None
+
+
+def test_serialize_records_roundtrip():
+    prov = Provenance(extractor="t", fetched_at=datetime.now(UTC), query="")
+    r = VideoRecord(
+        id="t:2",
+        source="t",
+        source_native_id="2",
+        url="https://example.test/2",
+        title="y",
+        provenance=prov,
+    )
+    out = serialize_records([r])
+    assert out and out[0]["id"] == "t:2"
+    assert isinstance(out[0]["provenance"], dict)

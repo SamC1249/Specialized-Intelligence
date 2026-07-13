@@ -10,10 +10,43 @@ from datetime import date
 from pathlib import Path
 
 from specint.compare import run_comparison
-from specint.records import SourceQuery
+from specint.records import SourceQuery, VideoRecord
 from specint.sources import REGISTRY
 
 DEFAULT_TERMS = ["cooking", "recipe"]
+FIXTURES_DIR = Path(__file__).resolve().parents[2] / "tests" / "fixtures"
+
+
+def _load_fixture_records(slug: str, query: SourceQuery) -> list[VideoRecord]:
+    """Load per-source records from the checked-in test fixtures.
+
+    Returns an empty list when a fixture is missing; the harness then
+    emits a zero row for that source so CI stays reproducible even as
+    new adapters are added without accompanying fixtures.
+    """
+    src_cls = REGISTRY.get(slug)
+    if src_cls is None:
+        return []
+    parser = src_cls()
+
+    if slug == "wikimedia":
+        f = FIXTURES_DIR / "wikimedia" / "search_pasta.json"
+        return parser.parse(json.loads(f.read_text()), query) if f.exists() else []
+    if slug == "archive_org":
+        f = FIXTURES_DIR / "archive_org" / "search_cooking.json"
+        return parser.parse(json.loads(f.read_text()), query) if f.exists() else []
+    if slug == "peertube":
+        f = FIXTURES_DIR / "peertube" / "search_cooking.json"
+        return parser.parse(json.loads(f.read_text()), query) if f.exists() else []
+    if slug == "common_crawl":
+        f = FIXTURES_DIR / "common_crawl" / "recipe_page.html"
+        if not f.exists():
+            return []
+        return parser.parse(
+            {"html": f.read_text(), "url": "https://example.test/recipes/garlic-butter-pasta"},
+            query,
+        )
+    return []
 
 
 def _cmd_sources(_: argparse.Namespace) -> int:
@@ -32,8 +65,7 @@ def _cmd_compare(args: argparse.Namespace) -> int:
         for slug in REGISTRY:
             if only and slug not in only:
                 continue
-            by_source[slug] = []
-        # No live calls in --fixtures mode; the harness reports zeros so CI is reproducible.
+            by_source[slug] = _load_fixture_records(slug, query)
     elif os.environ.get("SPECINT_RUN_INTEGRATION") != "1":
         print(
             "refusing to hit live network without SPECINT_RUN_INTEGRATION=1; pass --fixtures for an offline dry run.",
@@ -51,7 +83,12 @@ def _cmd_compare(args: argparse.Namespace) -> int:
                 records = []
             by_source[slug] = records
 
-    rows = run_comparison(query, by_source, notes=args.notes or "")
+    rows = run_comparison(
+        query,
+        by_source,
+        notes=args.notes or "",
+        dedupe=bool(args.dedupe),
+    )
     payload = {
         "query": query.model_dump(mode="json"),
         "rows": [r.model_dump(mode="json") for r in rows],
@@ -82,6 +119,11 @@ def build_parser() -> argparse.ArgumentParser:
     p_cmp.add_argument("--fixtures", action="store_true", help="offline mode (no network)")
     p_cmp.add_argument("--output", help="output JSON path")
     p_cmp.add_argument("--notes", help="free-form note attached to every row")
+    p_cmp.add_argument(
+        "--dedupe",
+        action="store_true",
+        help="collapse near-duplicates by normalized title before the __total__ row",
+    )
     p_cmp.set_defaults(func=_cmd_compare)
 
     return p

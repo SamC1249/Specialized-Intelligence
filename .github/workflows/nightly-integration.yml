@@ -1,0 +1,54 @@
+name: Nightly Integration (env-gated)
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  live-integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Guard — fail closed unless SPECINT_RUN_INTEGRATION=1
+        id: guard
+        env:
+          SPECINT_RUN_INTEGRATION: ${{ vars.SPECINT_RUN_INTEGRATION }}
+        run: |
+          if [ "${SPECINT_RUN_INTEGRATION:-0}" != "1" ]; then
+            echo "SKIPPED: SPECINT_RUN_INTEGRATION not set to 1; live run intentionally disabled." >&2
+            echo "skipped=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "skipped=0" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Live comparison (metadata only, no media)
+        if: steps.guard.outputs.skipped == '0'
+        env:
+          SPECINT_RUN_INTEGRATION: "1"
+        run: |
+          python -m specint compare --terms cooking recipe \
+            --dedupe --notes nightly \
+            --output reports/nightly-$(date -u +%Y-%m-%d).json
+
+      - name: Policy lint (reports)
+        if: steps.guard.outputs.skipped == '0'
+        run: python scripts/policy_lint.py --check reports
+
+      - name: Upload nightly report
+        if: steps.guard.outputs.skipped == '0'
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-compare
+          path: reports/nightly-*.json

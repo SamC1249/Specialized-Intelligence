@@ -22,3 +22,9 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
+      - id: policy-lint
+        name: policy lint (reports + host blocklist)
+        entry: python scripts/policy_lint.py --check all
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]

@@ -37,7 +37,10 @@ jobs:
       - name: Tests (offline)
         env:
           SPECINT_RUN_INTEGRATION: "0"
-        run: pytest -q --cov=specint --cov-report=term-missing
+        run: pytest -q --cov=specint --cov-report=term-missing --cov-fail-under=80
+
+      - name: Policy lint (reports + host blocklist)
+        run: python scripts/policy_lint.py --check all
 
       - name: E2E compare (fixtures)
         run: |
