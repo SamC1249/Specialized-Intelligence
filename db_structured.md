@@ -76,6 +76,36 @@ pair plus an aggregate `total` row. Stored under
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
 
+## Quality scoring components
+
+`specint.quality.metrics.score_record` combines the following pure
+components (each returns `[0, 1]`), weighted by
+`specint.quality.metrics.WEIGHTS`. Downstream code MUST call
+`score_record` / `score_records` and not re-implement these.
+
+| Component            | Weight | Signal                                                                  |
+| -------------------- | ------ | ----------------------------------------------------------------------- |
+| `license_clean`      | 0.30   | 1 iff `license.is_redistributable`.                                     |
+| `duration`           | 0.12   | Peaks at 5 min; decays linearly to ~1 hr.                               |
+| `resolution`         | 0.15   | Coarse ladder: 480p→0.5, 720p→0.8, ≥1080p→1.0.                          |
+| `text_density`       | 0.13   | `len(title + description + steps)` capped at 800 chars.                 |
+| `has_steps`          | 0.10   | 1 iff `recipe_steps` non-empty.                                         |
+| `language_confidence`| 0.10   | `specint.quality.language.confidence` (trigram detector, length-aware). |
+| `procedural_density` | 0.10   | `len(recipe_steps)` normalised to a target of 8.                        |
+
+## Deduplication
+
+`specint.quality.dedup` collapses cross-source duplicates.
+
+- `canonical_key(record) -> (norm_title, norm_author, duration_bucket)`
+  for exact-match detection.
+- `simhash(text)` returns a 64-bit SimHash over stopword-stripped
+  bigrams.
+- `deduplicate(records, near_threshold)` returns a `DedupResult`:
+  `kept` (list of `VideoRecord`) and `absorbed` (mapping of kept id →
+  list of absorbed ids). Ties break on license rank, then on
+  `quality_score`, then on `id`.
+
 ## Frontend / API contract (placeholder)
 
 There is no HTTP API yet. When one is added, all request/response bodies

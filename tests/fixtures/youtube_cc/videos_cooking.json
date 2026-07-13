@@ -1,0 +1,65 @@
+{
+  "kind": "youtube#videoListResponse",
+  "items": [
+    {
+      "kind": "youtube#video",
+      "id": "abcDEF12345",
+      "snippet": {
+        "title": "How to make classic French onion soup, step by step",
+        "description": "A slow-simmered French onion soup with caramelised onions, thyme, gruyère toast, and a splash of dry white wine. Every step is timed and captioned so you can follow along at home. Filmed at 1080p in a home kitchen.",
+        "channelTitle": "CulinaryCC",
+        "publishedAt": "2025-11-04T18:00:00Z",
+        "tags": ["cooking", "recipe", "french onion soup", "how to"],
+        "defaultAudioLanguage": "en"
+      },
+      "contentDetails": {
+        "duration": "PT12M34S",
+        "definition": "hd"
+      },
+      "status": {
+        "license": "creativeCommon",
+        "uploadStatus": "processed"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "id": "zyxwVUT98765",
+      "snippet": {
+        "title": "Standard All-Rights-Reserved cooking video",
+        "description": "This uploader did NOT mark the video as Creative Commons. It should never appear in specint's outputs.",
+        "channelTitle": "SomeChannel",
+        "publishedAt": "2024-05-15T12:00:00Z",
+        "tags": ["cooking"],
+        "defaultAudioLanguage": "en"
+      },
+      "contentDetails": {
+        "duration": "PT8M02S",
+        "definition": "hd"
+      },
+      "status": {
+        "license": "youtube",
+        "uploadStatus": "processed"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "id": "cc0RECIPE001",
+      "snippet": {
+        "title": "Ricetta della pasta al pomodoro fresco in dieci minuti",
+        "description": "Una guida pratica per preparare la pasta al pomodoro con basilico, aglio e olio extravergine di oliva. Il video dura poco più di dieci minuti ed è girato in una cucina domestica in Italia.",
+        "channelTitle": "CucinaAperta",
+        "publishedAt": "2025-06-22T09:15:00Z",
+        "tags": ["cucina", "pasta", "ricetta"],
+        "defaultAudioLanguage": "it"
+      },
+      "contentDetails": {
+        "duration": "PT10M15S",
+        "definition": "sd"
+      },
+      "status": {
+        "license": "creativeCommon",
+        "uploadStatus": "processed"
+      }
+    }
+  ]
+}

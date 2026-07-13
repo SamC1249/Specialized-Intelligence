@@ -1,0 +1,642 @@
+{
+  "presets": {
+    "baseline": {
+      "rows": [
+        {
+          "mean_quality": 0.3708875,
+          "n_license_clean": 2,
+          "n_records": 3,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.475925,
+          "p90_quality": 0.48872499999999997,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "archive_org",
+          "total_duration_s": 1572.0,
+          "unique_authors": 3
+        },
+        {
+          "mean_quality": 0.480612883076245,
+          "n_license_clean": 0,
+          "n_records": 1,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.480612883076245,
+          "p90_quality": 0.480612883076245,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "common_crawl",
+          "total_duration_s": 270.0,
+          "unique_authors": 1
+        },
+        {
+          "mean_quality": 0.5094175414509191,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.38097258290183816,
+          "p90_quality": 0.6378625,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "peertube",
+          "total_duration_s": 822.0,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.5104785140870745,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.44334036262868226,
+          "p90_quality": 0.5776166655454668,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "wikimedia",
+          "total_duration_s": 357.4,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.6083770833333333,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.578825,
+          "p90_quality": 0.6379291666666667,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "youtube_cc",
+          "total_duration_s": 1369.0,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.4849821660818899,
+          "n_license_clean": 8,
+          "n_records": 10,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.480612883076245,
+          "p90_quality": 0.6378625,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "__total__",
+          "total_duration_s": 4390.4,
+          "unique_authors": 10
+        }
+      ],
+      "total_mean_quality": 0.4849821660818899,
+      "total_n_license_clean": 8,
+      "weights": {
+        "duration": 0.12,
+        "has_steps": 0.1,
+        "language_confidence": 0.1,
+        "license_clean": 0.3,
+        "procedural_density": 0.1,
+        "resolution": 0.15,
+        "text_density": 0.13
+      }
+    },
+    "equal_weights": {
+      "rows": [
+        {
+          "mean_quality": 0.31442460317460313,
+          "n_license_clean": 2,
+          "n_records": 3,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.36773809523809525,
+          "p90_quality": 0.3832142857142857,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "archive_org",
+          "total_duration_s": 1572.0,
+          "unique_authors": 3
+        },
+        {
+          "mean_quality": 0.5763219758232071,
+          "n_license_clean": 0,
+          "n_records": 1,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.5763219758232071,
+          "p90_quality": 0.5763219758232071,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "common_crawl",
+          "total_duration_s": 270.0,
+          "unique_authors": 1
+        },
+        {
+          "mean_quality": 0.3822393449298844,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.2393001184311974,
+          "p90_quality": 0.5251785714285714,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "peertube",
+          "total_duration_s": 822.0,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.36129529790216997,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.28480766089811754,
+          "p90_quality": 0.4377829349062224,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "wikimedia",
+          "total_duration_s": 357.4,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.5085813492063491,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.4878571428571428,
+          "p90_quality": 0.5293055555555555,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "youtube_cc",
+          "total_duration_s": 1369.0,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.40238277694238234,
+          "n_license_clean": 8,
+          "n_records": 10,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.3832142857142857,
+          "p90_quality": 0.5293055555555555,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "__total__",
+          "total_duration_s": 4390.4,
+          "unique_authors": 10
+        }
+      ],
+      "total_mean_quality": 0.40238277694238234,
+      "total_n_license_clean": 8,
+      "weights": {
+        "duration": 0.14285714285714285,
+        "has_steps": 0.14285714285714285,
+        "language_confidence": 0.14285714285714285,
+        "license_clean": 0.14285714285714285,
+        "procedural_density": 0.14285714285714285,
+        "resolution": 0.14285714285714285,
+        "text_density": 0.14285714285714285
+      }
+    },
+    "language_heavy": {
+      "rows": [
+        {
+          "mean_quality": 0.41381521739130434,
+          "n_license_clean": 2,
+          "n_records": 3,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.5051521739130436,
+          "p90_quality": 0.5162826086956521,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "archive_org",
+          "total_duration_s": 1572.0,
+          "unique_authors": 3
+        },
+        {
+          "mean_quality": 0.46070735451357614,
+          "n_license_clean": 0,
+          "n_records": 1,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.46070735451357614,
+          "p90_quality": 0.46070735451357614,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "common_crawl",
+          "total_duration_s": 270.0,
+          "unique_authors": 1
+        },
+        {
+          "mean_quality": 0.49034248141504155,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.3347175715257352,
+          "p90_quality": 0.6459673913043479,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "peertube",
+          "total_duration_s": 822.0,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.44636144366755337,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.3869681796275702,
+          "p90_quality": 0.5057547077075366,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "wikimedia",
+          "total_duration_s": 357.4,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.6398931159420289,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.6337608695652174,
+          "p90_quality": 0.6460253623188406,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "youtube_cc",
+          "total_duration_s": 1369.0,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.4855347088736737,
+          "n_license_clean": 8,
+          "n_records": 10,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.5051521739130436,
+          "p90_quality": 0.6459673913043479,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "__total__",
+          "total_duration_s": 4390.4,
+          "unique_authors": 10
+        }
+      ],
+      "total_mean_quality": 0.4855347088736737,
+      "total_n_license_clean": 8,
+      "weights": {
+        "duration": 0.12,
+        "has_steps": 0.1,
+        "language_confidence": 0.25,
+        "license_clean": 0.3,
+        "procedural_density": 0.1,
+        "resolution": 0.15,
+        "text_density": 0.13
+      }
+    },
+    "no_license": {
+      "rows": [
+        {
+          "mean_quality": 0.244125,
+          "n_license_clean": 2,
+          "n_records": 3,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.2513214285714286,
+          "p90_quality": 0.2696071428571429,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "archive_org",
+          "total_duration_s": 1572.0,
+          "unique_authors": 3
+        },
+        {
+          "mean_quality": 0.6865898329660644,
+          "n_license_clean": 0,
+          "n_records": 1,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.6865898329660644,
+          "p90_quality": 0.6865898329660644,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "common_crawl",
+          "total_duration_s": 270.0,
+          "unique_authors": 1
+        },
+        {
+          "mean_quality": 0.29916791635845585,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.1156751184311974,
+          "p90_quality": 0.48266071428571433,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "peertube",
+          "total_duration_s": 822.0,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.30068359155296365,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.20477194661240325,
+          "p90_quality": 0.3965952364935241,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "wikimedia",
+          "total_duration_s": 357.4,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.44053869047619054,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.3983214285714286,
+          "p90_quality": 0.4827559523809524,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "youtube_cc",
+          "total_duration_s": 1369.0,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.34997452297412845,
+          "n_license_clean": 8,
+          "n_records": 10,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.2696071428571429,
+          "p90_quality": 0.4827559523809524,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "__total__",
+          "total_duration_s": 4390.4,
+          "unique_authors": 10
+        }
+      ],
+      "total_mean_quality": 0.34997452297412845,
+      "total_n_license_clean": 8,
+      "weights": {
+        "duration": 0.12,
+        "has_steps": 0.1,
+        "language_confidence": 0.1,
+        "license_clean": 0.0,
+        "procedural_density": 0.1,
+        "resolution": 0.15,
+        "text_density": 0.13
+      }
+    },
+    "resolution_heavy": {
+      "rows": [
+        {
+          "mean_quality": 0.3335628531073446,
+          "n_license_clean": 2,
+          "n_records": 3,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.42294491525423733,
+          "p90_quality": 0.4370550847457627,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "archive_org",
+          "total_duration_s": 1572.0,
+          "unique_authors": 3
+        },
+        {
+          "mean_quality": 0.557299053454445,
+          "n_license_clean": 0,
+          "n_records": 1,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.557299053454445,
+          "p90_quality": 0.557299053454445,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "common_crawl",
+          "total_duration_s": 270.0,
+          "unique_authors": 1
+        },
+        {
+          "mean_quality": 0.5144004588567112,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.3381123583913883,
+          "p90_quality": 0.690688559322034,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "peertube",
+          "total_duration_s": 822.0,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.5615905486613626,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.48122064629549344,
+          "p90_quality": 0.6419604510272318,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "wikimedia",
+          "total_duration_s": 357.4,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.6018414548022599,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.5391525423728813,
+          "p90_quality": 0.6645303672316385,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "youtube_cc",
+          "total_duration_s": 1369.0,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.49136525374171464,
+          "n_license_clean": 8,
+          "n_records": 10,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.48122064629549344,
+          "p90_quality": 0.6645303672316385,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "__total__",
+          "total_duration_s": 4390.4,
+          "unique_authors": 10
+        }
+      ],
+      "total_mean_quality": 0.49136525374171464,
+      "total_n_license_clean": 8,
+      "weights": {
+        "duration": 0.15,
+        "has_steps": 0.1,
+        "language_confidence": 0.1,
+        "license_clean": 0.3,
+        "procedural_density": 0.1,
+        "resolution": 0.3,
+        "text_density": 0.13
+      }
+    },
+    "steps_heavy": {
+      "rows": [
+        {
+          "mean_quality": 0.3150213675213675,
+          "n_license_clean": 2,
+          "n_records": 3,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.4041452991452992,
+          "p90_quality": 0.41559829059829057,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "archive_org",
+          "total_duration_s": 1572.0,
+          "unique_authors": 3
+        },
+        {
+          "mean_quality": 0.5311328060480727,
+          "n_license_clean": 0,
+          "n_records": 1,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.5311328060480727,
+          "p90_quality": 0.5311328060480727,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "common_crawl",
+          "total_duration_s": 270.0,
+          "unique_authors": 1
+        },
+        {
+          "mean_quality": 0.4338611465392471,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.32436759222379336,
+          "p90_quality": 0.5433547008547008,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "peertube",
+          "total_duration_s": 822.0,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.43536090947613204,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.3780900535287883,
+          "p90_quality": 0.49263176542347586,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "wikimedia",
+          "total_duration_s": 357.4,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.511855413105413,
+          "n_license_clean": 2,
+          "n_records": 2,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.48696581196581196,
+          "p90_quality": 0.5367450142450142,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "youtube_cc",
+          "total_duration_s": 1369.0,
+          "unique_authors": 2
+        },
+        {
+          "mean_quality": 0.42383518468537595,
+          "n_license_clean": 8,
+          "n_records": 10,
+          "notes": "fixture-ablation-2026-07-13",
+          "p50_quality": 0.41559829059829057,
+          "p90_quality": 0.5367450142450142,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "__total__",
+          "total_duration_s": 4390.4,
+          "unique_authors": 10
+        }
+      ],
+      "total_mean_quality": 0.42383518468537595,
+      "total_n_license_clean": 8,
+      "weights": {
+        "duration": 0.12,
+        "has_steps": 0.2,
+        "language_confidence": 0.1,
+        "license_clean": 0.3,
+        "procedural_density": 0.2,
+        "resolution": 0.15,
+        "text_density": 0.1
+      }
+    }
+  },
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  }
+}

@@ -17,6 +17,7 @@ from specint.sources.archive_org import ArchiveOrgSource
 from specint.sources.common_crawl import CommonCrawlRecipeSource
 from specint.sources.peertube import PeerTubeSource
 from specint.sources.wikimedia import WikimediaCommonsSource
+from specint.sources.youtube_cc import YouTubeCCSource
 
 
 def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Path):
@@ -39,12 +40,22 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
             },
             query,
         ),
+        "youtube_cc": YouTubeCCSource().parse(
+            json.loads((fixtures_dir / "youtube_cc/videos_cooking.json").read_text()), query
+        ),
     }
 
     rows = run_comparison(query, by_source, notes="e2e-fixture")
 
     sources_seen = {row.source for row in rows}
-    assert sources_seen == {"wikimedia", "archive_org", "peertube", "common_crawl", "__total__"}
+    assert sources_seen == {
+        "wikimedia",
+        "archive_org",
+        "peertube",
+        "common_crawl",
+        "youtube_cc",
+        "__total__",
+    }
 
     total = next(r for r in rows if r.source == "__total__")
     per_source_total = sum(r.n_records for r in rows if r.source != "__total__")
@@ -64,4 +75,4 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
     out.write_text(json.dumps(payload, sort_keys=True))
     reloaded = json.loads(out.read_text())
     assert reloaded["query"]["terms"] == ["cooking", "recipe"]
-    assert len(reloaded["rows"]) == 5
+    assert len(reloaded["rows"]) == 6
