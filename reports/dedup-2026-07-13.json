@@ -1,0 +1,26 @@
+{
+  "absorbed": {},
+  "kept_ids": [
+    "wikimedia:12345",
+    "wikimedia:67890",
+    "archive_org:PrelingerCookingShow1952",
+    "archive_org:ChefDemo2018",
+    "archive_org:RestrictedRecipe",
+    "peertube:framatube.org:abcd-1234",
+    "peertube:framatube.org:ijkl-9012",
+    "common_crawl:https://example.test/videos/garlic-butter-pasta",
+    "youtube_cc:abcDEF12345",
+    "youtube_cc:cc0RECIPE001"
+  ],
+  "n_dropped": 0,
+  "n_input": 10,
+  "n_kept": 10,
+  "per_source_before": {
+    "archive_org": 3,
+    "common_crawl": 1,
+    "peertube": 2,
+    "wikimedia": 2,
+    "youtube_cc": 2
+  },
+  "threshold": 12
+}
