@@ -27,3 +27,32 @@ def test_cli_compare_refuses_live_without_env(monkeypatch, tmp_path: Path):
     monkeypatch.delenv("SPECINT_RUN_INTEGRATION", raising=False)
     rc = main(["compare", "--terms", "cooking", "--output", str(tmp_path / "out.json")])
     assert rc == 2
+
+
+def test_cli_compare_only_restricts_sources(tmp_path: Path):
+    out = tmp_path / "only.json"
+    rc = main(
+        [
+            "compare",
+            "--fixtures",
+            "--only",
+            "wikimedia",
+            "--terms",
+            "cooking",
+            "--output",
+            str(out),
+        ]
+    )
+    assert rc == 0
+    payload = json.loads(out.read_text())
+    per_source = {r["source"] for r in payload["rows"] if r["source"] != "__total__"}
+    assert per_source == {"wikimedia"}
+
+
+def test_cli_compare_dedupe_flag_marks_total(tmp_path: Path):
+    out = tmp_path / "dedupe.json"
+    rc = main(["compare", "--fixtures", "--dedupe", "--output", str(out)])
+    assert rc == 0
+    payload = json.loads(out.read_text())
+    total = next(r for r in payload["rows"] if r["source"] == "__total__")
+    assert "dedupe=on" in total["notes"]

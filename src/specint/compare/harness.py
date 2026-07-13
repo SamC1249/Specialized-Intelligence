@@ -14,7 +14,7 @@ from __future__ import annotations
 import statistics
 from collections.abc import Iterable, Mapping
 
-from specint.quality import score_records
+from specint.quality import dedupe_by_id_and_title, score_records
 from specint.records import BenchmarkResult, License, SourceQuery, VideoRecord
 
 
@@ -63,13 +63,22 @@ def run_comparison(
     query: SourceQuery,
     by_source: Mapping[str, list[VideoRecord]],
     notes: str = "",
+    dedupe: bool = False,
 ) -> list[BenchmarkResult]:
-    """Score, aggregate per source, and append a `__total__` row."""
+    """Score, aggregate per source, and append a `__total__` row.
+
+    When ``dedupe=True``, apply :func:`dedupe_by_id_and_title` to the union
+    of scored records *before* computing the ``__total__`` row. Per-source
+    rows are unaffected so we can attribute yield loss to cross-source
+    collapse in follow-up analyses.
+    """
     rows: list[BenchmarkResult] = []
     all_scored: list[VideoRecord] = []
     for source, records in sorted(by_source.items()):
         scored = score_records(records)
         all_scored.extend(scored)
         rows.append(aggregate(source, query.terms, scored, notes=notes))
-    rows.append(aggregate("__total__", query.terms, all_scored, notes=notes))
+    total_pool = dedupe_by_id_and_title(all_scored) if dedupe else all_scored
+    total_notes = f"{notes};dedupe={'on' if dedupe else 'off'}".strip(";")
+    rows.append(aggregate("__total__", query.terms, total_pool, notes=total_notes))
     return rows
