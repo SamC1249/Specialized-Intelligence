@@ -17,6 +17,8 @@ from collections.abc import Iterable, Mapping
 from specint.quality import score_records
 from specint.records import BenchmarkResult, License, SourceQuery, VideoRecord
 
+Weights = Mapping[str, float] | None
+
 
 def _percentile(values: list[float], pct: float) -> float:
     if not values:
@@ -63,12 +65,17 @@ def run_comparison(
     query: SourceQuery,
     by_source: Mapping[str, list[VideoRecord]],
     notes: str = "",
+    weights: Weights = None,
 ) -> list[BenchmarkResult]:
-    """Score, aggregate per source, and append a `__total__` row."""
+    """Score, aggregate per source, and append a `__total__` row.
+
+    `weights` is passed through to `score_records`; when `None`, the
+    default `WEIGHTS` vector is used.
+    """
     rows: list[BenchmarkResult] = []
     all_scored: list[VideoRecord] = []
     for source, records in sorted(by_source.items()):
-        scored = score_records(records)
+        scored = score_records(records, weights=weights)
         all_scored.extend(scored)
         rows.append(aggregate(source, query.terms, scored, notes=notes))
     rows.append(aggregate("__total__", query.terms, all_scored, notes=notes))
