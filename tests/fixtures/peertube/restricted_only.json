@@ -1,0 +1,24 @@
+{
+  "__instance__": "https://framatube.org",
+  "total": 2,
+  "data": [
+    {
+      "id": 8001,
+      "uuid": "restricted-nc",
+      "name": "Should be filtered NC",
+      "duration": 300,
+      "licence": {"id": 4, "label": "Attribution - Non Commercial"},
+      "files": [],
+      "account": {"displayName": "Closed", "host": "framatube.org"}
+    },
+    {
+      "id": 8002,
+      "uuid": "restricted-nd",
+      "name": "Should be filtered ND",
+      "duration": 300,
+      "licence": {"id": 3, "label": "Attribution - No Derivatives"},
+      "files": [],
+      "account": {"displayName": "NoDeriv", "host": "framatube.org"}
+    }
+  ]
+}
