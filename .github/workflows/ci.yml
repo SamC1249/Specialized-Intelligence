@@ -31,26 +31,54 @@ jobs:
       - name: Format check (ruff)
         run: ruff format --check .
 
-      - name: Type check (mypy, best-effort)
+      - name: Type check (mypy) — strict on core modules
+        run: mypy --strict src/specint/records.py src/specint/quality/ src/specint/compare/
+
+      - name: Type check (mypy) — best-effort on adapters
         run: mypy src || true
 
-      - name: Tests (offline)
+      - name: Tests (offline) with coverage floor
         env:
           SPECINT_RUN_INTEGRATION: "0"
-        run: pytest -q --cov=specint --cov-report=term-missing
+        run: |
+          pytest -q --cov=specint --cov-report=term-missing --cov-fail-under=85
 
       - name: E2E compare (fixtures)
         run: |
-          python -m specint compare --fixtures --terms cooking recipe \
+          python -m specint compare --fixtures --fixtures-dir tests/fixtures \
+            --scorer v2 --dedup --terms cooking recipe \
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
 
-      - name: Upload comparison report
+      - name: E2E matrix (fixtures)
+        run: |
+          python -m specint matrix --suite tests/fixtures/suite/query_suite.json \
+            --fixtures-dir tests/fixtures --scorer v2 --dedup \
+            --output reports/ci-matrix.json
+          test -s reports/ci-matrix.json
+
+      - name: E2E diff (regression gate)
+        run: |
+          python -m specint diff reports/baseline-2026-06-20.json \
+            reports/ci-compare.json --output reports/ci-diff.json
+          python - <<'PY'
+          import json, sys
+          rows = json.loads(open('reports/ci-diff.json').read())['rows']
+          total = next(r for r in rows if r['source'] == '__total__')
+          assert total['n_license_clean_delta'] >= 0, total
+          assert total['mean_quality_delta'] >= -0.01, total
+          print('regression-gate ok:', total)
+          PY
+
+      - name: Upload comparison reports
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
-          name: compare-report
-          path: reports/ci-compare.json
+          name: compare-reports
+          path: |
+            reports/ci-compare.json
+            reports/ci-matrix.json
+            reports/ci-diff.json
 
   precommit:
     runs-on: ubuntu-latest
