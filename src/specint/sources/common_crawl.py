@@ -82,6 +82,61 @@ def _parse_iso(value: str | None) -> datetime | None:
         return None
 
 
+def _license_from_cc_url(url: str) -> License:
+    u = url.lower()
+    if "publicdomain/zero" in u or "cc0" in u:
+        return License.CC0
+    if "by-sa" in u:
+        return License.CC_BY_SA
+    if "by-nc" in u or "by-nd" in u:
+        return License.RESTRICTED
+    if "/by/" in u or "licenses/by/" in u:
+        return License.CC_BY
+    if "publicdomain" in u:
+        return License.PUBLIC_DOMAIN
+    return License.UNKNOWN
+
+
+def extract_page_license(soup: BeautifulSoup) -> tuple[License, str | None]:
+    """Adversarial rule (see docs/plan-2026-07-14.md #H4): only upgrade a
+    Common Crawl record to a redistributable license when we have *two*
+    corroborating signals — a `rel="license"` link AND a
+    creativecommons.org / publicdomain URL. Otherwise stay UNKNOWN.
+    """
+    rel_hrefs: list[str] = []
+    for link in soup.find_all("link"):
+        rel = link.get("rel")
+        rels = [r.lower() for r in (rel or [])] if isinstance(rel, list) else []
+        if rel and isinstance(rel, str):
+            rels = [rel.lower()]
+        if "license" in rels:
+            href = link.get("href")
+            if isinstance(href, str) and href:
+                rel_hrefs.append(href)
+
+    meta_hrefs: list[str] = []
+    for meta in soup.find_all("meta"):
+        name = (meta.get("name") or meta.get("property") or "").lower()
+        content = meta.get("content")
+        if name in {"license", "og:license", "dcterms.license", "dc.rights"} and isinstance(
+            content, str
+        ):
+            meta_hrefs.append(content)
+
+    for href in rel_hrefs:
+        if "creativecommons.org" in href or "publicdomain" in href:
+            license_enum = _license_from_cc_url(href)
+            if license_enum.is_redistributable:
+                return license_enum, href
+
+    if rel_hrefs and meta_hrefs:
+        for href in rel_hrefs + meta_hrefs:
+            license_enum = _license_from_cc_url(href)
+            if license_enum.is_redistributable:
+                return license_enum, href
+    return License.UNKNOWN, None
+
+
 def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[VideoRecord]:
     soup = BeautifulSoup(html, "lxml")
     blocks: list[dict[str, Any]] = []
@@ -94,6 +149,7 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
     videos = [b for b in blocks if "VideoObject" in _node_types(b)]
     recipes = [b for b in blocks if "Recipe" in _node_types(b)]
     recipe = recipes[0] if recipes else None
+    page_license, page_license_url = extract_page_license(soup)
 
     prov = Provenance(
         extractor=__name__,
@@ -132,8 +188,8 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             width=int(v["width"]) if isinstance(v.get("width"), (int, float)) else None,
             height=int(v["height"]) if isinstance(v.get("height"), (int, float)) else None,
             fps=None,
-            license=License.UNKNOWN,
-            license_url=None,
+            license=page_license,
+            license_url=page_license_url if page_license_url else None,
             author=_safe_str(
                 (v.get("author") or {}).get("name")
                 if isinstance(v.get("author"), dict)

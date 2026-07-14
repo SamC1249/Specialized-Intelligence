@@ -16,6 +16,11 @@ repos:
       - id: ruff-format
   - repo: local
     hooks:
+      - id: mypy-strict-core
+        name: mypy --strict (records + quality + compare)
+        entry: mypy --strict src/specint/records.py src/specint/quality/ src/specint/compare/
+        language: system
+        pass_filenames: false
       - id: pytest-quick
         name: pytest (offline)
         entry: pytest -q

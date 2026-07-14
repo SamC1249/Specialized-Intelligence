@@ -1,0 +1,8 @@
+{
+  "name": "cooking-default",
+  "queries": [
+    {"terms": ["cooking", "recipe"], "max_results": 25, "language": null},
+    {"terms": ["pasta", "sauce"], "max_results": 25, "language": null},
+    {"terms": ["baking", "bread"], "max_results": 25, "language": null}
+  ]
+}

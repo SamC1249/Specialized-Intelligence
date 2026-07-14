@@ -1,0 +1,26 @@
+{
+  "query": {
+    "pages": {
+      "22222": {
+        "pageid": 22222,
+        "title": "File:Boeuf bourguignon.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Boeuf_bourguignon.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Boeuf_bourguignon.webm",
+            "mime": "video/webm",
+            "duration": 620.0,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by/4.0"},
+              "Artist": {"value": "Chef Alphonse"},
+              "DateTimeOriginal": {"value": "2024-05-01T10:00:00Z"}
+            }
+          }
+        ]
+      }
+    }
+  }
+}

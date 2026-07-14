@@ -1,0 +1,395 @@
+{
+  "per_query": [
+    {
+      "mean_quality": 0.4194805555555556,
+      "n_duplicates": 0,
+      "n_license_clean": 2,
+      "n_records": 3,
+      "notes": "fixture-suite",
+      "p50_quality": 0.5305666666666667,
+      "p90_quality": 0.54525,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "scorer": "v2",
+      "source": "archive_org",
+      "total_duration_s": 1572.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.597625,
+      "n_duplicates": 0,
+      "n_license_clean": 0,
+      "n_records": 1,
+      "notes": "fixture-suite",
+      "p50_quality": 0.597625,
+      "p90_quality": 0.597625,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "scorer": "v2",
+      "source": "common_crawl",
+      "total_duration_s": 270.0,
+      "unique_authors": 1
+    },
+    {
+      "mean_quality": 0.563825,
+      "n_duplicates": 0,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-suite",
+      "p50_quality": 0.402875,
+      "p90_quality": 0.7247750000000001,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "scorer": "v2",
+      "source": "peertube",
+      "total_duration_s": 822.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.5602136111111111,
+      "n_duplicates": 0,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-suite",
+      "p50_quality": 0.48675,
+      "p90_quality": 0.6336772222222222,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "scorer": "v2",
+      "source": "wikimedia",
+      "total_duration_s": 357.4,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.5130179861111112,
+      "n_duplicates": 0,
+      "n_license_clean": 6,
+      "n_records": 8,
+      "notes": "fixture-suite",
+      "p50_quality": 0.54525,
+      "p90_quality": 0.6336772222222222,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "scorer": "v2",
+      "source": "__total__",
+      "total_duration_s": 3021.4,
+      "unique_authors": 8
+    },
+    {
+      "mean_quality": 0.4194805555555556,
+      "n_duplicates": 0,
+      "n_license_clean": 2,
+      "n_records": 3,
+      "notes": "fixture-suite",
+      "p50_quality": 0.5305666666666667,
+      "p90_quality": 0.54525,
+      "query_terms": [
+        "pasta",
+        "sauce"
+      ],
+      "scorer": "v2",
+      "source": "archive_org",
+      "total_duration_s": 1572.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.597625,
+      "n_duplicates": 0,
+      "n_license_clean": 0,
+      "n_records": 1,
+      "notes": "fixture-suite",
+      "p50_quality": 0.597625,
+      "p90_quality": 0.597625,
+      "query_terms": [
+        "pasta",
+        "sauce"
+      ],
+      "scorer": "v2",
+      "source": "common_crawl",
+      "total_duration_s": 270.0,
+      "unique_authors": 1
+    },
+    {
+      "mean_quality": 0.563825,
+      "n_duplicates": 0,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-suite",
+      "p50_quality": 0.402875,
+      "p90_quality": 0.7247750000000001,
+      "query_terms": [
+        "pasta",
+        "sauce"
+      ],
+      "scorer": "v2",
+      "source": "peertube",
+      "total_duration_s": 822.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.5602136111111111,
+      "n_duplicates": 0,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-suite",
+      "p50_quality": 0.48675,
+      "p90_quality": 0.6336772222222222,
+      "query_terms": [
+        "pasta",
+        "sauce"
+      ],
+      "scorer": "v2",
+      "source": "wikimedia",
+      "total_duration_s": 357.4,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.5130179861111112,
+      "n_duplicates": 0,
+      "n_license_clean": 6,
+      "n_records": 8,
+      "notes": "fixture-suite",
+      "p50_quality": 0.54525,
+      "p90_quality": 0.6336772222222222,
+      "query_terms": [
+        "pasta",
+        "sauce"
+      ],
+      "scorer": "v2",
+      "source": "__total__",
+      "total_duration_s": 3021.4,
+      "unique_authors": 8
+    },
+    {
+      "mean_quality": 0.4194805555555556,
+      "n_duplicates": 0,
+      "n_license_clean": 2,
+      "n_records": 3,
+      "notes": "fixture-suite",
+      "p50_quality": 0.5305666666666667,
+      "p90_quality": 0.54525,
+      "query_terms": [
+        "baking",
+        "bread"
+      ],
+      "scorer": "v2",
+      "source": "archive_org",
+      "total_duration_s": 1572.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.597625,
+      "n_duplicates": 0,
+      "n_license_clean": 0,
+      "n_records": 1,
+      "notes": "fixture-suite",
+      "p50_quality": 0.597625,
+      "p90_quality": 0.597625,
+      "query_terms": [
+        "baking",
+        "bread"
+      ],
+      "scorer": "v2",
+      "source": "common_crawl",
+      "total_duration_s": 270.0,
+      "unique_authors": 1
+    },
+    {
+      "mean_quality": 0.563825,
+      "n_duplicates": 0,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-suite",
+      "p50_quality": 0.402875,
+      "p90_quality": 0.7247750000000001,
+      "query_terms": [
+        "baking",
+        "bread"
+      ],
+      "scorer": "v2",
+      "source": "peertube",
+      "total_duration_s": 822.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.5602136111111111,
+      "n_duplicates": 0,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-suite",
+      "p50_quality": 0.48675,
+      "p90_quality": 0.6336772222222222,
+      "query_terms": [
+        "baking",
+        "bread"
+      ],
+      "scorer": "v2",
+      "source": "wikimedia",
+      "total_duration_s": 357.4,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.5130179861111112,
+      "n_duplicates": 0,
+      "n_license_clean": 6,
+      "n_records": 8,
+      "notes": "fixture-suite",
+      "p50_quality": 0.54525,
+      "p90_quality": 0.6336772222222222,
+      "query_terms": [
+        "baking",
+        "bread"
+      ],
+      "scorer": "v2",
+      "source": "__total__",
+      "total_duration_s": 3021.4,
+      "unique_authors": 8
+    }
+  ],
+  "per_source": [
+    {
+      "mean_quality": 0.41948055555555563,
+      "n_duplicates": 0,
+      "n_license_clean": 6,
+      "n_records": 9,
+      "notes": "fixture-suite;suite=cooking-default",
+      "p50_quality": 0.5305666666666667,
+      "p90_quality": 0.54525,
+      "query_terms": [
+        "cooking",
+        "recipe",
+        "pasta",
+        "sauce",
+        "baking",
+        "bread"
+      ],
+      "scorer": "v2",
+      "source": "archive_org",
+      "total_duration_s": 4716.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.597625,
+      "n_duplicates": 0,
+      "n_license_clean": 0,
+      "n_records": 3,
+      "notes": "fixture-suite;suite=cooking-default",
+      "p50_quality": 0.597625,
+      "p90_quality": 0.597625,
+      "query_terms": [
+        "cooking",
+        "recipe",
+        "pasta",
+        "sauce",
+        "baking",
+        "bread"
+      ],
+      "scorer": "v2",
+      "source": "common_crawl",
+      "total_duration_s": 810.0,
+      "unique_authors": 1
+    },
+    {
+      "mean_quality": 0.563825,
+      "n_duplicates": 0,
+      "n_license_clean": 6,
+      "n_records": 6,
+      "notes": "fixture-suite;suite=cooking-default",
+      "p50_quality": 0.402875,
+      "p90_quality": 0.7247750000000001,
+      "query_terms": [
+        "cooking",
+        "recipe",
+        "pasta",
+        "sauce",
+        "baking",
+        "bread"
+      ],
+      "scorer": "v2",
+      "source": "peertube",
+      "total_duration_s": 2466.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.5602136111111111,
+      "n_duplicates": 0,
+      "n_license_clean": 6,
+      "n_records": 6,
+      "notes": "fixture-suite;suite=cooking-default",
+      "p50_quality": 0.48675,
+      "p90_quality": 0.6336772222222222,
+      "query_terms": [
+        "cooking",
+        "recipe",
+        "pasta",
+        "sauce",
+        "baking",
+        "bread"
+      ],
+      "scorer": "v2",
+      "source": "wikimedia",
+      "total_duration_s": 1072.1999999999998,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.5130179861111112,
+      "n_duplicates": 16,
+      "n_license_clean": 6,
+      "n_records": 8,
+      "notes": "fixture-suite;suite=cooking-default",
+      "p50_quality": 0.54525,
+      "p90_quality": 0.6336772222222222,
+      "query_terms": [
+        "cooking",
+        "recipe",
+        "pasta",
+        "sauce",
+        "baking",
+        "bread"
+      ],
+      "scorer": "v2",
+      "source": "__total__",
+      "total_duration_s": 3021.4,
+      "unique_authors": 8
+    }
+  ],
+  "suite": {
+    "name": "cooking-default",
+    "queries": [
+      {
+        "language": null,
+        "max_results": 25,
+        "terms": [
+          "cooking",
+          "recipe"
+        ]
+      },
+      {
+        "language": null,
+        "max_results": 25,
+        "terms": [
+          "pasta",
+          "sauce"
+        ]
+      },
+      {
+        "language": null,
+        "max_results": 25,
+        "terms": [
+          "baking",
+          "bread"
+        ]
+      }
+    ]
+  }
+}

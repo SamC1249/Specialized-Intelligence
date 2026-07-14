@@ -75,6 +75,18 @@ pair plus an aggregate `total` row. Stored under
 | `p90_quality`           | `float`   |                                             |
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
+| `n_duplicates`          | `int`     | Records dropped during cross-source dedup.  |
+| `scorer`                | `str`     | Named scorer id (e.g. `v1`, `v2`).          |
+
+## `SourceQuerySuite` (Pydantic model)
+
+Multi-query benchmarks. Ensures per-source rankings are averaged over
+several `SourceQuery` values instead of relying on a single query.
+
+| Field     | Type              | Notes                                    |
+| --------- | ----------------- | ---------------------------------------- |
+| `name`    | `str`             | Human-readable identifier.               |
+| `queries` | `list[SourceQuery]` | Queries executed against every source. |
 
 ## Frontend / API contract (placeholder)
 
