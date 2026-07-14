@@ -19,9 +19,22 @@ python -m pip install -e ".[dev]"
 pre-commit install
 pytest -q
 
-# Offline comparison harness (no network):
-python -m specint compare --fixtures --terms cooking recipe \
+# Offline comparison against checked-in fixtures (no network):
+python -m specint compare --fixtures --fixtures-dir tests/fixtures \
+  --scorer v2 --dedup --terms cooking recipe \
   --output reports/example.json
+
+# Multi-query benchmark (H1: reduce single-query variance):
+python -m specint matrix --suite tests/fixtures/suite/query_suite.json \
+  --fixtures-dir tests/fixtures --scorer v2 --dedup \
+  --output reports/matrix.json
+
+# A/B compare scorer v1 vs v2 on the same fixtures (H2):
+python -m specint scorer-compare --fixtures-dir tests/fixtures \
+  --dedup --output reports/scorer.json
+
+# Mechanical report diff (regression gate):
+python -m specint diff reports/baseline-2026-06-20.json reports/example.json
 
 # Live comparison (only with explicit opt-in):
 SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
