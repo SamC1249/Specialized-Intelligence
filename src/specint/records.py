@@ -94,9 +94,17 @@ class BenchmarkResult(BaseModel):
     p90_quality: float
     unique_authors: int
     notes: str = ""
+    n_duplicates: int = 0
+    scorer: str = "v1"
 
     @classmethod
-    def empty(cls, source: str, query_terms: list[str], notes: str = "") -> BenchmarkResult:
+    def empty(
+        cls,
+        source: str,
+        query_terms: list[str],
+        notes: str = "",
+        scorer: str = "v1",
+    ) -> BenchmarkResult:
         return cls(
             source=source,
             query_terms=list(query_terms),
@@ -108,7 +116,25 @@ class BenchmarkResult(BaseModel):
             p90_quality=0.0,
             unique_authors=0,
             notes=notes,
+            n_duplicates=0,
+            scorer=scorer,
         )
+
+
+class SourceQuerySuite(BaseModel):
+    """A named bag of `SourceQuery` values run together for multi-query benchmarks.
+
+    Multi-query benchmarking reduces the variance of per-source rankings
+    that a single query can introduce (H1 in `docs/plan-2026-07-14.md`).
+    """
+
+    model_config = ConfigDict(frozen=True)
+
+    name: str
+    queries: list[SourceQuery] = Field(default_factory=list)
+
+    def serialize(self) -> str:
+        return f"suite={self.name};n={len(self.queries)}"
 
 
 def utcnow() -> datetime:
