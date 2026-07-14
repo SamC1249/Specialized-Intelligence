@@ -1,0 +1,76 @@
+{
+  "baseline": "reports/baseline-2026-06-20.json",
+  "candidate": "reports/compare-2026-07-14.json",
+  "rows": [
+    {
+      "baseline_scorer": "v1",
+      "candidate_scorer": "v2",
+      "mean_quality_delta": 0.013871631944444462,
+      "n_duplicates_delta": 0,
+      "n_license_clean_delta": 0,
+      "n_records_delta": 0,
+      "p50_quality_delta": 0.01431249999999995,
+      "p90_quality_delta": -0.06276027777777782,
+      "source": "__total__",
+      "total_duration_s_delta": 0.0,
+      "unique_authors_delta": 0,
+      "verdict": "improved"
+    },
+    {
+      "baseline_scorer": "v1",
+      "candidate_scorer": "v2",
+      "mean_quality_delta": 0.0610013888888889,
+      "n_duplicates_delta": 0,
+      "n_license_clean_delta": 0,
+      "n_records_delta": 0,
+      "p50_quality_delta": 0.04944166666666677,
+      "p90_quality_delta": 0.047875,
+      "source": "archive_org",
+      "total_duration_s_delta": 0.0,
+      "unique_authors_delta": 0,
+      "verdict": "improved"
+    },
+    {
+      "baseline_scorer": "v1",
+      "candidate_scorer": "v2",
+      "mean_quality_delta": 0.0666874999999999,
+      "n_duplicates_delta": 0,
+      "n_license_clean_delta": 0,
+      "n_records_delta": 0,
+      "p50_quality_delta": 0.0666874999999999,
+      "p90_quality_delta": 0.0666874999999999,
+      "source": "common_crawl",
+      "total_duration_s_delta": 0.0,
+      "unique_authors_delta": 0,
+      "verdict": "improved"
+    },
+    {
+      "baseline_scorer": "v1",
+      "candidate_scorer": "v2",
+      "mean_quality_delta": -0.008050000000000002,
+      "n_duplicates_delta": 0,
+      "n_license_clean_delta": 0,
+      "n_records_delta": 0,
+      "p50_quality_delta": -0.04443750000000002,
+      "p90_quality_delta": 0.028337500000000015,
+      "source": "peertube",
+      "total_duration_s_delta": 0.0,
+      "unique_authors_delta": 0,
+      "verdict": "regressed_quality"
+    },
+    {
+      "baseline_scorer": "v1",
+      "candidate_scorer": "v2",
+      "mean_quality_delta": -0.06130930555555558,
+      "n_duplicates_delta": 0,
+      "n_license_clean_delta": 0,
+      "n_records_delta": 0,
+      "p50_quality_delta": -0.05062500000000003,
+      "p90_quality_delta": -0.07199361111111113,
+      "source": "wikimedia",
+      "total_duration_s_delta": 0.0,
+      "unique_authors_delta": 0,
+      "verdict": "regressed_quality"
+    }
+  ]
+}
