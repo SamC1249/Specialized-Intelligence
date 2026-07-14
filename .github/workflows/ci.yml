@@ -39,11 +39,21 @@ jobs:
           SPECINT_RUN_INTEGRATION: "0"
         run: pytest -q --cov=specint --cov-report=term-missing
 
+      - name: Sources registry smoke test
+        run: |
+          python -m specint sources | tee /tmp/sources.txt
+          for slug in wikimedia archive_org peertube common_crawl; do
+            grep -q "^${slug}\b" /tmp/sources.txt || { echo "missing source: ${slug}"; exit 1; }
+          done
+
       - name: E2E compare (fixtures)
         run: |
           python -m specint compare --fixtures --terms cooking recipe \
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
+
+      - name: Adversarial-TODO scan
+        run: python scripts/check_adversarial_todos.py
 
       - name: Upload comparison report
         if: matrix.python-version == '3.12'
