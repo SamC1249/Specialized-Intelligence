@@ -22,3 +22,9 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
+      - id: detect-adversarial-todo
+        name: detect unresolved SPECINT-ADVERSARIAL markers
+        entry: python3 scripts/check_adversarial_todos.py
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
