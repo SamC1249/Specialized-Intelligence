@@ -5,6 +5,7 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+      - id: check-json
       - id: check-added-large-files
         args: ["--maxkb=512"]
       - id: check-merge-conflict
@@ -16,6 +17,12 @@ repos:
       - id: ruff-format
   - repo: local
     hooks:
+      - id: mypy-strict-core
+        name: mypy --strict (records + quality)
+        entry: mypy --strict src/specint/records.py src/specint/quality
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
       - id: pytest-quick
         name: pytest (offline)
         entry: pytest -q
