@@ -21,11 +21,39 @@ pytest -q
 
 # Offline comparison harness (no network):
 python -m specint compare --fixtures --terms cooking recipe \
-  --output reports/example.json
+  --scorer v1 --output reports/example.json
+
+# A/B a new scorer against v1 on the same fixtures:
+python -m specint compare --fixtures --scorer v2 \
+  --output reports/example-v2.json
+python -m specint diff reports/example.json reports/example-v2.json \
+  --output reports/example-diff.json
+
+# Multi-query benchmark matrix (per-query and per-source aggregates):
+python -m specint matrix --fixtures --name cooking-suite \
+  --output reports/example-matrix.json
 
 # Live comparison (only with explicit opt-in):
 SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
 ```
+
+## Comparison-first, not anecdotal
+
+Every new adapter, scorer, or filter must:
+
+- run through `specint.compare.harness.run_comparison` (single query)
+  or `run_matrix` (multi-query suite),
+- emit a fresh JSON report under `reports/`,
+- and be diffable against the previous baseline via
+  `python -m specint diff`.
+
+Reports carry the *exact* extractor commit stamp
+(`Provenance.extractor_git`) so we can reproduce yesterday's numbers
+tomorrow. AGENTS.md rule 2 (provenance is mandatory) is enforced at
+model level: `Provenance` defaults `extractor_git` to
+`specint._version.get_extractor_git()`, which reads `GITHUB_SHA`,
+falls back to `git rev-parse --short=12 HEAD`, and only lands on
+`"dev"` when neither is available.
 
 ## Layout
 
