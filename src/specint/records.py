@@ -6,13 +6,15 @@ Every other module imports types from here. Do not redefine these locally.
 from __future__ import annotations
 
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import AnyHttpUrl, BaseModel, ConfigDict, Field
 
+from specint._version import get_extractor_git
 
-class License(str, Enum):  # noqa: UP042 - keep classic str+Enum for Pydantic compatibility
+
+class License(StrEnum):  # - keep classic str+Enum for Pydantic compatibility
     CC0 = "CC0"
     CC_BY = "CC-BY"
     CC_BY_SA = "CC-BY-SA"
@@ -36,7 +38,7 @@ class Provenance(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     extractor: str
-    extractor_git: str = "dev"
+    extractor_git: str = Field(default_factory=get_extractor_git)
     fetched_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     query: str = ""
 
@@ -51,6 +53,23 @@ class SourceQuery(BaseModel):
     def serialize(self) -> str:
         terms = "|".join(self.terms)
         return f"terms={terms};max={self.max_results};lang={self.language or ''}"
+
+
+class SourceQuerySuite(BaseModel):
+    """A named bundle of `SourceQuery` values.
+
+    Multi-query benchmarks average per-source signal over disjoint
+    queries so one lucky fixture cannot pretend a source is
+    dominant. Used by `compare.harness.run_matrix`.
+    """
+
+    model_config = ConfigDict(frozen=True)
+
+    name: str
+    queries: list[SourceQuery] = Field(default_factory=list)
+
+    def serialize(self) -> str:
+        return f"suite={self.name};n={len(self.queries)}"
 
 
 class VideoRecord(BaseModel):
@@ -93,10 +112,18 @@ class BenchmarkResult(BaseModel):
     p50_quality: float
     p90_quality: float
     unique_authors: int
+    n_duplicates: int = 0
+    scorer: str = "v1"
     notes: str = ""
 
     @classmethod
-    def empty(cls, source: str, query_terms: list[str], notes: str = "") -> BenchmarkResult:
+    def empty(
+        cls,
+        source: str,
+        query_terms: list[str],
+        notes: str = "",
+        scorer: str = "v1",
+    ) -> BenchmarkResult:
         return cls(
             source=source,
             query_terms=list(query_terms),
@@ -107,6 +134,8 @@ class BenchmarkResult(BaseModel):
             p50_quality=0.0,
             p90_quality=0.0,
             unique_authors=0,
+            n_duplicates=0,
+            scorer=scorer,
             notes=notes,
         )
 
