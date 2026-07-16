@@ -37,13 +37,22 @@ jobs:
       - name: Tests (offline)
         env:
           SPECINT_RUN_INTEGRATION: "0"
-        run: pytest -q --cov=specint --cov-report=term-missing
+        run: pytest -q --cov=specint --cov-report=term-missing --cov-fail-under=80
 
       - name: E2E compare (fixtures)
         run: |
           python -m specint compare --fixtures --terms cooking recipe \
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
+
+      - name: Validate report against Pydantic contract
+        run: |
+          python -c "import json, sys; \
+from specint.records import BenchmarkResult, SourceQuery; \
+p = json.load(open('reports/ci-compare.json')); \
+SourceQuery.model_validate(p['query']); \
+[BenchmarkResult.model_validate(r) for r in p['rows']]; \
+sys.stdout.write('report contract OK\n')"
 
       - name: Upload comparison report
         if: matrix.python-version == '3.12'
