@@ -1,0 +1,71 @@
+{
+  "report_a": "reports/baseline-2026-06-20.json",
+  "report_b": "reports/compare-2026-07-16.json",
+  "rows": [
+    {
+      "mean_quality_delta": 0.0644259943181818,
+      "n_duplicates_delta": 0,
+      "n_license_clean_delta": 3,
+      "n_records_delta": 3,
+      "p50_quality_delta": 0.006437499999999985,
+      "p90_quality_delta": 0.009233333333333316,
+      "scorer_a": "v1",
+      "scorer_b": "v1",
+      "source": "__total__",
+      "total_duration_s_delta": 687.0,
+      "unique_authors_delta": 2
+    },
+    {
+      "mean_quality_delta": 0.0,
+      "n_duplicates_delta": 0,
+      "n_license_clean_delta": 0,
+      "n_records_delta": 0,
+      "p50_quality_delta": 0.0,
+      "p90_quality_delta": 0.0,
+      "scorer_a": "v1",
+      "scorer_b": "v1",
+      "source": "archive_org",
+      "total_duration_s_delta": 0.0,
+      "unique_authors_delta": 0
+    },
+    {
+      "mean_quality_delta": 0.20340625,
+      "n_duplicates_delta": 0,
+      "n_license_clean_delta": 1,
+      "n_records_delta": 1,
+      "p50_quality_delta": 0.0,
+      "p90_quality_delta": 0.4068124999999999,
+      "scorer_a": "v1",
+      "scorer_b": "v1",
+      "source": "common_crawl",
+      "total_duration_s_delta": 372.0,
+      "unique_authors_delta": 1
+    },
+    {
+      "mean_quality_delta": 0.0,
+      "n_duplicates_delta": 0,
+      "n_license_clean_delta": 0,
+      "n_records_delta": 0,
+      "p50_quality_delta": 0.0,
+      "p90_quality_delta": 0.0,
+      "scorer_a": "v1",
+      "scorer_b": "v1",
+      "source": "peertube",
+      "total_duration_s_delta": 0.0,
+      "unique_authors_delta": 0
+    },
+    {
+      "mean_quality_delta": 0.006332291666666601,
+      "n_duplicates_delta": 0,
+      "n_license_clean_delta": 2,
+      "n_records_delta": 2,
+      "p50_quality_delta": 0.16112499999999996,
+      "p90_quality_delta": 0.0,
+      "scorer_a": "v1",
+      "scorer_b": "v1",
+      "source": "wikimedia",
+      "total_duration_s_delta": 315.0,
+      "unique_authors_delta": 1
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "name": "cooking-2026-07-16",
+  "queries": [
+    {
+      "terms": ["cooking", "recipe"],
+      "max_results": 25,
+      "fixtures": {
+        "wikimedia": [
+          {"path": "wikimedia/search_pasta.json", "kind": "json"}
+        ],
+        "archive_org": [
+          {"path": "archive_org/search_cooking.json", "kind": "json"}
+        ],
+        "peertube": [
+          {"path": "peertube/search_cooking.json", "kind": "json"}
+        ],
+        "common_crawl": [
+          {
+            "path": "common_crawl/recipe_page.html",
+            "kind": "html",
+            "page_url": "https://example.test/recipes/garlic-butter-pasta"
+          }
+        ]
+      }
+    },
+    {
+      "terms": ["knife", "skills"],
+      "max_results": 25,
+      "fixtures": {
+        "wikimedia": [
+          {"path": "wikimedia/search_pasta.json", "kind": "json"}
+        ],
+        "peertube": [
+          {"path": "peertube/search_cooking.json", "kind": "json"}
+        ]
+      }
+    },
+    {
+      "terms": ["tarte", "tatin"],
+      "max_results": 25,
+      "language": "fr",
+      "fixtures": {
+        "wikimedia": [
+          {"path": "wikimedia/multilingual.json", "kind": "json"}
+        ],
+        "common_crawl": [
+          {
+            "path": "common_crawl/cc_licensed_recipe.html",
+            "kind": "html",
+            "page_url": "https://wikibooks-cookbook.example/cc-lasagna"
+          }
+        ]
+      }
+    }
+  ]
+}

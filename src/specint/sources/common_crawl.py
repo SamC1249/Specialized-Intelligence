@@ -68,7 +68,7 @@ def _safe_str(value: Any) -> str:
         return ""
     if isinstance(value, str):
         return value
-    if isinstance(value, (list, tuple)) and value:
+    if isinstance(value, list | tuple) and value:
         return _safe_str(value[0])
     return str(value)
 
@@ -80,6 +80,86 @@ def _parse_iso(value: str | None) -> datetime | None:
         return datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError:
         return None
+
+
+def _cc_license_from_url(url: str | None) -> License:
+    if not url:
+        return License.UNKNOWN
+    u = url.lower().strip()
+    if "creativecommons.org" not in u and "publicdomain" not in u:
+        return License.UNKNOWN
+    if "publicdomain/zero" in u or "cc0" in u:
+        return License.CC0
+    if "by-nc" in u or "by-nd" in u or "nc-sa" in u or "nc-nd" in u:
+        return License.RESTRICTED
+    if "by-sa" in u:
+        return License.CC_BY_SA
+    if "/by/" in u or u.endswith("/by") or "licenses/by/" in u:
+        return License.CC_BY
+    if "publicdomain" in u:
+        return License.PUBLIC_DOMAIN
+    return License.UNKNOWN
+
+
+def extract_page_license(
+    soup: BeautifulSoup, jsonld_blocks: list[dict[str, Any]]
+) -> tuple[License, str | None]:
+    """Return the strongest license claim we can *prove* from the page.
+
+    Adversarial-Agent 07-14 (07a3) risk: only upgrade to CC-BY when
+    both a `creativecommons.org` URL **and** a `rel="license"` (or
+    equivalent structured tag) agree. We treat these as evidence
+    sources and require at least two independent signals for any
+    non-UNKNOWN classification.
+    """
+    urls: list[str] = []
+    for tag in soup.find_all("link", attrs={"rel": True}):
+        rels = tag.get("rel") or []
+        if isinstance(rels, list) and "license" in [r.lower() for r in rels]:
+            href = tag.get("href")
+            if isinstance(href, str):
+                urls.append(href)
+    for tag in soup.find_all("meta", attrs={"name": True}):
+        if str(tag.get("name") or "").lower() in {"license", "dc.rights"}:
+            content = tag.get("content")
+            if isinstance(content, str):
+                urls.append(content)
+    for tag in soup.find_all("meta", attrs={"property": True}):
+        if str(tag.get("property") or "").lower() in {"og:license", "article:license"}:
+            content = tag.get("content")
+            if isinstance(content, str):
+                urls.append(content)
+    for block in jsonld_blocks:
+        lic = block.get("license")
+        if isinstance(lic, str):
+            urls.append(lic)
+        elif isinstance(lic, dict):
+            for key in ("url", "@id"):
+                candidate = lic.get(key)
+                if isinstance(candidate, str):
+                    urls.append(candidate)
+
+    # Require at least two independent CC/PD URL claims to upgrade.
+    cc_urls = [u for u in urls if _cc_license_from_url(u) is not License.UNKNOWN]
+    if len(cc_urls) < 2:
+        return License.UNKNOWN, cc_urls[0] if cc_urls else None
+
+    classifications = [_cc_license_from_url(u) for u in cc_urls]
+    if License.RESTRICTED in classifications:
+        return License.RESTRICTED, cc_urls[classifications.index(License.RESTRICTED)]
+
+    # Choose the strictest (most conservative) agreeing license.
+    order = [
+        License.CC0,
+        License.PUBLIC_DOMAIN,
+        License.CC_BY,
+        License.CC_BY_SA,
+    ]
+    for tier in order:
+        matches = [u for u, c in zip(cc_urls, classifications, strict=False) if c is tier]
+        if len(matches) >= 2:
+            return tier, matches[0]
+    return License.UNKNOWN, cc_urls[0] if cc_urls else None
 
 
 def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[VideoRecord]:
@@ -94,6 +174,7 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
     videos = [b for b in blocks if "VideoObject" in _node_types(b)]
     recipes = [b for b in blocks if "Recipe" in _node_types(b)]
     recipe = recipes[0] if recipes else None
+    page_license, page_license_url = extract_page_license(soup, blocks)
 
     prov = Provenance(
         extractor=__name__,
@@ -117,23 +198,29 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             elif isinstance(instructions, str):
                 steps = [s.strip() for s in instructions.split(".") if s.strip()]
 
+        media_url: str | None = None
+        if page_license.is_redistributable:
+            content_url = _safe_str(v.get("contentUrl"))
+            if content_url:
+                media_url = content_url
+
         record = VideoRecord(
             id=f"common_crawl:{native_id}",
             source="common_crawl",
             source_native_id=native_id,
             url=page_url,
-            media_url=None,
+            media_url=media_url,
             title=_safe_str(v.get("name") or (recipe.get("name") if recipe else "")),
             description=_safe_str(
                 v.get("description") or (recipe.get("description") if recipe else "")
             ),
             language=None,
             duration_s=parse_iso8601_duration(v.get("duration")),
-            width=int(v["width"]) if isinstance(v.get("width"), (int, float)) else None,
-            height=int(v["height"]) if isinstance(v.get("height"), (int, float)) else None,
+            width=int(v["width"]) if isinstance(v.get("width"), int | float) else None,
+            height=int(v["height"]) if isinstance(v.get("height"), int | float) else None,
             fps=None,
-            license=License.UNKNOWN,
-            license_url=None,
+            license=page_license,
+            license_url=page_license_url,
             author=_safe_str(
                 (v.get("author") or {}).get("name")
                 if isinstance(v.get("author"), dict)
