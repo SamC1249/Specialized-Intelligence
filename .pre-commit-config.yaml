@@ -5,6 +5,8 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+      - id: check-json
+      - id: check-toml
       - id: check-added-large-files
         args: ["--maxkb=512"]
       - id: check-merge-conflict
@@ -16,9 +18,15 @@ repos:
       - id: ruff-format
   - repo: local
     hooks:
-      - id: pytest-quick
-        name: pytest (offline)
-        entry: pytest -q
+      - id: pytest-offline
+        name: pytest (offline, quick)
+        entry: pytest -q --no-header
         language: system
         pass_filenames: false
-        stages: [pre-push]
+        stages: [pre-commit, pre-push]
+      - id: forbid-network-in-tests
+        name: forbid live network calls under tests/
+        entry: python scripts/forbid_network_in_tests.py
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
