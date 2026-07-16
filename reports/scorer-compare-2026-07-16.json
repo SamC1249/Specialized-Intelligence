@@ -1,0 +1,71 @@
+{
+  "report_a": "reports/compare-2026-07-16.json",
+  "report_b": "reports/compare-2026-07-16-v2.json",
+  "rows": [
+    {
+      "mean_quality_delta": -0.07631098484848481,
+      "n_duplicates_delta": 0,
+      "n_license_clean_delta": 0,
+      "n_records_delta": 0,
+      "p50_quality_delta": -0.13737500000000002,
+      "p90_quality_delta": -0.01279583333333334,
+      "scorer_a": "v1",
+      "scorer_b": "v2",
+      "source": "__total__",
+      "total_duration_s_delta": 0.0,
+      "unique_authors_delta": 0
+    },
+    {
+      "mean_quality_delta": 0.012812499999999949,
+      "n_duplicates_delta": 0,
+      "n_license_clean_delta": 0,
+      "n_records_delta": 0,
+      "p50_quality_delta": -0.005124999999999991,
+      "p90_quality_delta": -0.00412499999999999,
+      "scorer_a": "v1",
+      "scorer_b": "v2",
+      "source": "archive_org",
+      "total_duration_s_delta": 0.0,
+      "unique_authors_delta": 0
+    },
+    {
+      "mean_quality_delta": 0.04221874999999997,
+      "n_duplicates_delta": 0,
+      "n_license_clean_delta": 0,
+      "n_records_delta": 0,
+      "p50_quality_delta": 0.07468750000000002,
+      "p90_quality_delta": 0.009750000000000036,
+      "scorer_a": "v1",
+      "scorer_b": "v2",
+      "source": "common_crawl",
+      "total_duration_s_delta": 0.0,
+      "unique_authors_delta": 0
+    },
+    {
+      "mean_quality_delta": -0.025437500000000002,
+      "n_duplicates_delta": 0,
+      "n_license_clean_delta": 0,
+      "n_records_delta": 0,
+      "p50_quality_delta": -0.04731249999999998,
+      "p90_quality_delta": -0.003562500000000024,
+      "scorer_a": "v1",
+      "scorer_b": "v2",
+      "source": "peertube",
+      "total_duration_s_delta": 0.0,
+      "unique_authors_delta": 0
+    },
+    {
+      "mean_quality_delta": -0.22785520833333328,
+      "n_duplicates_delta": 0,
+      "n_license_clean_delta": 0,
+      "n_records_delta": 0,
+      "p50_quality_delta": -0.2985,
+      "p90_quality_delta": -0.30567083333333334,
+      "scorer_a": "v1",
+      "scorer_b": "v2",
+      "source": "wikimedia",
+      "total_duration_s_delta": 0.0,
+      "unique_authors_delta": 0
+    }
+  ]
+}

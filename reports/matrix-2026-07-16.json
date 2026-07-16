@@ -1,0 +1,275 @@
+{
+  "rows": [
+    {
+      "mean_quality": 0.3584791666666667,
+      "n_duplicates": 0,
+      "n_license_clean": 2,
+      "n_records": 3,
+      "notes": "|cooking-2026-07-16|terms=cooking|recipe;max=25;lang=",
+      "p50_quality": 0.48112499999999997,
+      "p90_quality": 0.497375,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "scorer": "v1",
+      "source": "archive_org",
+      "total_duration_s": 1572.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.5309375000000001,
+      "n_duplicates": 0,
+      "n_license_clean": 0,
+      "n_records": 1,
+      "notes": "|cooking-2026-07-16|terms=cooking|recipe;max=25;lang=",
+      "p50_quality": 0.5309375000000001,
+      "p90_quality": 0.5309375000000001,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "scorer": "v1",
+      "source": "common_crawl",
+      "total_duration_s": 270.0,
+      "unique_authors": 1
+    },
+    {
+      "mean_quality": 0.571875,
+      "n_duplicates": 0,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "|cooking-2026-07-16|terms=cooking|recipe;max=25;lang=",
+      "p50_quality": 0.4473125,
+      "p90_quality": 0.6964375,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "scorer": "v1",
+      "source": "peertube",
+      "total_duration_s": 822.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.6215229166666667,
+      "n_duplicates": 0,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "|cooking-2026-07-16|terms=cooking|recipe;max=25;lang=",
+      "p50_quality": 0.537375,
+      "p90_quality": 0.7056708333333334,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "scorer": "v1",
+      "source": "wikimedia",
+      "total_duration_s": 357.4,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.571875,
+      "n_duplicates": 0,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "|cooking-2026-07-16|terms=knife|skills;max=25;lang=",
+      "p50_quality": 0.4473125,
+      "p90_quality": 0.6964375,
+      "query_terms": [
+        "knife",
+        "skills"
+      ],
+      "scorer": "v1",
+      "source": "peertube",
+      "total_duration_s": 822.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.6215229166666667,
+      "n_duplicates": 0,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "|cooking-2026-07-16|terms=knife|skills;max=25;lang=",
+      "p50_quality": 0.537375,
+      "p90_quality": 0.7056708333333334,
+      "query_terms": [
+        "knife",
+        "skills"
+      ],
+      "scorer": "v1",
+      "source": "wikimedia",
+      "total_duration_s": 357.4,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.93775,
+      "n_duplicates": 0,
+      "n_license_clean": 1,
+      "n_records": 1,
+      "notes": "|cooking-2026-07-16|terms=tarte|tatin;max=25;lang=",
+      "p50_quality": 0.93775,
+      "p90_quality": 0.93775,
+      "query_terms": [
+        "tarte",
+        "tatin"
+      ],
+      "scorer": "v1",
+      "source": "common_crawl",
+      "total_duration_s": 372.0,
+      "unique_authors": 1
+    },
+    {
+      "mean_quality": 0.6341875,
+      "n_duplicates": 0,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "|cooking-2026-07-16|terms=tarte|tatin;max=25;lang=",
+      "p50_quality": 0.569875,
+      "p90_quality": 0.6985,
+      "query_terms": [
+        "tarte",
+        "tatin"
+      ],
+      "scorer": "v1",
+      "source": "wikimedia",
+      "total_duration_s": 315.0,
+      "unique_authors": 1
+    },
+    {
+      "mean_quality": 0.3584791666666667,
+      "n_duplicates": 0,
+      "n_license_clean": 2,
+      "n_records": 3,
+      "notes": "|cooking-2026-07-16|__suite_aggregate__",
+      "p50_quality": 0.48112499999999997,
+      "p90_quality": 0.497375,
+      "query_terms": [
+        "cooking",
+        "recipe",
+        "knife",
+        "skills",
+        "tarte",
+        "tatin"
+      ],
+      "scorer": "v1",
+      "source": "archive_org",
+      "total_duration_s": 1572.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.7343437500000001,
+      "n_duplicates": 0,
+      "n_license_clean": 1,
+      "n_records": 2,
+      "notes": "|cooking-2026-07-16|__suite_aggregate__",
+      "p50_quality": 0.5309375000000001,
+      "p90_quality": 0.93775,
+      "query_terms": [
+        "cooking",
+        "recipe",
+        "knife",
+        "skills",
+        "tarte",
+        "tatin"
+      ],
+      "scorer": "v1",
+      "source": "common_crawl",
+      "total_duration_s": 642.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.571875,
+      "n_duplicates": 0,
+      "n_license_clean": 4,
+      "n_records": 4,
+      "notes": "|cooking-2026-07-16|__suite_aggregate__",
+      "p50_quality": 0.6964375,
+      "p90_quality": 0.6964375,
+      "query_terms": [
+        "cooking",
+        "recipe",
+        "knife",
+        "skills",
+        "tarte",
+        "tatin"
+      ],
+      "scorer": "v1",
+      "source": "peertube",
+      "total_duration_s": 1644.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.6257444444444444,
+      "n_duplicates": 0,
+      "n_license_clean": 6,
+      "n_records": 6,
+      "notes": "|cooking-2026-07-16|__suite_aggregate__",
+      "p50_quality": 0.569875,
+      "p90_quality": 0.7056708333333334,
+      "query_terms": [
+        "cooking",
+        "recipe",
+        "knife",
+        "skills",
+        "tarte",
+        "tatin"
+      ],
+      "scorer": "v1",
+      "source": "wikimedia",
+      "total_duration_s": 1029.8,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.5724061111111111,
+      "n_duplicates": 0,
+      "n_license_clean": 13,
+      "n_records": 15,
+      "notes": "|cooking-2026-07-16|__suite_aggregate__",
+      "p50_quality": 0.537375,
+      "p90_quality": 0.7056708333333334,
+      "query_terms": [
+        "cooking",
+        "recipe",
+        "knife",
+        "skills",
+        "tarte",
+        "tatin"
+      ],
+      "scorer": "v1",
+      "source": "__total__",
+      "total_duration_s": 4887.8,
+      "unique_authors": 10
+    }
+  ],
+  "scorer": "v1",
+  "suite": {
+    "name": "cooking-2026-07-16",
+    "queries": [
+      {
+        "language": null,
+        "max_results": 25,
+        "terms": [
+          "cooking",
+          "recipe"
+        ]
+      },
+      {
+        "language": null,
+        "max_results": 25,
+        "terms": [
+          "knife",
+          "skills"
+        ]
+      },
+      {
+        "language": null,
+        "max_results": 25,
+        "terms": [
+          "tarte",
+          "tatin"
+        ]
+      }
+    ]
+  }
+}
