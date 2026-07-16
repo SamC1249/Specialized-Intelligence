@@ -1,0 +1,42 @@
+{
+  "__instance__": "https://tilvids.com",
+  "total": 3,
+  "data": [
+    {
+      "id": 7101,
+      "uuid": "aaaa-1111",
+      "name": "Reaction Only, No Derivatives",
+      "description": "Uploader marked this Attribution-No Derivatives; harness must filter.",
+      "duration": 320,
+      "publishedAt": "2025-01-05T10:00:00Z",
+      "language": {"id": "en", "label": "English"},
+      "licence": {"id": 3, "label": "Attribution - No Derivatives"},
+      "files": [
+        {"fileUrl": "https://tilvids.com/static/aaaa-1111.mp4"}
+      ],
+      "account": {"displayName": "Some Chef", "host": "tilvids.com"}
+    },
+    {
+      "id": 7102,
+      "uuid": "bbbb-2222",
+      "name": "Non-Commercial Salad",
+      "description": "Attribution - Non Commercial. Must be filtered.",
+      "duration": 200,
+      "licence": {"id": 4, "label": "Attribution - Non Commercial"},
+      "files": [
+        {"fileUrl": "https://tilvids.com/static/bbbb-2222.mp4"}
+      ],
+      "account": {"displayName": "NC Kitchen", "host": "tilvids.com"}
+    },
+    {
+      "id": 7103,
+      "uuid": "cccc-3333",
+      "name": "NC-SA Pancakes",
+      "description": "Attribution - Non Commercial - Share Alike. Must be filtered.",
+      "duration": 240,
+      "licence": {"id": 5, "label": "Attribution - Non Commercial - Share Alike"},
+      "files": [],
+      "account": {"displayName": "NC-SA Cooks", "host": "tilvids.com"}
+    }
+  ]
+}

@@ -20,17 +20,34 @@ from specint.sources.base import BaseSource
 API_URL = "https://commons.wikimedia.org/w/api.php"
 
 
+_WS_RE = None  # populated below
+
+
+def _normalise_license_string(short_name: str) -> str:
+    # Strip every unicode whitespace (incl. NBSP U+00A0, thin spaces),
+    # uppercase, and drop hyphens so "BY-NC" and "BYNC" collide.
+    cleaned = []
+    for ch in short_name:
+        if ch.isspace() or ord(ch) == 0x00A0:
+            continue
+        cleaned.append(ch)
+    return "".join(cleaned).upper().replace("-", "")
+
+
 def _coerce_license(short_name: str | None) -> License:
     if not short_name:
         return License.UNKNOWN
-    s = short_name.strip().upper().replace(" ", "")
-    if s.startswith("CC0"):
-        return License.CC0
-    if "BY-SA" in s or "BYSA" in s:
-        return License.CC_BY_SA
-    if "BY-NC" in s or "BYNC" in s or "BY-ND" in s or "BYND" in s:
+    s = _normalise_license_string(short_name)
+    # NC / ND variants are always RESTRICTED regardless of what else is present.
+    if "NONCOMMERCIAL" in s or "BYNC" in s or "NCSA" in s or "NCND" in s or "BYNCND" in s:
         return License.RESTRICTED
-    if "CC-BY" in s or "CCBY" in s:
+    if "NODERIVATIVES" in s or "NODERIV" in s or "BYND" in s:
+        return License.RESTRICTED
+    if s.startswith("CC0") or "CREATIVECOMMONSZERO" in s:
+        return License.CC0
+    if "BYSA" in s or "SHAREALIKE" in s or "ATTRIBUTIONSHAREALIKE" in s:
+        return License.CC_BY_SA
+    if "CCBY" in s or s.startswith("BY") or "ATTRIBUTION" in s:
         return License.CC_BY
     if "PUBLICDOMAIN" in s or s == "PD":
         return License.PUBLIC_DOMAIN

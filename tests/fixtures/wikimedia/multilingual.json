@@ -1,0 +1,44 @@
+{
+  "query": {
+    "pages": {
+      "22222": {
+        "pageid": 22222,
+        "title": "File:Recette de tarte tatin.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Recette_de_tarte_tatin.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Recette_de_tarte_tatin.webm",
+            "mime": "video/webm",
+            "duration": 285.0,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by/4.0"},
+              "Artist": {"value": "Chef Marceau"},
+              "DateTimeOriginal": {"value": "2024-06-01T10:00:00Z"}
+            }
+          }
+        ]
+      },
+      "33333": {
+        "pageid": 33333,
+        "title": "File:Empty title clip.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Empty_title_clip.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Empty_title_clip.webm",
+            "mime": "video/webm",
+            "duration": 30.0,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by/4.0"}
+            }
+          }
+        ]
+      }
+    }
+  }
+}
