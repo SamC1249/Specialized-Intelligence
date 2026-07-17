@@ -1,0 +1,23 @@
+{
+  "groups": [
+    [
+      {
+        "id": "openverse:ov-0004",
+        "license": "CC-BY-SA",
+        "quality_score": null,
+        "source": "openverse",
+        "title": "Cooking pasta carbonara"
+      },
+      {
+        "id": "wikimedia:12345",
+        "license": "CC-BY-SA",
+        "quality_score": null,
+        "source": "wikimedia",
+        "title": "Cooking pasta carbonara"
+      }
+    ]
+  ],
+  "n_duplicates_removed": 1,
+  "n_groups": 10,
+  "n_records": 11
+}
