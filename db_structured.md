@@ -76,6 +76,48 @@ pair plus an aggregate `total` row. Stored under
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
 
+## `LicenseVerdict` (dataclass) — `specint.licenses`
+
+Returned by `classify(url, short_name)`. Confidence bands documented in
+the module.
+
+| Field         | Type      | Notes                                            |
+| ------------- | --------- | ------------------------------------------------ |
+| `license`     | `License` | See enum above.                                  |
+| `confidence`  | `float`   | 0.0 (UNKNOWN) through 0.95 (URL+short-name agree). |
+
+## `WeightConfig` (dataclass) — `specint.quality.metrics`
+
+Named quality-scoring config used by the ablation harness.
+
+| Field     | Type                    | Notes                                    |
+| --------- | ----------------------- | ---------------------------------------- |
+| `name`    | `str`                   | Human-friendly config name.              |
+| `weights` | `Mapping[str, float]`   | Component name → weight (unnormalised).  |
+
+## Ablation report (`reports/ablation-YYYY-MM-DD.json`)
+
+Produced by `specint.compare.ablation.run_ablation`.
+
+| Field             | Type                                     |
+| ----------------- | ---------------------------------------- |
+| `query`           | serialized `SourceQuery`                 |
+| `configs`         | `list[str]`                              |
+| `sources`         | `list[str]` (sorted)                     |
+| `rankings`        | `dict[config, list[{source, rank, mean_quality, n_records}]]` |
+| `delta_vs_default`| `dict[config, dict[source, float]]`      |
+
+## Dedup output (`specint dedup`)
+
+`group_duplicates(records) -> list[list[VideoRecord]]`. The CLI writes:
+
+| Field                    | Type                     |
+| ------------------------ | ------------------------ |
+| `n_records`              | `int`                    |
+| `n_groups`               | `int`                    |
+| `n_duplicates_removed`   | `int`                    |
+| `groups`                 | `list[list[record-view]]`|
+
 ## Frontend / API contract (placeholder)
 
 There is no HTTP API yet. When one is added, all request/response bodies

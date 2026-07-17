@@ -41,3 +41,43 @@ def test_score_records_attaches_quality():
     [scored] = score_records([r])
     assert scored.quality_score is not None
     assert 0.0 <= scored.quality_score <= 1.0
+
+
+def test_procedural_density_beats_has_steps_for_richer_recipes():
+    from specint.quality.metrics import ALL_COMPONENTS
+
+    proc = ALL_COMPONENTS["procedural_density"]
+    thin = _rec(recipe_steps=["prep", "cook", "serve"])
+    thick = _rec(
+        title="Chop, dice, saute, simmer, whisk and fold",
+        recipe_steps=[
+            "chop garlic",
+            "dice onion",
+            "saute in oil",
+            "simmer for 20 minutes",
+            "whisk eggs",
+            "fold in flour",
+            "bake at 200",
+            "rest before serving",
+        ],
+    )
+    assert proc(thick) > proc(thin)
+    assert proc(thick) == 1.0
+
+
+def test_cooking_relevance_multilingual():
+    from specint.quality.metrics import ALL_COMPONENTS
+
+    rel = ALL_COMPONENTS["cooking_relevance"]
+    english = _rec(title="Homemade sourdough bread recipe", description="")
+    spanish = _rec(title="Sofrito de ajo y cebolla receta", description="cocina rapida")
+    assert rel(english) > 0
+    assert rel(spanish) > 0
+
+
+def test_custom_weights_override_defaults():
+    r_license_only = _rec(license=License.CC0)
+    from specint.quality.metrics import score_record
+
+    assert score_record(r_license_only, weights={"license_clean": 1.0}) == 1.0
+    assert score_record(r_license_only, weights={"resolution": 1.0}) == 0.0

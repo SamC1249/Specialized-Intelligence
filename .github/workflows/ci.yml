@@ -34,10 +34,10 @@ jobs:
       - name: Type check (mypy, best-effort)
         run: mypy src || true
 
-      - name: Tests (offline)
+      - name: Tests (offline) with coverage floor
         env:
           SPECINT_RUN_INTEGRATION: "0"
-        run: pytest -q --cov=specint --cov-report=term-missing
+        run: pytest -q --cov=specint --cov-report=term-missing --cov-fail-under=85
 
       - name: E2E compare (fixtures)
         run: |
@@ -45,12 +45,27 @@ jobs:
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
 
-      - name: Upload comparison report
+      - name: E2E ablation (fixtures)
+        run: |
+          python -m specint ablate --fixtures --terms cooking recipe \
+            --output reports/ci-ablation.json
+          test -s reports/ci-ablation.json
+
+      - name: E2E dedup (fixtures)
+        run: |
+          python -m specint dedup --fixtures --terms cooking recipe \
+            --output reports/ci-dedup.json
+          test -s reports/ci-dedup.json
+
+      - name: Upload comparison + ablation artifacts
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
-          name: compare-report
-          path: reports/ci-compare.json
+          name: compare-artifacts
+          path: |
+            reports/ci-compare.json
+            reports/ci-ablation.json
+            reports/ci-dedup.json
 
   precommit:
     runs-on: ubuntu-latest
