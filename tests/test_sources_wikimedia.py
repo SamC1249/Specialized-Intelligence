@@ -8,20 +8,21 @@ def test_wikimedia_parse_filters_non_video_and_classifies_license(load_json):
     records = src.parse(raw, SourceQuery(terms=["pasta"], max_results=10))
     assert {r.source for r in records} == {"wikimedia"}
     titles = {r.title for r in records}
-    assert "File:Cooking pasta carbonara.webm" in titles
-    assert "File:Knife skills demo.ogv" in titles
+    assert "Cooking pasta carbonara" in titles
+    assert "Knife skills demo" in titles
     # The image must be filtered out.
-    assert "File:Some_image.jpg" not in titles
+    assert "Some_image" not in titles
+    assert not any(t.lower().startswith("file:") for t in titles)
 
     by_title = {r.title: r for r in records}
-    pasta = by_title["File:Cooking pasta carbonara.webm"]
+    pasta = by_title["Cooking pasta carbonara"]
     assert pasta.license is License.CC_BY_SA
     assert pasta.duration_s == 312.4
     assert pasta.height == 1080
     assert pasta.media_url is not None  # license is redistributable
     assert pasta.author == "Jane Cook"
 
-    knife = by_title["File:Knife skills demo.ogv"]
+    knife = by_title["Knife skills demo"]
     assert knife.license is License.CC0
     assert knife.media_url is not None
 
