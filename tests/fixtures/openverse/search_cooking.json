@@ -1,0 +1,96 @@
+{
+  "result_count": 4,
+  "page_count": 1,
+  "results": [
+    {
+      "id": "ov-0004",
+      "title": "Cooking pasta carbonara",
+      "description": "Cross-posted to Openverse via Wikimedia Commons.",
+      "creator": "Jane Cook",
+      "url": "https://cdn.openverse.example/videos/ov-0004.webm",
+      "foreign_landing_url": "https://commons.wikimedia.org/wiki/File:Cooking_pasta_carbonara.webm",
+      "license": "by-sa",
+      "license_version": "4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "provider": "wikimedia",
+      "filetype": "webm",
+      "mime_type": "video/webm",
+      "width": 1920,
+      "height": 1080,
+      "duration": 312,
+      "language": "en",
+      "tags": [
+        {"name": "pasta"},
+        {"name": "cooking"}
+      ],
+      "indexed_on": "2024-05-01T00:00:00Z"
+    },
+    {
+      "id": "ov-0001",
+      "title": "Homemade Sourdough — Kneading and Baking Demo",
+      "description": "A short demonstration on kneading, proofing and baking a classic sourdough loaf. Includes cooking time and step-by-step commentary.",
+      "creator": "Kitchen Cooperative",
+      "url": "https://cdn.openverse.example/videos/ov-0001.mp4",
+      "foreign_landing_url": "https://commons.wikimedia.org/wiki/File:Homemade_Sourdough_Demo.webm",
+      "license": "by-sa",
+      "license_version": "4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "provider": "wikimedia",
+      "filetype": "webm",
+      "mime_type": "video/webm",
+      "width": 1920,
+      "height": 1080,
+      "duration": 420,
+      "language": "en",
+      "tags": [
+        {"name": "bread"},
+        {"name": "baking"},
+        {"name": "sourdough"},
+        {"name": "kitchen"}
+      ],
+      "indexed_on": "2025-11-04T12:00:00Z"
+    },
+    {
+      "id": "ov-0002",
+      "title": "Cocina Rápida: Sofrito de Ajo y Cebolla",
+      "description": "Un tutorial breve para preparar un sofrito básico. Pica el ajo, sofrie la cebolla y añade la salsa de tomate.",
+      "creator": "Recetas Libres",
+      "url": "https://cdn.openverse.example/videos/ov-0002.mp4",
+      "foreign_landing_url": "https://europeana.example/records/food/2002",
+      "license": "by",
+      "license_version": "4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "provider": "europeana",
+      "filetype": "mp4",
+      "mime_type": "video/mp4",
+      "width": 1280,
+      "height": 720,
+      "duration": 180,
+      "language": "es",
+      "tags": [
+        {"name": "receta"},
+        {"name": "sofrito"},
+        {"name": "cocina"}
+      ],
+      "indexed_on": "2025-10-15T09:12:00Z"
+    },
+    {
+      "id": "ov-0003",
+      "title": "Advertising Reel — Not Redistributable",
+      "description": "This item should be filtered by the license classifier.",
+      "creator": "Brand X",
+      "url": "https://cdn.openverse.example/videos/ov-0003.mp4",
+      "foreign_landing_url": "https://example.example/videos/reel",
+      "license": "by-nc-nd",
+      "license_url": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "provider": "flickr",
+      "filetype": "mp4",
+      "mime_type": "video/mp4",
+      "width": 1920,
+      "height": 1080,
+      "duration": 60,
+      "language": "en",
+      "tags": []
+    }
+  ]
+}

@@ -13,6 +13,7 @@ from __future__ import annotations
 from specint.sources.archive_org import ArchiveOrgSource
 from specint.sources.base import BaseSource
 from specint.sources.common_crawl import CommonCrawlRecipeSource
+from specint.sources.openverse import OpenverseSource
 from specint.sources.peertube import PeerTubeSource
 from specint.sources.wikimedia import WikimediaCommonsSource
 
@@ -21,6 +22,7 @@ REGISTRY: dict[str, type[BaseSource]] = {
     "archive_org": ArchiveOrgSource,
     "peertube": PeerTubeSource,
     "common_crawl": CommonCrawlRecipeSource,
+    "openverse": OpenverseSource,
 }
 
 __all__ = [
@@ -28,6 +30,7 @@ __all__ = [
     "ArchiveOrgSource",
     "BaseSource",
     "CommonCrawlRecipeSource",
+    "OpenverseSource",
     "PeerTubeSource",
     "WikimediaCommonsSource",
 ]
