@@ -49,6 +49,16 @@ def _parse_iso(value: str | None) -> datetime | None:
 class WikimediaCommonsSource(BaseSource):
     slug = "wikimedia"
 
+    def __init__(self, category: str | None = None, **kwargs: Any) -> None:
+        """`category` selects category-generator mode (e.g. "Videos of cooking").
+
+        When None, we fall back to the default free-text `gsrsearch` path.
+        Both modes emit the same `query.pages[…]` structure, so `parse()`
+        is unchanged.
+        """
+        super().__init__(**kwargs)
+        self.category = category
+
     def parse(self, raw: Any, query: SourceQuery) -> list[VideoRecord]:
         if not isinstance(raw, dict):
             return []
@@ -106,16 +116,30 @@ class WikimediaCommonsSource(BaseSource):
         return out
 
     def search(self, query: SourceQuery) -> Iterable[VideoRecord]:
-        params = {
+        params: dict[str, str] = {
             "action": "query",
             "format": "json",
-            "generator": "search",
-            "gsrsearch": " ".join(query.terms) + " filetype:video",
-            "gsrnamespace": "6",
-            "gsrlimit": str(min(query.max_results, 50)),
             "prop": "imageinfo",
             "iiprop": "url|size|mime|extmetadata",
         }
+        if self.category:
+            params.update(
+                {
+                    "generator": "categorymembers",
+                    "gcmtitle": f"Category:{self.category}",
+                    "gcmtype": "file",
+                    "gcmlimit": str(min(query.max_results, 100)),
+                }
+            )
+        else:
+            params.update(
+                {
+                    "generator": "search",
+                    "gsrsearch": " ".join(query.terms) + " filetype:video",
+                    "gsrnamespace": "6",
+                    "gsrlimit": str(min(query.max_results, 50)),
+                }
+            )
         resp = self.client().get(API_URL, params=params)
         resp.raise_for_status()
         return self.parse(resp.json(), query)

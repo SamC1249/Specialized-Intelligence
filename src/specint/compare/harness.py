@@ -14,6 +14,7 @@ from __future__ import annotations
 import statistics
 from collections.abc import Iterable, Mapping
 
+from specint.dedup import dedup, dedup_report
 from specint.quality import score_records
 from specint.records import BenchmarkResult, License, SourceQuery, VideoRecord
 
@@ -64,7 +65,12 @@ def run_comparison(
     by_source: Mapping[str, list[VideoRecord]],
     notes: str = "",
 ) -> list[BenchmarkResult]:
-    """Score, aggregate per source, and append a `__total__` row."""
+    """Score, aggregate per source, and append `__total__` and `__deduped__` rows.
+
+    `__total__` is the raw union across sources (baseline compatibility).
+    `__deduped__` is the union after cross-source dedup — the number we
+    should actually plan a download budget against.
+    """
     rows: list[BenchmarkResult] = []
     all_scored: list[VideoRecord] = []
     for source, records in sorted(by_source.items()):
@@ -72,4 +78,13 @@ def run_comparison(
         all_scored.extend(scored)
         rows.append(aggregate(source, query.terms, scored, notes=notes))
     rows.append(aggregate("__total__", query.terms, all_scored, notes=notes))
+
+    deduped = dedup(all_scored)
+    dedup_notes = f"{notes}; " if notes else ""
+    report = dedup_report(all_scored)
+    dedup_notes += (
+        f"dedup: {report['n_duplicates']}/{report['n_input']} collapsed "
+        f"into {report['n_unique_groups']} groups"
+    )
+    rows.append(aggregate("__deduped__", query.terms, deduped, notes=dedup_notes))
     return rows

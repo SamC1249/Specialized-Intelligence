@@ -5,20 +5,36 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+      - id: check-json
       - id: check-added-large-files
         args: ["--maxkb=512"]
       - id: check-merge-conflict
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.5.0
     hooks:
       - id: ruff
         args: ["--fix"]
       - id: ruff-format
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+        args:
+          - "--ignore-words-list=saute,alos,thi,nd,ba,te,fpr"
+          - "--skip=*.json,*.lock,reports/*,agent-tools/*"
   - repo: local
     hooks:
       - id: pytest-quick
         name: pytest (offline)
         entry: pytest -q
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+      - id: baseline-regen-guard
+        name: reject stale baseline (informational)
+        entry: python scripts/regen_baseline.py
         language: system
         pass_filenames: false
         stages: [pre-push]

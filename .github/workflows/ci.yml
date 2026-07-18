@@ -45,12 +45,21 @@ jobs:
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
 
+      - name: Baseline regression (regenerate + diff)
+        run: |
+          python scripts/regen_baseline.py
+          # test_baseline_regression.py enforces reproducibility numerically; this
+          # step surfaces the JSON diff for humans reviewing the CI logs.
+          git --no-pager diff --stat reports/ || true
+
       - name: Upload comparison report
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: compare-report
-          path: reports/ci-compare.json
+          path: |
+            reports/ci-compare.json
+            reports/baseline-*.json
 
   precommit:
     runs-on: ubuntu-latest

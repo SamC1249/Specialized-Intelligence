@@ -44,12 +44,23 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
     rows = run_comparison(query, by_source, notes="e2e-fixture")
 
     sources_seen = {row.source for row in rows}
-    assert sources_seen == {"wikimedia", "archive_org", "peertube", "common_crawl", "__total__"}
+    assert sources_seen == {
+        "wikimedia",
+        "archive_org",
+        "peertube",
+        "common_crawl",
+        "__total__",
+        "__deduped__",
+    }
 
+    per_source = [r for r in rows if not r.source.startswith("__")]
     total = next(r for r in rows if r.source == "__total__")
-    per_source_total = sum(r.n_records for r in rows if r.source != "__total__")
+    deduped = next(r for r in rows if r.source == "__deduped__")
+    per_source_total = sum(r.n_records for r in per_source)
     assert total.n_records == per_source_total
     assert total.n_records > 0
+    # Dedup can only reduce or preserve the count.
+    assert deduped.n_records <= total.n_records
 
     # License-clean count must be monotonically <= n_records.
     for row in rows:
@@ -64,4 +75,4 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
     out.write_text(json.dumps(payload, sort_keys=True))
     reloaded = json.loads(out.read_text())
     assert reloaded["query"]["terms"] == ["cooking", "recipe"]
-    assert len(reloaded["rows"]) == 5
+    assert len(reloaded["rows"]) == 6

@@ -1,0 +1,64 @@
+{
+  "batchcomplete": "",
+  "continue": {
+    "gcmcontinue": "file|COOKING_SOUP.WEBM|98765",
+    "continue": "gcmcontinue||"
+  },
+  "query": {
+    "pages": {
+      "22222": {
+        "pageid": 22222,
+        "title": "File:Chopping onions technique.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Chopping_onions_technique.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Chopping_onions_technique.webm",
+            "mime": "video/webm",
+            "duration": 74.0,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by/4.0"},
+              "Artist": {"value": "Chef Public"},
+              "DateTimeOriginal": {"value": "2023-11-04T00:00:00Z"}
+            }
+          }
+        ]
+      },
+      "33333": {
+        "pageid": 33333,
+        "title": "File:Kneading bread dough demo.ogv",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Kneading_bread_dough_demo.ogv",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kneading_bread_dough_demo.ogv",
+            "mime": "video/ogg",
+            "duration": 118.5,
+            "width": 1280,
+            "height": 720,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/publicdomain/zero/1.0/"},
+              "Artist": {"value": "Home Bakery Collective"}
+            }
+          }
+        ]
+      },
+      "44444": {
+        "pageid": 44444,
+        "title": "File:Some_unrelated_photo.jpg",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Some_unrelated_photo.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Some_unrelated_photo.jpg",
+            "mime": "image/jpeg",
+            "width": 800,
+            "height": 600,
+            "extmetadata": {"LicenseShortName": {"value": "CC0"}}
+          }
+        ]
+      }
+    }
+  }
+}
