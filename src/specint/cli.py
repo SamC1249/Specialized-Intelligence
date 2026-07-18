@@ -9,11 +9,17 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from specint.compare import run_comparison
-from specint.records import SourceQuery
+from specint.compare import run_full_comparison
+from specint.records import SourceQuery, VideoRecord
 from specint.sources import REGISTRY
+from specint.sources.archive_org import ArchiveOrgSource
+from specint.sources.common_crawl import CommonCrawlRecipeSource
+from specint.sources.peertube import PeerTubeSource
+from specint.sources.wikimedia import WikimediaCommonsSource
+from specint.sources.youtube_cc import YouTubeCCSource
 
 DEFAULT_TERMS = ["cooking", "recipe"]
+_FIXTURES = Path(__file__).resolve().parent.parent.parent / "tests" / "fixtures"
 
 
 def _cmd_sources(_: argparse.Namespace) -> int:
@@ -22,40 +28,89 @@ def _cmd_sources(_: argparse.Namespace) -> int:
     return 0
 
 
+def _load_fixtures(query: SourceQuery, only: set[str] | None) -> dict[str, list[VideoRecord]]:
+    """Load offline fixtures for every registered source (or a subset)."""
+    fx = _FIXTURES
+    out: dict[str, list[VideoRecord]] = {}
+    plans: list[tuple[str, callable[[], list[VideoRecord]]]] = [  # type: ignore[valid-type]
+        (
+            "wikimedia",
+            lambda: WikimediaCommonsSource().parse(
+                json.loads((fx / "wikimedia/search_pasta.json").read_text()), query
+            ),
+        ),
+        (
+            "archive_org",
+            lambda: ArchiveOrgSource().parse(
+                json.loads((fx / "archive_org/search_cooking.json").read_text()), query
+            ),
+        ),
+        (
+            "peertube",
+            lambda: PeerTubeSource().parse(
+                json.loads((fx / "peertube/search_cooking.json").read_text()), query
+            ),
+        ),
+        (
+            "common_crawl",
+            lambda: CommonCrawlRecipeSource().parse(
+                {
+                    "html": (fx / "common_crawl/recipe_page.html").read_text(),
+                    "url": "https://example.test/recipes/garlic-butter-pasta",
+                },
+                query,
+            ),
+        ),
+        (
+            "youtube_cc",
+            lambda: YouTubeCCSource().parse(
+                json.loads((fx / "youtube_cc/search_cooking.json").read_text()), query
+            ),
+        ),
+    ]
+    for slug, loader in plans:
+        if only and slug not in only:
+            continue
+        try:
+            out[slug] = loader()
+        except FileNotFoundError:
+            out[slug] = []
+    return out
+
+
 def _cmd_compare(args: argparse.Namespace) -> int:
     terms = args.terms or DEFAULT_TERMS
     query = SourceQuery(terms=terms, max_results=args.max_results)
     only = set(args.only) if args.only else None
 
-    by_source: dict[str, list] = {}
     if args.fixtures:
-        for slug in REGISTRY:
-            if only and slug not in only:
-                continue
-            by_source[slug] = []
-        # No live calls in --fixtures mode; the harness reports zeros so CI is reproducible.
+        by_source = _load_fixtures(query, only)
     elif os.environ.get("SPECINT_RUN_INTEGRATION") != "1":
         print(
-            "refusing to hit live network without SPECINT_RUN_INTEGRATION=1; pass --fixtures for an offline dry run.",
+            "refusing to hit live network without SPECINT_RUN_INTEGRATION=1; "
+            "pass --fixtures for an offline dry run.",
             file=sys.stderr,
         )
         return 2
     else:
+        by_source = {}
         for slug, cls in REGISTRY.items():
             if only and slug not in only:
                 continue
             try:
-                records = list(cls().search(query))
+                by_source[slug] = list(cls().search(query))
             except Exception as exc:  # pragma: no cover - integration only
                 print(f"[warn] {slug} failed: {exc}", file=sys.stderr)
-                records = []
-            by_source[slug] = records
+                by_source[slug] = []
 
-    rows = run_comparison(query, by_source, notes=args.notes or "")
-    payload = {
-        "query": query.model_dump(mode="json"),
-        "rows": [r.model_dump(mode="json") for r in rows],
-    }
+    result = run_full_comparison(
+        query,
+        by_source,
+        notes=args.notes or "",
+        detect_language=args.detect_language,
+        apply_dedupe=args.dedupe,
+    )
+    payload = result.to_payload(query)
 
     out_path = (
         Path(args.output)
@@ -82,6 +137,16 @@ def build_parser() -> argparse.ArgumentParser:
     p_cmp.add_argument("--fixtures", action="store_true", help="offline mode (no network)")
     p_cmp.add_argument("--output", help="output JSON path")
     p_cmp.add_argument("--notes", help="free-form note attached to every row")
+    p_cmp.add_argument(
+        "--dedupe",
+        action="store_true",
+        help="run cross-source dedupe and emit a __total_deduped__ row + dedupe report",
+    )
+    p_cmp.add_argument(
+        "--detect-language",
+        action="store_true",
+        help="run offline heuristic language detector on records missing `language`",
+    )
     p_cmp.set_defaults(func=_cmd_compare)
 
     return p
