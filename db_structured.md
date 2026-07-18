@@ -76,6 +76,34 @@ pair plus an aggregate `total` row. Stored under
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
 
+## `DedupeCluster` / `DedupeReport` (dataclasses)
+
+Emitted by `specint.quality.dedupe.dedupe`. Not persisted separately —
+they are inlined into the `dedupe` block of the compare JSON.
+
+| Field                 | Type            | Notes                                                                    |
+| --------------------- | --------------- | ------------------------------------------------------------------------ |
+| `DedupeCluster.canonical_id`  | `str`   | The winning record's `id`.                                               |
+| `DedupeCluster.member_ids`    | `tuple[str,…]` | Sorted `id`s of every record in the cluster.                         |
+| `DedupeCluster.sources`       | `tuple[str,…]` | Sorted unique `source` slugs represented in the cluster.             |
+| `DedupeCluster.reason`        | `str`   | Human-readable rule that fired (≥2 shared signals).                      |
+| `DedupeReport.input_n`        | `int`   | Records fed into dedupe.                                                 |
+| `DedupeReport.output_n`       | `int`   | Records remaining after canonicalization.                                |
+| `DedupeReport.n_clusters_gt1` | `int`   | Number of clusters with more than one member.                            |
+| `DedupeReport.reduction`      | `float` | `1 - output_n/input_n`, in `[0, 1]`.                                     |
+
+## Compare JSON payload (extended)
+
+The JSON emitted by `python -m specint compare` is a superset of the
+legacy shape and always contains at least `query` and `rows`. When the
+richer flags are enabled the top-level dict also contains:
+
+| Key                 | Type                    | Notes                                                              |
+| ------------------- | ----------------------- | ------------------------------------------------------------------ |
+| `dedupe`            | `dict`                  | Present iff `--dedupe`. Contains the `DedupeReport` above + `clusters`. |
+| `pareto_frontier`   | `list[str]`             | Non-dominated sources on `(mean_quality, license_clean_rate, unique_after_dedupe)`. |
+| `language_coverage` | `dict[str, float]`      | Per-source fraction of records with non-null `language` after (optional) detection. |
+
 ## Frontend / API contract (placeholder)
 
 There is no HTTP API yet. When one is added, all request/response bodies
