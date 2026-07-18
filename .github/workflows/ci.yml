@@ -39,11 +39,22 @@ jobs:
           SPECINT_RUN_INTEGRATION: "0"
         run: pytest -q --cov=specint --cov-report=term-missing
 
-      - name: E2E compare (fixtures)
+      - name: Integration-marker fence
+        run: |
+          out=$(pytest --collect-only -q -m integration || true)
+          echo "$out"
+          case "$out" in
+            *"0 tests collected"*|*"no tests collected"*|*"no tests ran"*) ;;
+            *) echo "integration marker collected tests without opt-in"; exit 1 ;;
+          esac
+
+      - name: E2E compare (fixtures, full harness)
         run: |
           python -m specint compare --fixtures --terms cooking recipe \
+            --dedupe --detect-language \
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
+          python -c "import json; d=json.load(open('reports/ci-compare.json')); assert 'pareto_frontier' in d and 'dedupe' in d and 'language_coverage' in d, d.keys()"
 
       - name: Upload comparison report
         if: matrix.python-version == '3.12'

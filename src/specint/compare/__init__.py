@@ -1,3 +1,17 @@
-from specint.compare.harness import aggregate, run_comparison
+from specint.compare.harness import (
+    ComparisonResult,
+    ParetoPoint,
+    aggregate,
+    pareto_frontier,
+    run_comparison,
+    run_full_comparison,
+)
 
-__all__ = ["aggregate", "run_comparison"]
+__all__ = [
+    "ComparisonResult",
+    "ParetoPoint",
+    "aggregate",
+    "pareto_frontier",
+    "run_comparison",
+    "run_full_comparison",
+]

@@ -77,7 +77,7 @@ class ArchiveOrgSource(BaseSource):
                     duration_s = parts[0] * 3600 + parts[1] * 60 + parts[2]
                 elif len(parts) == 2:
                     duration_s = parts[0] * 60 + parts[1]
-            elif isinstance(duration, (int, float)):
+            elif isinstance(duration, int | float):
                 duration_s = float(duration)
 
             keywords: list[str] = []
