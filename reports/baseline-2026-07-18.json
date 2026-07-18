@@ -1,0 +1,135 @@
+{
+  "dedupe": {
+    "clusters": [],
+    "input_n": 10,
+    "n_clusters_gt1": 0,
+    "output_n": 10,
+    "reduction": 0.0
+  },
+  "language_coverage": {
+    "archive_org": 1.0,
+    "common_crawl": 1.0,
+    "peertube": 0.5,
+    "wikimedia": 0.0,
+    "youtube_cc": 1.0
+  },
+  "pareto_frontier": [
+    "archive_org",
+    "youtube_cc"
+  ],
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  },
+  "rows": [
+    {
+      "mean_quality": 0.3430194444444445,
+      "n_license_clean": 2,
+      "n_records": 3,
+      "notes": "fixture-baseline",
+      "p50_quality": 0.41625,
+      "p90_quality": 0.5361833333333333,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "archive_org",
+      "total_duration_s": 1572.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.618625,
+      "n_license_clean": 0,
+      "n_records": 1,
+      "notes": "fixture-baseline",
+      "p50_quality": 0.618625,
+      "p90_quality": 0.618625,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "common_crawl",
+      "total_duration_s": 270.0,
+      "unique_authors": 1
+    },
+    {
+      "mean_quality": 0.48629999999999995,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-baseline",
+      "p50_quality": 0.37687499999999996,
+      "p90_quality": 0.595725,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "peertube",
+      "total_duration_s": 822.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.5344808333333333,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-baseline",
+      "p50_quality": 0.46525,
+      "p90_quality": 0.6037116666666666,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "wikimedia",
+      "total_duration_s": 357.4,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.7814875,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-baseline",
+      "p50_quality": 0.74425,
+      "p90_quality": 0.818725,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "youtube_cc",
+      "total_duration_s": 1632.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.525222,
+      "n_license_clean": 8,
+      "n_records": 10,
+      "notes": "fixture-baseline",
+      "p50_quality": 0.5361833333333333,
+      "p90_quality": 0.74425,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "__total_deduped__",
+      "total_duration_s": 4653.4,
+      "unique_authors": 9
+    },
+    {
+      "mean_quality": 0.525222,
+      "n_license_clean": 8,
+      "n_records": 10,
+      "notes": "fixture-baseline",
+      "p50_quality": 0.5361833333333333,
+      "p90_quality": 0.74425,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "__total__",
+      "total_duration_s": 4653.4,
+      "unique_authors": 9
+    }
+  ]
+}
