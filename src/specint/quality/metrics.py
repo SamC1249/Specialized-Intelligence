@@ -6,12 +6,19 @@ we can rank a backlog of millions of candidates before deciding which to
 actually download.
 
 Components (current):
-  - license_clean : 1 if license is redistributable, else 0.
-  - duration      : peaks at 5 minutes (procedural sweet spot for a single
-                    recipe), penalizes very short and very long.
-  - resolution    : >=720p ramps from 0 to 1.
-  - text_density  : combined length of title + description + recipe_steps.
-  - has_steps     : 1 if recipe_steps non-empty (procedural supervision).
+  - license_clean       : 1 if license is redistributable, else 0.
+  - duration            : peaks at 5 minutes (procedural sweet spot for a
+                          single recipe), penalizes very short and very long.
+  - resolution          : >=720p ramps from 0 to 1.
+  - text_density        : combined length of title + description +
+                          recipe_steps.
+  - has_steps           : 1 if recipe_steps non-empty (procedural
+                          supervision).
+  - procedural_density  : rewards records whose text carries dense,
+                          state-changing action signal (imperative verbs,
+                          time/temperature literals, discrete steps). See
+                          `docs/artifacts/2025-worldprediction.md` for the
+                          motivation.
 
 Adding a component:
   1. Implement a new `_score_*` function returning a float in [0, 1].
@@ -22,17 +29,80 @@ Adding a component:
 
 from __future__ import annotations
 
+import re
 from collections.abc import Iterable
 
 from specint.records import VideoRecord
 
 WEIGHTS: dict[str, float] = {
-    "license_clean": 0.35,
-    "duration": 0.15,
-    "resolution": 0.20,
-    "text_density": 0.15,
-    "has_steps": 0.15,
+    "license_clean": 0.30,
+    "duration": 0.12,
+    "resolution": 0.16,
+    "text_density": 0.12,
+    "has_steps": 0.10,
+    "procedural_density": 0.20,
 }
+
+_IMPERATIVE_VERBS: frozenset[str] = frozenset(
+    {
+        "add",
+        "bake",
+        "beat",
+        "blend",
+        "boil",
+        "braise",
+        "broil",
+        "chop",
+        "combine",
+        "cook",
+        "cover",
+        "cut",
+        "deglaze",
+        "dice",
+        "drain",
+        "fold",
+        "fry",
+        "garnish",
+        "grate",
+        "grill",
+        "heat",
+        "knead",
+        "marinate",
+        "melt",
+        "mince",
+        "mix",
+        "peel",
+        "pour",
+        "preheat",
+        "reduce",
+        "roast",
+        "saute",
+        "sauté",
+        "sear",
+        "season",
+        "serve",
+        "simmer",
+        "slice",
+        "sprinkle",
+        "steam",
+        "stir",
+        "toast",
+        "toss",
+        "whisk",
+    }
+)
+
+_TIME_TEMP_RE = re.compile(
+    r"""
+    \b(
+        \d+\s*(?:seconds?|secs?|minutes?|mins?|hours?|hrs?)\b
+        | \d+\s*(?:°|deg(?:rees)?)\s*(?:c|f|celsius|fahrenheit)?\b
+        | \d{2,3}\s*(?:c|f)\b
+    )
+    """,
+    flags=re.IGNORECASE | re.VERBOSE,
+)
+_TOKEN_RE = re.compile(r"[A-Za-zÀ-ÿ]+")
 
 
 def _score_license(record: VideoRecord) -> float:
@@ -75,12 +145,41 @@ def _score_has_steps(record: VideoRecord) -> float:
     return 1.0 if record.recipe_steps else 0.0
 
 
+def _score_procedural_density(record: VideoRecord) -> float:
+    """Reward records whose metadata implies dense procedural content.
+
+    Three sub-signals, each capped at 1.0 and averaged with equal weight:
+      - verb_hits    : imperative-verb tokens matched anywhere in
+                       title + description + step text.
+      - time_temp    : count of "N minutes / 350 F / 180 °C"-style
+                       literals — canonical world-model state cues.
+      - step_count   : number of `recipe_steps` entries (procedural
+                       decomposition already done by upstream).
+    """
+    haystack_parts = [record.title, record.description, " ".join(record.recipe_steps)]
+    haystack = " ".join(p for p in haystack_parts if p)
+    if not haystack.strip():
+        return 0.0
+
+    tokens = [t.lower() for t in _TOKEN_RE.findall(haystack)]
+    verb_hits = sum(1 for t in tokens if t in _IMPERATIVE_VERBS)
+    verb_score = min(1.0, verb_hits / 6.0)
+
+    time_temp_hits = len(_TIME_TEMP_RE.findall(haystack))
+    time_temp_score = min(1.0, time_temp_hits / 3.0)
+
+    step_score = min(1.0, len(record.recipe_steps) / 8.0)
+
+    return (verb_score + time_temp_score + step_score) / 3.0
+
+
 _COMPONENTS = {
     "license_clean": _score_license,
     "duration": _score_duration,
     "resolution": _score_resolution,
     "text_density": _score_text_density,
     "has_steps": _score_has_steps,
+    "procedural_density": _score_procedural_density,
 }
 
 
