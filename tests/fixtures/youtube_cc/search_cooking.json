@@ -1,0 +1,57 @@
+{
+  "items": [
+    {
+      "id": {"videoId": "abcCC1234"},
+      "snippet": {
+        "publishedAt": "2024-05-01T09:00:00Z",
+        "channelTitle": "Open Kitchen Collective",
+        "title": "How to Cook Perfect Rice — 5-Minute Guide",
+        "description": "Step-by-step: rinse the rice, add 2 cups water, boil for 12 minutes, then let it steam for 5 minutes. Serve hot.",
+        "thumbnails": {
+          "high": {"width": 1920, "height": 1080}
+        },
+        "defaultAudioLanguage": "en",
+        "tags": ["cooking", "rice", "tutorial"]
+      }
+    },
+    {
+      "id": {"videoId": "defCC5678"},
+      "snippet": {
+        "publishedAt": "2023-11-11T09:00:00Z",
+        "channelTitle": "Chef Marie",
+        "title": "Tarte aux Pommes — Recette Classique",
+        "description": "Éplucher les pommes, cuire la pâte 20 minutes à 180°C, garnir et servir tiède.",
+        "thumbnails": {"high": {"width": 1280, "height": 720}},
+        "defaultAudioLanguage": "fr",
+        "tags": ["cuisine", "recette"]
+      }
+    },
+    {
+      "id": {"videoId": "ghiRESTR"},
+      "snippet": {
+        "publishedAt": "2022-01-01T09:00:00Z",
+        "channelTitle": "Restricted Chef",
+        "title": "Copyrighted Cooking Show",
+        "description": "This should be excluded because status.license is 'youtube' (standard license).",
+        "thumbnails": {"high": {"width": 1920, "height": 1080}}
+      }
+    }
+  ],
+  "videoDetails": [
+    {
+      "id": "abcCC1234",
+      "contentDetails": {"duration": "PT5M12S"},
+      "status": {"license": "creativeCommon"}
+    },
+    {
+      "id": "defCC5678",
+      "contentDetails": {"duration": "PT22M"},
+      "status": {"license": "creativeCommon"}
+    },
+    {
+      "id": "ghiRESTR",
+      "contentDetails": {"duration": "PT8M"},
+      "status": {"license": "youtube"}
+    }
+  ]
+}
