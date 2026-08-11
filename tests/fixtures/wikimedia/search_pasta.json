@@ -40,6 +40,66 @@
           }
         ]
       },
+      "22222": {
+        "pageid": 22222,
+        "title": "File:Modern Chef Demonstration.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Modern_Chef_Demonstration.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Modern_Chef_Demonstration.webm",
+            "mime": "video/webm",
+            "duration": 270.0,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by/4.0"},
+              "Artist": {"value": "Open Kitchen Collective"},
+              "DateTimeOriginal": {"value": "2018-09-04T00:00:00Z"}
+            }
+          }
+        ]
+      },
+      "33333": {
+        "pageid": 33333,
+        "title": "File:Cocina española tortilla.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Cocina_espanola_tortilla.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Cocina_espanola_tortilla.webm",
+            "mime": "video/webm",
+            "duration": 420.0,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by/4.0"},
+              "Artist": {"value": "Cocina Abierta"},
+              "DateTimeOriginal": {"value": "2023-02-01T00:00:00Z"}
+            }
+          }
+        ]
+      },
+      "44444": {
+        "pageid": 44444,
+        "title": "File:料理レシピ和食.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/f/f6/washoku_recipe.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:washoku_recipe.webm",
+            "mime": "video/webm",
+            "duration": 360.0,
+            "width": 1280,
+            "height": 720,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY-SA 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by-sa/4.0"},
+              "Artist": {"value": "和食ラボ"},
+              "DateTimeOriginal": {"value": "2024-08-11T00:00:00Z"}
+            }
+          }
+        ]
+      },
       "11111": {
         "pageid": 11111,
         "title": "File:Some_image.jpg",

@@ -11,35 +11,13 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from specint.compare import run_comparison
+from specint.compare import load_fixture_by_source, run_comparison
 from specint.records import SourceQuery
-from specint.sources.archive_org import ArchiveOrgSource
-from specint.sources.common_crawl import CommonCrawlRecipeSource
-from specint.sources.peertube import PeerTubeSource
-from specint.sources.wikimedia import WikimediaCommonsSource
 
 
 def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Path):
     query = SourceQuery(terms=["cooking", "recipe"], max_results=25)
-
-    by_source = {
-        "wikimedia": WikimediaCommonsSource().parse(
-            json.loads((fixtures_dir / "wikimedia/search_pasta.json").read_text()), query
-        ),
-        "archive_org": ArchiveOrgSource().parse(
-            json.loads((fixtures_dir / "archive_org/search_cooking.json").read_text()), query
-        ),
-        "peertube": PeerTubeSource().parse(
-            json.loads((fixtures_dir / "peertube/search_cooking.json").read_text()), query
-        ),
-        "common_crawl": CommonCrawlRecipeSource().parse(
-            {
-                "html": (fixtures_dir / "common_crawl/recipe_page.html").read_text(),
-                "url": "https://example.test/recipes/garlic-butter-pasta",
-            },
-            query,
-        ),
-    }
+    by_source = load_fixture_by_source(fixtures_dir, query)
 
     rows = run_comparison(query, by_source, notes="e2e-fixture")
 
@@ -51,11 +29,20 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
     assert total.n_records == per_source_total
     assert total.n_records > 0
 
-    # License-clean count must be monotonically <= n_records.
     for row in rows:
         assert row.n_license_clean <= row.n_records
 
-    # Persist a sample report to validate the JSON serialisation contract.
+    # 2026-08-11 additions:
+    #   - The __total__ row now reports dedup + language-confidence stats.
+    #   - Wikimedia + archive_org fixtures share a "Modern Chef Demonstration"
+    #     record so cross-source dedup fires.
+    assert total.n_after_dedup is not None
+    assert total.cross_source_duplicates is not None
+    assert total.n_after_dedup <= total.n_records
+    assert total.cross_source_duplicates >= 1
+    assert total.mean_language_confidence is not None
+    assert total.mean_language_confidence > 0.0
+
     payload = {
         "query": query.model_dump(mode="json"),
         "rows": [r.model_dump(mode="json") for r in rows],
