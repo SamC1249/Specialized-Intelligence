@@ -94,6 +94,9 @@ class BenchmarkResult(BaseModel):
     p90_quality: float
     unique_authors: int
     notes: str = ""
+    n_after_dedup: int | None = None
+    cross_source_duplicates: int | None = None
+    mean_language_confidence: float | None = None
 
     @classmethod
     def empty(cls, source: str, query_terms: list[str], notes: str = "") -> BenchmarkResult:
@@ -108,6 +111,9 @@ class BenchmarkResult(BaseModel):
             p90_quality=0.0,
             unique_authors=0,
             notes=notes,
+            n_after_dedup=0,
+            cross_source_duplicates=0,
+            mean_language_confidence=0.0,
         )
 
 

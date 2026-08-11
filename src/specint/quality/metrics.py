@@ -5,25 +5,31 @@ weighted sum, also in [0, 1]. Scoring is deliberately *metadata-only* so
 we can rank a backlog of millions of candidates before deciding which to
 actually download.
 
-Components (current):
-  - license_clean : 1 if license is redistributable, else 0.
-  - duration      : peaks at 5 minutes (procedural sweet spot for a single
-                    recipe), penalizes very short and very long.
-  - resolution    : >=720p ramps from 0 to 1.
-  - text_density  : combined length of title + description + recipe_steps.
-  - has_steps     : 1 if recipe_steps non-empty (procedural supervision).
+Components:
+  - license_clean       : 1 if license is redistributable, else 0.
+  - duration            : peaks at 5 minutes (procedural sweet spot for a
+                          single recipe), penalizes very short and very
+                          long clips.
+  - resolution          : >=720p ramps from 0 to 1.
+  - text_density        : combined length of title + description +
+                          recipe_steps.
+  - has_steps           : 1 if recipe_steps non-empty (procedural
+                          supervision).
+  - language_confidence : 2026-08-11 addition — cheap metadata-only
+                          language-detection confidence. Not in the
+                          default `WEIGHTS`; kept available for
+                          ablation experiments (see
+                          `specint.compare.ablation`).
 
-Adding a component:
-  1. Implement a new `_score_*` function returning a float in [0, 1].
-  2. Add it to `WEIGHTS` with a documented rationale.
-  3. Update tests in `tests/test_quality.py` with the new lower/upper
-     bounds.
+The default `WEIGHTS` vector is the *baseline*. Any PR that changes it
+must justify the change with a fresh `python -m specint ablate` report.
 """
 
 from __future__ import annotations
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 
+from specint.quality.language import language_confidence
 from specint.records import VideoRecord
 
 WEIGHTS: dict[str, float] = {
@@ -43,10 +49,10 @@ def _score_duration(record: VideoRecord) -> float:
     d = record.duration_s
     if d is None or d <= 0:
         return 0.0
-    target = 300.0  # 5 minutes
+    target = 300.0
     if d <= target:
         return d / target
-    return max(0.0, 1.0 - (d - target) / (target * 12))  # decays out to ~1 hour
+    return max(0.0, 1.0 - (d - target) / (target * 12))
 
 
 def _score_resolution(record: VideoRecord) -> float:
@@ -75,20 +81,36 @@ def _score_has_steps(record: VideoRecord) -> float:
     return 1.0 if record.recipe_steps else 0.0
 
 
-_COMPONENTS = {
+def _score_language_confidence(record: VideoRecord) -> float:
+    return language_confidence(record)
+
+
+COMPONENTS = {
     "license_clean": _score_license,
     "duration": _score_duration,
     "resolution": _score_resolution,
     "text_density": _score_text_density,
     "has_steps": _score_has_steps,
+    "language_confidence": _score_language_confidence,
 }
 
 
-def score_record(record: VideoRecord) -> float:
-    total_weight = sum(WEIGHTS.values())
-    raw = sum(WEIGHTS[name] * fn(record) for name, fn in _COMPONENTS.items())
-    return raw / total_weight if total_weight else 0.0
+def score_record(record: VideoRecord, weights: Mapping[str, float] | None = None) -> float:
+    w = weights if weights is not None else WEIGHTS
+    total_weight = sum(w.values())
+    if total_weight <= 0:
+        return 0.0
+    raw = 0.0
+    for name, weight in w.items():
+        fn = COMPONENTS.get(name)
+        if fn is None:
+            continue
+        raw += weight * fn(record)
+    return raw / total_weight
 
 
-def score_records(records: Iterable[VideoRecord]) -> list[VideoRecord]:
-    return [r.with_quality(score_record(r)) for r in records]
+def score_records(
+    records: Iterable[VideoRecord],
+    weights: Mapping[str, float] | None = None,
+) -> list[VideoRecord]:
+    return [r.with_quality(score_record(r, weights=weights)) for r in records]

@@ -46,6 +46,21 @@ def _parse_iso(value: str | None) -> datetime | None:
         return None
 
 
+_VIDEO_EXTS = (".webm", ".ogv", ".ogg", ".mp4", ".mov", ".mkv", ".m4v")
+
+
+def _clean_commons_title(raw_title: str) -> str:
+    t = raw_title
+    if t.startswith("File:"):
+        t = t[len("File:") :]
+    lower = t.lower()
+    for ext in _VIDEO_EXTS:
+        if lower.endswith(ext):
+            t = t[: -len(ext)]
+            break
+    return t.replace("_", " ").strip()
+
+
 class WikimediaCommonsSource(BaseSource):
     slug = "wikimedia"
 
@@ -87,7 +102,7 @@ class WikimediaCommonsSource(BaseSource):
                 source_native_id=str(page_id),
                 url=url,
                 media_url=media_url if license_enum.is_redistributable else None,
-                title=title,
+                title=_clean_commons_title(title),
                 description="",
                 language=None,
                 duration_s=info.get("duration"),

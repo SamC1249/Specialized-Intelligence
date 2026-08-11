@@ -45,12 +45,24 @@ jobs:
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
 
-      - name: Upload comparison report
+      - name: E2E ablation (fixtures)
+        run: |
+          python -m specint ablate --fixtures-dir tests/fixtures \
+            --output reports/ci-ablate.json
+          test -s reports/ci-ablate.json
+
+      - name: E2E compare (multilingual fixtures)
+        run: |
+          python -m specint compare --fixtures --multilingual --langs en es ja \
+            --output reports/ci-compare-multilingual.json
+          test -s reports/ci-compare-multilingual.json
+
+      - name: Upload reports
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
-          name: compare-report
-          path: reports/ci-compare.json
+          name: compare-reports
+          path: reports/ci-*.json
 
   precommit:
     runs-on: ubuntu-latest
