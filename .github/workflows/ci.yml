@@ -34,10 +34,19 @@ jobs:
       - name: Type check (mypy, best-effort)
         run: mypy src || true
 
-      - name: Tests (offline)
+      - name: Tests (offline, sockets disabled)
         env:
           SPECINT_RUN_INTEGRATION: "0"
         run: pytest -q --cov=specint --cov-report=term-missing
+
+      - name: Schema drift guard
+        run: pytest tests/test_schema_drift.py -q
+
+      - name: Baseline regression guard
+        run: pytest tests/test_baseline_regression.py -q
+
+      - name: Network guard smoke test
+        run: pytest tests/test_network_guard.py -q
 
       - name: E2E compare (fixtures)
         run: |

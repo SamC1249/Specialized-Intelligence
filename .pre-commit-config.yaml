@@ -5,11 +5,17 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+      - id: check-toml
+      - id: check-json
       - id: check-added-large-files
         args: ["--maxkb=512"]
       - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+      - id: debug-statements
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.5.0
+    rev: v0.6.9
     hooks:
       - id: ruff
         args: ["--fix"]
@@ -22,3 +28,15 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
+      - id: schema-drift
+        name: schema drift (VideoRecord vs db_structured.md)
+        entry: pytest tests/test_schema_drift.py -q
+        language: system
+        pass_filenames: false
+        files: '^(src/specint/records\.py|db_structured\.md)$'
+      - id: baseline-regression
+        name: baseline regression (fixture harness == reports/baseline)
+        entry: pytest tests/test_baseline_regression.py -q
+        language: system
+        pass_filenames: false
+        files: '^(src/specint/(quality|compare|sources)/|reports/baseline-.*\.json|tests/fixtures/)'
