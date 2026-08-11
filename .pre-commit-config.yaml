@@ -22,3 +22,15 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
+      - id: mypy-src
+        name: mypy (best-effort)
+        entry: bash -c "mypy src || true"
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+      - id: specint-compare
+        name: specint compare (fixtures)
+        entry: bash -c "python -m specint compare --fixtures --terms cooking recipe --output reports/precommit-compare.json > /dev/null"
+        language: system
+        pass_filenames: false
+        stages: [pre-push]

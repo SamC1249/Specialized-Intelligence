@@ -1,0 +1,253 @@
+{
+  "notes": "coding-agent-2026-08-11",
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  },
+  "rows": [
+    {
+      "mean_quality": 0.3584791666666667,
+      "n_records": 3,
+      "p90_quality": 0.497375,
+      "preset": "baseline",
+      "source": "archive_org",
+      "weights": {
+        "duration": 0.15,
+        "has_steps": 0.15,
+        "license_clean": 0.35,
+        "resolution": 0.2,
+        "text_density": 0.15
+      }
+    },
+    {
+      "mean_quality": 0.5309375000000001,
+      "n_records": 1,
+      "p90_quality": 0.5309375000000001,
+      "preset": "baseline",
+      "source": "common_crawl",
+      "weights": {
+        "duration": 0.15,
+        "has_steps": 0.15,
+        "license_clean": 0.35,
+        "resolution": 0.2,
+        "text_density": 0.15
+      }
+    },
+    {
+      "mean_quality": 0.571875,
+      "n_records": 2,
+      "p90_quality": 0.6964375,
+      "preset": "baseline",
+      "source": "peertube",
+      "weights": {
+        "duration": 0.15,
+        "has_steps": 0.15,
+        "license_clean": 0.35,
+        "resolution": 0.2,
+        "text_density": 0.15
+      }
+    },
+    {
+      "mean_quality": 0.6574966666666666,
+      "n_records": 5,
+      "p90_quality": 0.7037958333333333,
+      "preset": "baseline",
+      "source": "wikimedia",
+      "weights": {
+        "duration": 0.15,
+        "has_steps": 0.15,
+        "license_clean": 0.35,
+        "resolution": 0.2,
+        "text_density": 0.15
+      }
+    },
+    {
+      "mean_quality": 0.3789513888888889,
+      "n_records": 3,
+      "p90_quality": 0.5925416666666666,
+      "preset": "language_heavy",
+      "source": "archive_org",
+      "weights": {
+        "duration": 0.1,
+        "has_steps": 0.1,
+        "language_confidence": 0.25,
+        "license_clean": 0.25,
+        "resolution": 0.15,
+        "text_density": 0.15
+      }
+    },
+    {
+      "mean_quality": 0.5109375,
+      "n_records": 1,
+      "p90_quality": 0.5109375,
+      "preset": "language_heavy",
+      "source": "common_crawl",
+      "weights": {
+        "duration": 0.1,
+        "has_steps": 0.1,
+        "language_confidence": 0.25,
+        "license_clean": 0.25,
+        "resolution": 0.15,
+        "text_density": 0.15
+      }
+    },
+    {
+      "mean_quality": 0.44675,
+      "n_records": 2,
+      "p90_quality": 0.5636875,
+      "preset": "language_heavy",
+      "source": "peertube",
+      "weights": {
+        "duration": 0.1,
+        "has_steps": 0.1,
+        "language_confidence": 0.25,
+        "license_clean": 0.25,
+        "resolution": 0.15,
+        "text_density": 0.15
+      }
+    },
+    {
+      "mean_quality": 0.5351025396825396,
+      "n_records": 5,
+      "p90_quality": 0.6375029761904761,
+      "preset": "language_heavy",
+      "source": "wikimedia",
+      "weights": {
+        "duration": 0.1,
+        "has_steps": 0.1,
+        "language_confidence": 0.25,
+        "license_clean": 0.25,
+        "resolution": 0.15,
+        "text_density": 0.15
+      }
+    },
+    {
+      "mean_quality": 0.4500972222222222,
+      "n_records": 3,
+      "p90_quality": 0.64825,
+      "preset": "license_heavy",
+      "source": "archive_org",
+      "weights": {
+        "duration": 0.1,
+        "has_steps": 0.1,
+        "license_clean": 0.55,
+        "resolution": 0.15,
+        "text_density": 0.1
+      }
+    },
+    {
+      "mean_quality": 0.370625,
+      "n_records": 1,
+      "p90_quality": 0.370625,
+      "preset": "license_heavy",
+      "source": "common_crawl",
+      "weights": {
+        "duration": 0.1,
+        "has_steps": 0.1,
+        "license_clean": 0.55,
+        "resolution": 0.15,
+        "text_density": 0.1
+      }
+    },
+    {
+      "mean_quality": 0.70625,
+      "n_records": 2,
+      "p90_quality": 0.7976250000000001,
+      "preset": "license_heavy",
+      "source": "peertube",
+      "weights": {
+        "duration": 0.1,
+        "has_steps": 0.1,
+        "license_clean": 0.55,
+        "resolution": 0.15,
+        "text_density": 0.1
+      }
+    },
+    {
+      "mean_quality": 0.7703311111111112,
+      "n_records": 5,
+      "p90_quality": 0.8025305555555556,
+      "preset": "license_heavy",
+      "source": "wikimedia",
+      "weights": {
+        "duration": 0.1,
+        "has_steps": 0.1,
+        "license_clean": 0.55,
+        "resolution": 0.15,
+        "text_density": 0.1
+      }
+    },
+    {
+      "mean_quality": 0.25780555555555557,
+      "n_records": 3,
+      "p90_quality": 0.35650000000000004,
+      "preset": "procedural_heavy",
+      "source": "archive_org",
+      "weights": {
+        "duration": 0.1,
+        "has_steps": 0.3,
+        "license_clean": 0.25,
+        "resolution": 0.15,
+        "text_density": 0.2
+      }
+    },
+    {
+      "mean_quality": 0.6012500000000001,
+      "n_records": 1,
+      "p90_quality": 0.6012500000000001,
+      "preset": "procedural_heavy",
+      "source": "common_crawl",
+      "weights": {
+        "duration": 0.1,
+        "has_steps": 0.3,
+        "license_clean": 0.25,
+        "resolution": 0.15,
+        "text_density": 0.2
+      }
+    },
+    {
+      "mean_quality": 0.41225,
+      "n_records": 2,
+      "p90_quality": 0.50475,
+      "preset": "procedural_heavy",
+      "source": "peertube",
+      "weights": {
+        "duration": 0.1,
+        "has_steps": 0.3,
+        "license_clean": 0.25,
+        "resolution": 0.15,
+        "text_density": 0.2
+      }
+    },
+    {
+      "mean_quality": 0.4727311111111111,
+      "n_records": 5,
+      "p90_quality": 0.5054055555555556,
+      "preset": "procedural_heavy",
+      "source": "wikimedia",
+      "weights": {
+        "duration": 0.1,
+        "has_steps": 0.3,
+        "license_clean": 0.25,
+        "resolution": 0.15,
+        "text_density": 0.2
+      }
+    }
+  ],
+  "summary": {
+    "per_preset_mean_quality": {
+      "baseline": 0.5296970833333333,
+      "language_heavy": 0.46793535714285717,
+      "license_heavy": 0.5743258333333333,
+      "procedural_heavy": 0.43600916666666667
+    },
+    "winner": {
+      "mean_quality": 0.5743258333333333,
+      "preset": "license_heavy"
+    }
+  }
+}
