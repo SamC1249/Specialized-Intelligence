@@ -75,6 +75,9 @@ pair plus an aggregate `total` row. Stored under
 | `p90_quality`           | `float`   |                                             |
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
+| `n_after_dedup`         | `int \| None` | Optional; only present on the `__total__` row (2026-08-11). |
+| `cross_source_duplicates` | `int \| None` | Optional; only present on the `__total__` row (2026-08-11). |
+| `mean_language_confidence` | `float \| None` | Optional; metadata-only detector confidence in [0,1] (2026-08-11). |
 
 ## Frontend / API contract (placeholder)
 
