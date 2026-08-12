@@ -77,7 +77,8 @@ If you cannot beat the current baseline on a defensible metric, document
 - Common Crawl (only public-license recipe pages with `VideoObject`
   schema.org metadata)
 - YouTube Data API **only** for `videoLicense=creativeCommon` listings
-  (URL + metadata, no media download)
+  (URL + metadata, no media download; adapter must never populate
+  `media_url` even when the video-level license would allow it)
 
 Anything else requires an entry in the next adversarial plan justifying
 inclusion.

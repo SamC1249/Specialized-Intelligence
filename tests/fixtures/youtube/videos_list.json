@@ -1,0 +1,69 @@
+{
+  "kind": "youtube#videoListResponse",
+  "items": [
+    {
+      "kind": "youtube#video",
+      "id": "abc123XYZ_1",
+      "snippet": {
+        "publishedAt": "2024-11-04T10:30:00Z",
+        "channelId": "UC_open_kitchen",
+        "channelTitle": "Open Kitchen",
+        "title": "How to make garlic butter pasta at home — step by step",
+        "description": "Boil the pasta, melt the butter with garlic, toss and serve. A simple cooking recipe you can prepare in 15 minutes. Add parsley to finish.",
+        "tags": ["pasta", "cooking", "recipe", "creative commons"],
+        "categoryId": "26",
+        "defaultAudioLanguage": "en"
+      },
+      "contentDetails": {
+        "duration": "PT8M12S",
+        "definition": "hd",
+        "caption": "true"
+      },
+      "status": {
+        "license": "creativeCommon",
+        "privacyStatus": "public"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "id": "def456UVW_2",
+      "snippet": {
+        "publishedAt": "2023-06-11T18:00:00Z",
+        "channelId": "UC_home_baker",
+        "channelTitle": "Home Baker",
+        "title": "Sourdough Bread — Fold, Rest, Bake",
+        "description": "Mix the starter, fold every 30 minutes, bake at 240C. Whisk the glaze and drizzle on top.",
+        "tags": ["bread", "sourdough", "baking"],
+        "categoryId": "26",
+        "defaultAudioLanguage": "en"
+      },
+      "contentDetails": {
+        "duration": "PT22M5S",
+        "definition": "hd"
+      },
+      "status": {
+        "license": "creativeCommon",
+        "privacyStatus": "public"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "id": "ghi789RST_3",
+      "snippet": {
+        "publishedAt": "2022-01-20T12:00:00Z",
+        "channelTitle": "Restricted Uploader",
+        "title": "Restricted Recipe",
+        "description": "This entry is present to prove license filtering works.",
+        "tags": []
+      },
+      "contentDetails": {
+        "duration": "PT4M0S",
+        "definition": "sd"
+      },
+      "status": {
+        "license": "youtube",
+        "privacyStatus": "public"
+      }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "fingerprints": [
+    "easy garlic butter pasta|d=27|a=sam cook",
+    "family cooking show 1952|d=112|a=prelinger archives",
+    "file cooking pasta carbonara webm|d=31|a=jane cook",
+    "file knife skills demo ogv|d=4|a=public kitchen",
+    "how to make garlic butter pasta at home step by step|d=49|a=open kitchen",
+    "modern chef demonstration|d=27|a=open kitchen collective",
+    "open source sourdough|d=64|a=open bakers",
+    "public domain pancakes|d=18|a=free kitchen",
+    "restricted recipe|d=18|a=some person",
+    "sourdough bread fold rest bake|d=132|a=home baker"
+  ],
+  "n_after_dedupe": 10,
+  "n_records": 10,
+  "overlap": {},
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  }
+}

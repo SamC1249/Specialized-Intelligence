@@ -76,6 +76,21 @@ pair plus an aggregate `total` row. Stored under
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
 
+## Dedupe report (produced by `python -m specint dedupe`)
+
+Emitted alongside `BenchmarkResult` rows when `--dedupe` is passed to
+`compare`, or as a standalone payload from `dedupe`.
+
+| Field             | Type              | Notes                                             |
+| ----------------- | ----------------- | ------------------------------------------------- |
+| `n_records`       | `int`             | Total records before dedupe.                      |
+| `n_after_dedupe`  | `int`             | After collapsing duplicate fingerprints.          |
+| `overlap`         | `dict[str, int]`  | Key `"src_a__src_b"` (sorted pair) -> shared count. |
+| `fingerprints`    | `list[str]`       | (dedupe subcommand only) unique fingerprints.     |
+
+The fingerprint is `(normalized_title, duration_bucket_10s, author_slug)`.
+See `src/specint/dedupe.py` for the exact implementation and rationale.
+
 ## Frontend / API contract (placeholder)
 
 There is no HTTP API yet. When one is added, all request/response bodies
