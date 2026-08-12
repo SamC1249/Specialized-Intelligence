@@ -14,6 +14,12 @@ repos:
       - id: ruff
         args: ["--fix"]
       - id: ruff-format
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+        args: ["--ignore-words-list=doubleclick,pastadishes"]
+        exclude: ^(reports/|tests/fixtures/)
   - repo: local
     hooks:
       - id: pytest-quick
