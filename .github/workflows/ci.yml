@@ -41,16 +41,37 @@ jobs:
 
       - name: E2E compare (fixtures)
         run: |
-          python -m specint compare --fixtures --terms cooking recipe \
+          python -m specint compare --fixtures --dedupe --terms cooking recipe \
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
+          python -c "import json,sys; p=json.load(open('reports/ci-compare.json')); assert 'dedupe' in p and 'overlap' in p['dedupe'], p"
+
+      - name: E2E dedupe smoke (fixtures)
+        run: |
+          python -m specint dedupe --fixtures --terms cooking recipe \
+            --output reports/ci-dedupe.json
+          python -c "import json; p=json.load(open('reports/ci-dedupe.json')); assert p['n_after_dedupe'] <= p['n_records']"
+
+      - name: Regression guard vs committed baseline
+        run: |
+          python <<'PY'
+          import json
+          cur = [r for r in json.load(open('reports/ci-compare.json'))['rows']
+                 if r['source'] == '__total__'][0]['mean_quality']
+          base = [r for r in json.load(open('reports/baseline-2026-06-20.json'))['rows']
+                  if r['source'] == '__total__'][0]['mean_quality']
+          print(f'aggregate mean_quality current={cur:.4f} baseline={base:.4f}')
+          assert cur >= base - 0.05, f'regressed: {cur} < {base} - 0.05'
+          PY
 
       - name: Upload comparison report
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: compare-report
-          path: reports/ci-compare.json
+          path: |
+            reports/ci-compare.json
+            reports/ci-dedupe.json
 
   precommit:
     runs-on: ubuntu-latest

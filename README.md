@@ -23,8 +23,18 @@ pytest -q
 python -m specint compare --fixtures --terms cooking recipe \
   --output reports/example.json
 
+# Same, with cross-source deduplication + overlap matrix:
+python -m specint compare --fixtures --dedupe --terms cooking recipe \
+  --output reports/example-dedupe.json
+
+# Stand-alone dedupe report:
+python -m specint dedupe --fixtures --terms cooking recipe
+
 # Live comparison (only with explicit opt-in):
 SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
+# YouTube CC-only listing is metadata-only and requires:
+YOUTUBE_API_KEY=... SPECINT_RUN_INTEGRATION=1 \
+  python -m specint compare --only youtube --terms cooking
 ```
 
 ## Layout
