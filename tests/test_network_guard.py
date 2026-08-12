@@ -14,16 +14,17 @@ import pytest
 
 def test_direct_socket_connect_is_blocked() -> None:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    with pytest.raises(Exception) as excinfo:  # noqa: PT011 - guard raises RuntimeError
+    with pytest.raises(RuntimeError, match="offline"):
         s.connect(("example.com", 80))
-    assert "offline" in str(excinfo.value).lower()
 
 
 def test_httpx_client_is_blocked() -> None:
     client = httpx.Client()
-    with pytest.raises(Exception):  # noqa: PT011 - transport-level failure
-        client.get("https://example.com/")
-    client.close()
+    try:
+        with pytest.raises(RuntimeError, match="offline"):
+            client.get("https://example.com/")
+    finally:
+        client.close()
 
 
 def test_localhost_is_still_allowed() -> None:

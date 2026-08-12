@@ -95,9 +95,7 @@ def test_floats_match_within_tolerance(
     field: str, baseline: dict[str, dict], current: dict[str, dict]
 ) -> None:
     for src, row in baseline.items():
-        assert math.isclose(
-            current[src][field], row[field], rel_tol=REL_TOL, abs_tol=ABS_TOL
-        ), (
+        assert math.isclose(current[src][field], row[field], rel_tol=REL_TOL, abs_tol=ABS_TOL), (
             f"{src}.{field} drifted beyond tolerance: "
             f"baseline={row[field]}, current={current[src][field]}"
         )

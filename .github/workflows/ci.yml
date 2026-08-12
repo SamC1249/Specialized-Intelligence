@@ -40,10 +40,24 @@ jobs:
         run: pytest -q --cov=specint --cov-report=term-missing
 
       - name: E2E compare (fixtures)
+        env:
+          SPECINT_RUN_INTEGRATION: "0"
         run: |
           python -m specint compare --fixtures --terms cooking recipe \
             --output reports/ci-compare.json
-          test -s reports/ci-compare.json
+          python - <<'PY'
+          import json, sys
+          rows = json.load(open("reports/ci-compare.json"))["rows"]
+          total = next(r for r in rows if r["source"] == "__total__")
+          if total["n_records"] <= 0:
+              print("E2E compare produced zero records — CLI is stubbed?", file=sys.stderr)
+              sys.exit(1)
+          if total["n_license_clean"] <= 0:
+              print("E2E compare produced zero license-clean records", file=sys.stderr)
+              sys.exit(1)
+          print(f"E2E ok: {total['n_records']} records, "
+                f"{total['n_license_clean']} license-clean")
+          PY
 
       - name: Upload comparison report
         if: matrix.python-version == '3.12'
