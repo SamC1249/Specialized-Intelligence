@@ -1,12 +1,14 @@
 """Systematic comparison harness.
 
-Given a `SourceQuery` and a set of (source_slug, list_of_records) pairs —
-typically produced by feeding offline fixtures or live `search()` calls
-through `quality.score_records` — emit a deterministic list of
+Given a `SourceQuery` and a set of (source_slug, list_of_records) pairs
+— typically produced by feeding offline fixtures or live `search()`
+calls through `quality.score_records` — emit a deterministic list of
 `BenchmarkResult` rows: one per source plus an aggregate `__total__`.
 
-The CLI wraps this so `python -m specint compare` always produces a
-reproducible, JSON-serialisable artifact under `reports/`.
+Optionally also run cross-source deduplication and return the overlap
+matrix (see `specint.dedupe`). The CLI wraps this so
+`python -m specint compare` always produces a reproducible,
+JSON-serialisable artifact under `reports/`.
 """
 
 from __future__ import annotations
@@ -14,6 +16,7 @@ from __future__ import annotations
 import statistics
 from collections.abc import Iterable, Mapping
 
+from specint.dedupe import dedupe, overlap
 from specint.quality import score_records
 from specint.records import BenchmarkResult, License, SourceQuery, VideoRecord
 
@@ -65,11 +68,39 @@ def run_comparison(
     notes: str = "",
 ) -> list[BenchmarkResult]:
     """Score, aggregate per source, and append a `__total__` row."""
+
     rows: list[BenchmarkResult] = []
     all_scored: list[VideoRecord] = []
     for source, records in sorted(by_source.items()):
-        scored = score_records(records)
+        scored = score_records(records, query)
         all_scored.extend(scored)
         rows.append(aggregate(source, query.terms, scored, notes=notes))
     rows.append(aggregate("__total__", query.terms, all_scored, notes=notes))
     return rows
+
+
+def run_full_report(
+    query: SourceQuery,
+    by_source: Mapping[str, list[VideoRecord]],
+    notes: str = "",
+    with_dedupe: bool = False,
+) -> dict:
+    """Return a full report dict: rows + optional dedupe/overlap section."""
+
+    scored_by_source: dict[str, list[VideoRecord]] = {
+        source: score_records(records, query) for source, records in sorted(by_source.items())
+    }
+    rows = run_comparison(query, scored_by_source, notes=notes)
+    payload: dict = {
+        "query": query.model_dump(mode="json"),
+        "rows": [r.model_dump(mode="json") for r in rows],
+    }
+    if with_dedupe:
+        flat = [rec for recs in scored_by_source.values() for rec in recs]
+        deduped = dedupe(flat)
+        payload["dedupe"] = {
+            "n_records": len(flat),
+            "n_after_dedupe": len(deduped),
+            "overlap": overlap(scored_by_source),
+        }
+    return payload
