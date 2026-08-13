@@ -112,7 +112,7 @@ def run_comparison(
                     n_before_dedupe=len(scored_by_source[source]),
                 )
             )
-        total_after, total_collapsed = dedupe(all_before)
+        total_after, _ = dedupe(all_before)
         rows.append(
             aggregate(
                 "__total__",
@@ -124,9 +124,7 @@ def run_comparison(
         )
     else:
         for source in sorted(scored_by_source.keys()):
-            rows.append(
-                aggregate(source, query.terms, scored_by_source[source], notes=notes)
-            )
+            rows.append(aggregate(source, query.terms, scored_by_source[source], notes=notes))
         rows.append(aggregate("__total__", query.terms, all_before, notes=notes))
 
     return rows

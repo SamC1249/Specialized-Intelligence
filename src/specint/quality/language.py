@@ -33,44 +33,142 @@ from collections.abc import Iterable
 STOP_WORDS: dict[str, frozenset[str]] = {
     "en": frozenset(
         {
-            "the", "and", "a", "an", "of", "to", "in", "on", "with",
-            "for", "is", "it", "this", "that", "how", "you", "your",
-            "make", "add", "cook",
+            "the",
+            "and",
+            "a",
+            "an",
+            "of",
+            "to",
+            "in",
+            "on",
+            "with",
+            "for",
+            "is",
+            "it",
+            "this",
+            "that",
+            "how",
+            "you",
+            "your",
+            "make",
+            "add",
+            "cook",
         }
     ),
     "es": frozenset(
         {
-            "el", "la", "los", "las", "de", "del", "y", "en", "un",
-            "una", "con", "para", "que", "por", "es", "como", "esto",
-            "receta", "cocina", "hacer",
+            "el",
+            "la",
+            "los",
+            "las",
+            "de",
+            "del",
+            "y",
+            "en",
+            "un",
+            "una",
+            "con",
+            "para",
+            "que",
+            "por",
+            "es",
+            "como",
+            "esto",
+            "receta",
+            "cocina",
+            "hacer",
         }
     ),
     "fr": frozenset(
         {
-            "le", "la", "les", "de", "des", "et", "en", "un", "une",
-            "avec", "pour", "que", "par", "est", "comment", "vous",
-            "votre", "recette", "cuisine", "faire",
+            "le",
+            "la",
+            "les",
+            "de",
+            "des",
+            "et",
+            "en",
+            "un",
+            "une",
+            "avec",
+            "pour",
+            "que",
+            "par",
+            "est",
+            "comment",
+            "vous",
+            "votre",
+            "recette",
+            "cuisine",
+            "faire",
         }
     ),
     "de": frozenset(
         {
-            "der", "die", "das", "und", "in", "im", "mit", "für",
-            "ein", "eine", "ist", "wie", "sie", "ihr", "rezept",
-            "kochen", "koch", "machen",
+            "der",
+            "die",
+            "das",
+            "und",
+            "in",
+            "im",
+            "mit",
+            "für",
+            "ein",
+            "eine",
+            "ist",
+            "wie",
+            "sie",
+            "ihr",
+            "rezept",
+            "kochen",
+            "koch",
+            "machen",
         }
     ),
     "it": frozenset(
         {
-            "il", "la", "lo", "gli", "le", "di", "del", "e", "in",
-            "con", "per", "che", "come", "voi", "vostro", "ricetta",
-            "cucina", "fare",
+            "il",
+            "la",
+            "lo",
+            "gli",
+            "le",
+            "di",
+            "del",
+            "e",
+            "in",
+            "con",
+            "per",
+            "che",
+            "come",
+            "voi",
+            "vostro",
+            "ricetta",
+            "cucina",
+            "fare",
         }
     ),
     "pt": frozenset(
         {
-            "o", "a", "os", "as", "de", "do", "da", "e", "em", "com",
-            "para", "que", "por", "é", "como", "você", "seu",
-            "receita", "cozinha", "fazer",
+            "o",
+            "a",
+            "os",
+            "as",
+            "de",
+            "do",
+            "da",
+            "e",
+            "em",
+            "com",
+            "para",
+            "que",
+            "por",
+            "é",
+            "como",
+            "você",
+            "seu",
+            "receita",
+            "cozinha",
+            "fazer",
         }
     ),
 }
@@ -167,9 +265,11 @@ def detect_language(text: str | None) -> tuple[str | None, float]:
     # Non-Latin scripts short-circuit: their presence is a very strong
     # signal even for short inputs.
     if non_latin_letters > 0:
-        best_script = max(
-            (k for k in counts if k != "LATIN"), key=lambda k: counts[k]
-        )
+        kana = counts.get("HIRAGANA", 0) + counts.get("KATAKANA", 0)
+        if kana > 0:
+            share = (kana + counts.get("CJK", 0)) / total_letters
+            return "ja", min(1.0, 0.6 + 0.4 * share)
+        best_script = max((k for k in counts if k != "LATIN"), key=lambda k: counts[k])
         lang = _SCRIPT_TO_LANG.get(best_script)
         share = counts[best_script] / total_letters
         return lang, min(1.0, 0.6 + 0.4 * share)

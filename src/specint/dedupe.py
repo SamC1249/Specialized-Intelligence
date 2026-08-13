@@ -172,7 +172,7 @@ def dedupe_by_source(
             if existing is None:
                 fp_owner[fp] = (source, r)
                 continue
-            other_source, other_record = existing
+            _, other_record = existing
             if _record_rank(r) > _record_rank(other_record):
                 fp_owner[fp] = (source, r)
 
@@ -180,9 +180,9 @@ def dedupe_by_source(
     for _, (owner_source, record) in fp_owner.items():
         winners[owner_source].append(record)
 
-    dropped_across = sum(
-        len(per_source_deduped[s]) for s in per_source_deduped
-    ) - sum(len(v) for v in winners.values())
+    dropped_across = sum(len(per_source_deduped[s]) for s in per_source_deduped) - sum(
+        len(v) for v in winners.values()
+    )
     total_collapsed += dropped_across
 
     for s in winners:

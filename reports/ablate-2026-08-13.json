@@ -1,0 +1,358 @@
+{
+  "mean_quality_matrix": {
+    "baseline": {
+      "__total__": 0.5925572727272728,
+      "archive_org": 0.39948055555555556,
+      "common_crawl": 0.527625,
+      "peertube": 0.6290870370370371,
+      "wikimedia": 0.7262005555555555
+    },
+    "license_heavy": {
+      "__total__": 0.6559727272727273,
+      "archive_org": 0.46445138888888887,
+      "common_crawl": 0.3914375,
+      "peertube": 0.7322925925925926,
+      "wikimedia": 0.8085076388888889
+    },
+    "procedural_heavy": {
+      "__total__": 0.5109636363636364,
+      "archive_org": 0.3500972222222222,
+      "common_crawl": 0.520625,
+      "peertube": 0.5129259259259259,
+      "wikimedia": 0.6277263888888889
+    }
+  },
+  "per_variant": [
+    {
+      "rows": [
+        {
+          "mean_language_confidence": 0.37727272727272726,
+          "mean_quality": 0.39948055555555556,
+          "n_after_dedupe": 3,
+          "n_duplicates": 0,
+          "n_license_clean": 2,
+          "n_records": 3,
+          "notes": "ablation:baseline",
+          "p50_quality": 0.5105666666666667,
+          "p90_quality": 0.52525,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "archive_org",
+          "total_duration_s": 1572.0,
+          "unique_authors": 3
+        },
+        {
+          "mean_language_confidence": 0.4555555555555556,
+          "mean_quality": 0.527625,
+          "n_after_dedupe": 1,
+          "n_duplicates": 0,
+          "n_license_clean": 0,
+          "n_records": 1,
+          "notes": "ablation:baseline",
+          "p50_quality": 0.527625,
+          "p90_quality": 0.527625,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "common_crawl",
+          "total_duration_s": 270.0,
+          "unique_authors": 1
+        },
+        {
+          "mean_language_confidence": 0.5388888888888889,
+          "mean_quality": 0.6290870370370371,
+          "n_after_dedupe": 3,
+          "n_duplicates": 0,
+          "n_license_clean": 3,
+          "n_records": 3,
+          "notes": "ablation:baseline",
+          "p50_quality": 0.6767361111111111,
+          "p90_quality": 0.72765,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "peertube",
+          "total_duration_s": 1202.0,
+          "unique_authors": 3
+        },
+        {
+          "mean_language_confidence": 0.40820723684210525,
+          "mean_quality": 0.7262005555555555,
+          "n_after_dedupe": 4,
+          "n_duplicates": 0,
+          "n_license_clean": 4,
+          "n_records": 4,
+          "notes": "ablation:baseline",
+          "p50_quality": 0.7302916666666667,
+          "p90_quality": 0.8109272222222222,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "wikimedia",
+          "total_duration_s": 1172.4,
+          "unique_authors": 4
+        },
+        {
+          "mean_language_confidence": 0.43971539558262046,
+          "mean_quality": 0.5925572727272728,
+          "n_after_dedupe": 11,
+          "n_duplicates": 0,
+          "n_license_clean": 9,
+          "n_records": 11,
+          "notes": "ablation:baseline",
+          "p50_quality": 0.6425,
+          "p90_quality": 0.7302916666666667,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "__total__",
+          "total_duration_s": 4216.4,
+          "unique_authors": 10
+        }
+      ],
+      "variant": "baseline"
+    },
+    {
+      "rows": [
+        {
+          "mean_language_confidence": 0.37727272727272726,
+          "mean_quality": 0.46445138888888887,
+          "n_after_dedupe": 3,
+          "n_duplicates": 0,
+          "n_license_clean": 2,
+          "n_records": 3,
+          "notes": "ablation:license_heavy",
+          "p50_quality": 0.6343416666666667,
+          "p90_quality": 0.645775,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "archive_org",
+          "total_duration_s": 1572.0,
+          "unique_authors": 3
+        },
+        {
+          "mean_language_confidence": 0.4555555555555556,
+          "mean_quality": 0.3914375,
+          "n_after_dedupe": 1,
+          "n_duplicates": 0,
+          "n_license_clean": 0,
+          "n_records": 1,
+          "notes": "ablation:license_heavy",
+          "p50_quality": 0.3914375,
+          "p90_quality": 0.3914375,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "common_crawl",
+          "total_duration_s": 270.0,
+          "unique_authors": 1
+        },
+        {
+          "mean_language_confidence": 0.5388888888888889,
+          "mean_quality": 0.7322925925925926,
+          "n_after_dedupe": 3,
+          "n_duplicates": 0,
+          "n_license_clean": 3,
+          "n_records": 3,
+          "notes": "ablation:license_heavy",
+          "p50_quality": 0.7717152777777778,
+          "p90_quality": 0.81175,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "peertube",
+          "total_duration_s": 1202.0,
+          "unique_authors": 3
+        },
+        {
+          "mean_language_confidence": 0.40820723684210525,
+          "mean_quality": 0.8085076388888889,
+          "n_after_dedupe": 4,
+          "n_duplicates": 0,
+          "n_license_clean": 4,
+          "n_records": 4,
+          "notes": "ablation:license_heavy",
+          "p50_quality": 0.8137041666666667,
+          "p90_quality": 0.8718680555555556,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "wikimedia",
+          "total_duration_s": 1172.4,
+          "unique_authors": 4
+        },
+        {
+          "mean_language_confidence": 0.43971539558262046,
+          "mean_quality": 0.6559727272727273,
+          "n_after_dedupe": 11,
+          "n_duplicates": 0,
+          "n_license_clean": 9,
+          "n_records": 11,
+          "notes": "ablation:license_heavy",
+          "p50_quality": 0.7413,
+          "p90_quality": 0.8137041666666667,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "__total__",
+          "total_duration_s": 4216.4,
+          "unique_authors": 10
+        }
+      ],
+      "variant": "license_heavy"
+    },
+    {
+      "rows": [
+        {
+          "mean_language_confidence": 0.37727272727272726,
+          "mean_quality": 0.3500972222222222,
+          "n_after_dedupe": 3,
+          "n_duplicates": 0,
+          "n_license_clean": 2,
+          "n_records": 3,
+          "notes": "ablation:procedural_heavy",
+          "p50_quality": 0.4374166666666667,
+          "p90_quality": 0.44825000000000004,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "archive_org",
+          "total_duration_s": 1572.0,
+          "unique_authors": 3
+        },
+        {
+          "mean_language_confidence": 0.4555555555555556,
+          "mean_quality": 0.520625,
+          "n_after_dedupe": 1,
+          "n_duplicates": 0,
+          "n_license_clean": 0,
+          "n_records": 1,
+          "notes": "ablation:procedural_heavy",
+          "p50_quality": 0.520625,
+          "p90_quality": 0.520625,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "common_crawl",
+          "total_duration_s": 270.0,
+          "unique_authors": 1
+        },
+        {
+          "mean_language_confidence": 0.5388888888888889,
+          "mean_quality": 0.5129259259259259,
+          "n_after_dedupe": 3,
+          "n_duplicates": 0,
+          "n_license_clean": 3,
+          "n_records": 3,
+          "notes": "ablation:procedural_heavy",
+          "p50_quality": 0.5334027777777778,
+          "p90_quality": 0.5905,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "peertube",
+          "total_duration_s": 1202.0,
+          "unique_authors": 3
+        },
+        {
+          "mean_language_confidence": 0.40820723684210525,
+          "mean_quality": 0.6277263888888889,
+          "n_after_dedupe": 4,
+          "n_duplicates": 0,
+          "n_license_clean": 4,
+          "n_records": 4,
+          "notes": "ablation:procedural_heavy",
+          "p50_quality": 0.604,
+          "p90_quality": 0.7510305555555555,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "wikimedia",
+          "total_duration_s": 1172.4,
+          "unique_authors": 4
+        },
+        {
+          "mean_language_confidence": 0.43971539558262046,
+          "mean_quality": 0.5109636363636364,
+          "n_after_dedupe": 11,
+          "n_duplicates": 0,
+          "n_license_clean": 9,
+          "n_records": 11,
+          "notes": "ablation:procedural_heavy",
+          "p50_quality": 0.5334027777777778,
+          "p90_quality": 0.604,
+          "query_terms": [
+            "cooking",
+            "recipe"
+          ],
+          "source": "__total__",
+          "total_duration_s": 4216.4,
+          "unique_authors": 10
+        }
+      ],
+      "variant": "procedural_heavy"
+    }
+  ],
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  },
+  "variants": [
+    {
+      "variant": "baseline",
+      "weights": {
+        "duration": 0.13,
+        "has_steps": 0.05,
+        "language_match": 0.08,
+        "license_clean": 0.32,
+        "procedural_density": 0.14,
+        "resolution": 0.18,
+        "text_density": 0.1
+      }
+    },
+    {
+      "variant": "license_heavy",
+      "weights": {
+        "duration": 0.1,
+        "has_steps": 0.03,
+        "language_match": 0.05,
+        "license_clean": 0.5,
+        "procedural_density": 0.1,
+        "resolution": 0.15,
+        "text_density": 0.07
+      }
+    },
+    {
+      "variant": "procedural_heavy",
+      "weights": {
+        "duration": 0.1,
+        "has_steps": 0.05,
+        "language_match": 0.1,
+        "license_clean": 0.25,
+        "procedural_density": 0.3,
+        "resolution": 0.1,
+        "text_density": 0.1
+      }
+    }
+  ]
+}

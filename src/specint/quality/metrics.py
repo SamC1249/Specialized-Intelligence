@@ -37,8 +37,7 @@ report generator keeps working.
 
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable
-from typing import Mapping
+from collections.abc import Callable, Iterable, Mapping
 
 from specint.quality.language import matches_target
 from specint.records import VideoRecord
@@ -58,15 +57,69 @@ WEIGHTS: dict[str, float] = dict(DEFAULT_WEIGHTS)
 
 IMPERATIVE_HINTS: frozenset[str] = frozenset(
     {
-        "add", "bake", "beat", "blend", "boil", "brown", "brush", "chop",
-        "combine", "cook", "cool", "cover", "cut", "dice", "drain",
-        "drizzle", "dust", "fold", "fry", "garnish", "glaze", "grate",
-        "grease", "grill", "heat", "knead", "layer", "let", "marinate",
-        "melt", "mince", "mix", "peel", "place", "poach", "pour",
-        "preheat", "prepare", "press", "reduce", "remove", "rinse",
-        "roast", "roll", "saute", "sauté", "sear", "season", "serve",
-        "shred", "sift", "simmer", "slice", "sprinkle", "steam", "stir",
-        "strain", "toast", "toss", "transfer", "turn", "whisk", "wrap",
+        "add",
+        "bake",
+        "beat",
+        "blend",
+        "boil",
+        "brown",
+        "brush",
+        "chop",
+        "combine",
+        "cook",
+        "cool",
+        "cover",
+        "cut",
+        "dice",
+        "drain",
+        "drizzle",
+        "dust",
+        "fold",
+        "fry",
+        "garnish",
+        "glaze",
+        "grate",
+        "grease",
+        "grill",
+        "heat",
+        "knead",
+        "layer",
+        "let",
+        "marinate",
+        "melt",
+        "mince",
+        "mix",
+        "peel",
+        "place",
+        "poach",
+        "pour",
+        "preheat",
+        "prepare",
+        "press",
+        "reduce",
+        "remove",
+        "rinse",
+        "roast",
+        "roll",
+        "saute",
+        "sauté",
+        "sear",
+        "season",
+        "serve",
+        "shred",
+        "sift",
+        "simmer",
+        "slice",
+        "sprinkle",
+        "steam",
+        "stir",
+        "strain",
+        "toast",
+        "toss",
+        "transfer",
+        "turn",
+        "whisk",
+        "wrap",
     }
 )
 
@@ -152,9 +205,7 @@ _COMPONENTS: dict[str, _ComponentFn] = {
 }
 
 
-def component_scores(
-    record: VideoRecord, target_language: str | None = None
-) -> dict[str, float]:
+def component_scores(record: VideoRecord, target_language: str | None = None) -> dict[str, float]:
     scores = {name: fn(record) for name, fn in _COMPONENTS.items()}
     scores["language_match"] = _score_language_match(record, target_language)
     return scores

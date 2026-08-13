@@ -87,21 +87,17 @@ def run_ablation(
             )
             all_scored.extend(scored)
             rows.append(aggregate(source, query.terms, scored, notes=f"ablation:{variant}"))
-        rows.append(
-            aggregate("__total__", query.terms, all_scored, notes=f"ablation:{variant}")
-        )
+        rows.append(aggregate("__total__", query.terms, all_scored, notes=f"ablation:{variant}"))
         out.append(AblationRun(variant=variant, weights=weights, rows=rows))
     return out
 
 
 def ablation_matrix(runs: Iterable[AblationRun]) -> dict[str, Any]:
-    """Compact JSON payload: variant × source → mean_quality."""
+    """Compact JSON payload: variant x source -> mean_quality."""
     matrix: dict[str, dict[str, float]] = {}
     for run in runs:
         matrix[run.variant] = {row.source: row.mean_quality for row in run.rows}
     return {
-        "variants": [
-            {"variant": r.variant, "weights": r.weights} for r in runs
-        ],
+        "variants": [{"variant": r.variant, "weights": r.weights} for r in runs],
         "mean_quality_matrix": matrix,
     }

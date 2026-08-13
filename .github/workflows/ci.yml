@@ -23,7 +23,7 @@ jobs:
       - name: Install package + dev deps
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev]"
+          pip install -e ".[dev]" respx
 
       - name: Lint (ruff)
         run: ruff check .
@@ -39,18 +39,41 @@ jobs:
           SPECINT_RUN_INTEGRATION: "0"
         run: pytest -q --cov=specint --cov-report=term-missing
 
-      - name: E2E compare (fixtures)
+      - name: E2E compare (fixtures + dedupe)
         run: |
-          python -m specint compare --fixtures --terms cooking recipe \
+          python -m specint compare --fixtures --dedupe \
+            --terms cooking recipe \
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
+          python -c "import json,sys; d=json.load(open('reports/ci-compare.json')); \
+            total=next(r for r in d['rows'] if r['source']=='__total__'); \
+            print('total mean_quality', total['mean_quality']); \
+            sys.exit(0 if total['mean_quality'] >= 0.45 else 1)"
 
-      - name: Upload comparison report
+      - name: E2E dedupe inspection
+        run: |
+          python -m specint dedupe --output reports/ci-dedupe.json
+          test -s reports/ci-dedupe.json
+          python -c "import json,sys; d=json.load(open('reports/ci-dedupe.json')); \
+            sys.exit(0 if d['total_collapsed'] >= 1 else 1)"
+
+      - name: E2E ablation harness
+        run: |
+          python -m specint ablate --fixtures --output reports/ci-ablate.json
+          test -s reports/ci-ablate.json
+          python -c "import json; d=json.load(open('reports/ci-ablate.json')); \
+            assert set(d['mean_quality_matrix'].keys()) == \
+              {'baseline','license_heavy','procedural_heavy'}"
+
+      - name: Upload comparison + ablation reports
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
-          name: compare-report
-          path: reports/ci-compare.json
+          name: specint-reports
+          path: |
+            reports/ci-compare.json
+            reports/ci-dedupe.json
+            reports/ci-ablate.json
 
   precommit:
     runs-on: ubuntu-latest

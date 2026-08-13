@@ -27,7 +27,7 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-from specint.compare import build_report, run_ablation, run_comparison
+from specint.compare import build_report, run_ablation
 from specint.compare.ablation import ablation_matrix
 from specint.dedupe import dedupe_by_source, overlap
 from specint.quality import all_seed_terms
@@ -131,9 +131,7 @@ def _cmd_compare(args: argparse.Namespace) -> int:
     by_source: Mapping[str, list[VideoRecord]]
     if args.fixtures:
         loaded = _load_fixture_records(query)
-        by_source = {
-            slug: recs for slug, recs in loaded.items() if not only or slug in only
-        }
+        by_source = {slug: recs for slug, recs in loaded.items() if not only or slug in only}
     elif os.environ.get("SPECINT_RUN_INTEGRATION") != "1":
         print(
             "refusing to hit live network without SPECINT_RUN_INTEGRATION=1; "

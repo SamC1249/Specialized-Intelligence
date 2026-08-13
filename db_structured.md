@@ -74,7 +74,26 @@ pair plus an aggregate `total` row. Stored under
 | `p50_quality`           | `float`   | Median quality.                             |
 | `p90_quality`           | `float`   |                                             |
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
+| `n_after_dedupe`        | `int`     | Records left after `dedupe_by_source` (0 when the harness ran with `dedupe_enabled=False`). |
+| `n_duplicates`          | `int`     | Cross-source duplicates collapsed. Old reports default to 0.                                |
+| `mean_language_confidence` | `float` | Mean `detect_language(title + description)` confidence over the row's records (0..1).      |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
+
+### Companion payload keys
+
+`compare` reports produced by `specint.compare.harness.build_report`
+carry these top-level keys alongside `rows`:
+
+- `query`: serialized `SourceQuery`.
+- `dedupe_enabled`: `bool` — whether cross-source dedup ran.
+- `overlap`: object with `sources`, `counts`, `pairs` (per-source-pair
+  `shared` / `jaccard` / shared `keys`), `total_records`, and
+  `unique_fingerprints`. Emitted every run so overlap trends are
+  visible historically.
+
+Ablation reports (`ablate-YYYY-MM-DD.json`) add `variants` (name +
+weight vector) and `mean_quality_matrix` (`variant -> source ->
+mean_quality`).
 
 ## Frontend / API contract (placeholder)
 
