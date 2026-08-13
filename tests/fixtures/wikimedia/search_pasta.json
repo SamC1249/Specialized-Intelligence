@@ -16,6 +16,7 @@
               "LicenseShortName": {"value": "CC BY-SA 4.0"},
               "LicenseUrl": {"value": "https://creativecommons.org/licenses/by-sa/4.0"},
               "Artist": {"value": "Jane Cook"},
+              "ImageDescription": {"value": "Boil water. Add pasta. Cook until al dente. Stir in eggs and cheese. Toss with pancetta."},
               "DateTimeOriginal": {"value": "2024-03-12T10:00:00Z"}
             }
           }
@@ -35,7 +36,8 @@
             "extmetadata": {
               "LicenseShortName": {"value": "CC0"},
               "LicenseUrl": {"value": "https://creativecommons.org/publicdomain/zero/1.0/"},
-              "Artist": {"value": "Public Kitchen"}
+              "Artist": {"value": "Public Kitchen"},
+              "ImageDescription": {"value": "Chop onions. Dice carrots. Slice peppers. Mince garlic."}
             }
           }
         ]
@@ -51,6 +53,48 @@
             "width": 800,
             "height": 600,
             "extmetadata": {"LicenseShortName": {"value": "CC0"}}
+          }
+        ]
+      },
+      "22222": {
+        "pageid": 22222,
+        "title": "File:Modern Chef Demonstration.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Modern_Chef_Demonstration.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Modern_Chef_Demonstration.webm",
+            "mime": "video/webm",
+            "duration": 275.0,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by/4.0/"},
+              "Artist": {"value": "Open Kitchen Collective"},
+              "ImageDescription": {"value": "A short knife-skills demo, mirrored from Internet Archive. Chop, slice, dice, mince."},
+              "DateTimeOriginal": {"value": "2018-09-04T00:00:00Z"}
+            }
+          }
+        ]
+      },
+      "33333": {
+        "pageid": 33333,
+        "title": "File:Cocinar paella valenciana.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Cocinar_paella_valenciana.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Cocinar_paella_valenciana.webm",
+            "mime": "video/webm",
+            "duration": 540.0,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY-SA 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by-sa/4.0"},
+              "Artist": {"value": "Cocina Abierta"},
+              "ImageDescription": {"value": "Cómo cocinar una paella valenciana tradicional. Sofreír la cebolla y el ajo, añadir el arroz, verter el caldo, cocinar a fuego lento."},
+              "DateTimeOriginal": {"value": "2023-06-01T09:00:00Z"}
+            }
           }
         ]
       }

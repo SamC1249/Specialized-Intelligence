@@ -19,6 +19,19 @@ from specint.sources.base import BaseSource
 
 API_URL = "https://commons.wikimedia.org/w/api.php"
 
+_VIDEO_EXT = (".webm", ".ogv", ".ogg", ".mp4", ".mov", ".mkv")
+
+
+def _clean_title(raw: str) -> str:
+    title = raw
+    if title.lower().startswith("file:"):
+        title = title[5:]
+    for ext in _VIDEO_EXT:
+        if title.lower().endswith(ext):
+            title = title[: -len(ext)]
+            break
+    return title.replace("_", " ").strip()
+
 
 def _coerce_license(short_name: str | None) -> License:
     if not short_name:
@@ -60,15 +73,13 @@ class WikimediaCommonsSource(BaseSource):
             query=query.serialize(),
         )
         for page_id, page in pages.items():
-            title = page.get("title") or ""
+            raw_title = page.get("title") or ""
             infos = page.get("imageinfo") or []
             if not infos:
                 continue
             info = infos[0]
             mime = (info.get("mime") or "").lower()
-            if not mime.startswith("video/") and not title.lower().endswith(
-                (".webm", ".ogv", ".mp4")
-            ):
+            if not mime.startswith("video/") and not raw_title.lower().endswith(_VIDEO_EXT):
                 continue
 
             ext = info.get("extmetadata") or {}
@@ -76,8 +87,9 @@ class WikimediaCommonsSource(BaseSource):
             artist = (ext.get("Artist") or {}).get("value")
             published = _parse_iso((ext.get("DateTimeOriginal") or {}).get("value"))
             license_url = (ext.get("LicenseUrl") or {}).get("value") or None
+            description = (ext.get("ImageDescription") or {}).get("value") or ""
 
-            url = info.get("descriptionurl") or f"https://commons.wikimedia.org/wiki/{title}"
+            url = info.get("descriptionurl") or f"https://commons.wikimedia.org/wiki/{raw_title}"
             media_url = info.get("url")
             license_enum = _coerce_license(license_value)
 
@@ -87,8 +99,8 @@ class WikimediaCommonsSource(BaseSource):
                 source_native_id=str(page_id),
                 url=url,
                 media_url=media_url if license_enum.is_redistributable else None,
-                title=title,
-                description="",
+                title=_clean_title(raw_title),
+                description=description,
                 language=None,
                 duration_s=info.get("duration"),
                 width=info.get("width"),

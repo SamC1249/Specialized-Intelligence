@@ -82,6 +82,13 @@ class VideoRecord(BaseModel):
 
 
 class BenchmarkResult(BaseModel):
+    """Deterministic, JSON-serialisable per-source aggregate.
+
+    New optional fields (`n_after_dedupe`, `n_duplicates`,
+    `mean_language_confidence`) default to zero so older reports on
+    disk still deserialise without migration.
+    """
+
     model_config = ConfigDict(extra="forbid")
 
     source: str
@@ -93,6 +100,9 @@ class BenchmarkResult(BaseModel):
     p50_quality: float
     p90_quality: float
     unique_authors: int
+    n_after_dedupe: int = 0
+    n_duplicates: int = 0
+    mean_language_confidence: float = 0.0
     notes: str = ""
 
     @classmethod
@@ -107,6 +117,9 @@ class BenchmarkResult(BaseModel):
             p50_quality=0.0,
             p90_quality=0.0,
             unique_authors=0,
+            n_after_dedupe=0,
+            n_duplicates=0,
+            mean_language_confidence=0.0,
             notes=notes,
         )
 
