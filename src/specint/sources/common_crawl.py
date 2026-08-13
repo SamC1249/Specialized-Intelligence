@@ -29,6 +29,29 @@ ISO8601_DURATION_RE = re.compile(
 )
 
 
+def infer_license_from_url(url: str | None) -> License:
+    """Map a canonical CC / public-domain URL to our `License` enum.
+
+    Conservative: any URL that isn't an *exact* Creative Commons canonical
+    URL family maps to `License.UNKNOWN`. We never upgrade to `RESTRICTED`
+    here — restrictive licenses come from source-specific coercion.
+    """
+    if not url or not isinstance(url, str):
+        return License.UNKNOWN
+    u = url.strip().lower()
+    if "creativecommons.org/publicdomain/zero" in u:
+        return License.CC0
+    if "creativecommons.org/publicdomain/mark" in u:
+        return License.PUBLIC_DOMAIN
+    if "creativecommons.org/licenses/by-sa/" in u:
+        return License.CC_BY_SA
+    if "creativecommons.org/licenses/by-nc" in u or "creativecommons.org/licenses/by-nd" in u:
+        return License.RESTRICTED
+    if "creativecommons.org/licenses/by/" in u:
+        return License.CC_BY
+    return License.UNKNOWN
+
+
 def parse_iso8601_duration(value: str | None) -> float | None:
     if not value or not isinstance(value, str):
         return None
@@ -82,6 +105,34 @@ def _parse_iso(value: str | None) -> datetime | None:
         return None
 
 
+def _extract_license_url(node: dict[str, Any]) -> str | None:
+    """Read a schema.org `license` field which may be a URL or a CreativeWork."""
+    val = node.get("license")
+    if isinstance(val, str):
+        return val
+    if isinstance(val, dict):
+        url = val.get("url") or val.get("@id")
+        if isinstance(url, str):
+            return url
+    return None
+
+
+def _page_level_license_url(soup: BeautifulSoup) -> str | None:
+    for link in soup.find_all("link"):
+        rel = link.get("rel")
+        rel_tokens = rel if isinstance(rel, list) else [rel] if isinstance(rel, str) else []
+        if any(str(t).lower() == "license" for t in rel_tokens):
+            href = link.get("href")
+            if isinstance(href, str) and href:
+                return href
+    meta = soup.find("meta", attrs={"name": "license"})
+    if meta:
+        content = meta.get("content")
+        if isinstance(content, str) and content:
+            return content
+    return None
+
+
 def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[VideoRecord]:
     soup = BeautifulSoup(html, "lxml")
     blocks: list[dict[str, Any]] = []
@@ -94,6 +145,7 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
     videos = [b for b in blocks if "VideoObject" in _node_types(b)]
     recipes = [b for b in blocks if "Recipe" in _node_types(b)]
     recipe = recipes[0] if recipes else None
+    page_license_url = _page_level_license_url(soup)
 
     prov = Provenance(
         extractor=__name__,
@@ -117,6 +169,13 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             elif isinstance(instructions, str):
                 steps = [s.strip() for s in instructions.split(".") if s.strip()]
 
+        license_url = (
+            _extract_license_url(v)
+            or (_extract_license_url(recipe) if recipe else None)
+            or page_license_url
+        )
+        license_enum = infer_license_from_url(license_url)
+
         record = VideoRecord(
             id=f"common_crawl:{native_id}",
             source="common_crawl",
@@ -132,8 +191,8 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             width=int(v["width"]) if isinstance(v.get("width"), (int, float)) else None,
             height=int(v["height"]) if isinstance(v.get("height"), (int, float)) else None,
             fps=None,
-            license=License.UNKNOWN,
-            license_url=None,
+            license=license_enum,
+            license_url=license_url if license_url else None,
             author=_safe_str(
                 (v.get("author") or {}).get("name")
                 if isinstance(v.get("author"), dict)

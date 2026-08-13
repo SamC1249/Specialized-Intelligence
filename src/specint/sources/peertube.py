@@ -83,6 +83,23 @@ class PeerTubeSource(BaseSource):
             media_url = files[0].get("fileUrl") if files else None
             language = (v.get("language") or {}).get("id")
 
+            duration_val = v.get("duration")
+            try:
+                duration_s = float(duration_val) if duration_val is not None else None
+            except (TypeError, ValueError):
+                duration_s = None
+
+            height_val: int | None = None
+            resolution = v.get("resolution")
+            if isinstance(resolution, dict):
+                try:
+                    height_val = int(resolution["id"]) if resolution.get("id") is not None else None
+                except (TypeError, ValueError):
+                    height_val = None
+
+            tags = v.get("tags")
+            keywords_list = [str(t) for t in tags] if isinstance(tags, list) else []
+
             record = VideoRecord(
                 id=f"peertube:{host}:{uuid}",
                 source="peertube",
@@ -92,17 +109,15 @@ class PeerTubeSource(BaseSource):
                 title=str(v.get("name") or ""),
                 description=str(v.get("description") or ""),
                 language=language,
-                duration_s=float(v["duration"]) if v.get("duration") is not None else None,
+                duration_s=duration_s,
                 width=None,
-                height=int(v["resolution"]["id"])
-                if isinstance(v.get("resolution"), dict) and v["resolution"].get("id")
-                else None,
+                height=height_val,
                 fps=None,
                 license=license_enum,
                 license_url=None,
                 author=(v.get("account") or {}).get("displayName"),
                 published_at=_parse_iso(v.get("publishedAt")),
-                keywords=list(v.get("tags") or []),
+                keywords=keywords_list,
                 recipe_steps=[],
                 provenance=prov,
             )

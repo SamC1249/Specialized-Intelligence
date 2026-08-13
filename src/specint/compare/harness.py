@@ -14,7 +14,7 @@ from __future__ import annotations
 import statistics
 from collections.abc import Iterable, Mapping
 
-from specint.quality import score_records
+from specint.quality import dedup_records, score_records
 from specint.records import BenchmarkResult, License, SourceQuery, VideoRecord
 
 
@@ -45,6 +45,8 @@ def aggregate(
     )
     authors = {r.author for r in items if r.author}
 
+    n_after_dedup = len(dedup_records(items))
+
     return BenchmarkResult(
         source=source,
         query_terms=list(query_terms),
@@ -55,6 +57,7 @@ def aggregate(
         p50_quality=_percentile(qualities, 50),
         p90_quality=_percentile(qualities, 90),
         unique_authors=len(authors),
+        n_after_dedup=n_after_dedup,
         notes=notes,
     )
 

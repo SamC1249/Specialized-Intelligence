@@ -93,6 +93,7 @@ class BenchmarkResult(BaseModel):
     p50_quality: float
     p90_quality: float
     unique_authors: int
+    n_after_dedup: int = 0
     notes: str = ""
 
     @classmethod
@@ -107,6 +108,7 @@ class BenchmarkResult(BaseModel):
             p50_quality=0.0,
             p90_quality=0.0,
             unique_authors=0,
+            n_after_dedup=0,
             notes=notes,
         )
 
