@@ -5,6 +5,7 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+      - id: check-json
       - id: check-added-large-files
         args: ["--maxkb=512"]
       - id: check-merge-conflict
@@ -19,6 +20,18 @@ repos:
       - id: pytest-quick
         name: pytest (offline)
         entry: pytest -q
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+      - id: baseline-drift
+        name: baseline drift check
+        entry: python scripts/check_baseline_drift.py
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+      - id: mypy-best-effort
+        name: mypy (best-effort, non-blocking)
+        entry: bash -c "mypy src || true"
         language: system
         pass_filenames: false
         stages: [pre-push]

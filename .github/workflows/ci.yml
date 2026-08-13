@@ -37,13 +37,16 @@ jobs:
       - name: Tests (offline)
         env:
           SPECINT_RUN_INTEGRATION: "0"
-        run: pytest -q --cov=specint --cov-report=term-missing
+        run: pytest -q --cov=specint --cov-report=term-missing --cov-fail-under=85
 
       - name: E2E compare (fixtures)
         run: |
           python -m specint compare --fixtures --terms cooking recipe \
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
+
+      - name: Baseline drift check
+        run: python scripts/check_baseline_drift.py
 
       - name: Upload comparison report
         if: matrix.python-version == '3.12'
