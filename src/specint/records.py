@@ -5,11 +5,36 @@ Every other module imports types from here. Do not redefine these locally.
 
 from __future__ import annotations
 
+import os
 from datetime import UTC, datetime
 from enum import Enum
 from typing import Any
 
 from pydantic import AnyHttpUrl, BaseModel, ConfigDict, Field
+
+
+def _resolved_git_sha() -> str:
+    """Return a short git SHA when we can, else ``"dev"``.
+
+    CI sets ``SPECINT_GIT_SHA`` explicitly (see ``.github/workflows``).
+    Local invocations fall back to ``git rev-parse --short HEAD``. If
+    neither works, we return the literal string ``"dev"``. Never raises.
+    """
+    env = os.environ.get("SPECINT_GIT_SHA", "").strip()
+    if env:
+        return env[:12]
+    try:  # pragma: no cover - environment-dependent
+        import subprocess
+
+        out = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=os.path.dirname(__file__) or ".",
+            stderr=subprocess.DEVNULL,
+            timeout=1.0,
+        )
+        return out.decode().strip() or "dev"
+    except Exception:  # pragma: no cover - environment-dependent
+        return "dev"
 
 
 class License(str, Enum):  # noqa: UP042 - keep classic str+Enum for Pydantic compatibility
@@ -36,7 +61,7 @@ class Provenance(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     extractor: str
-    extractor_git: str = "dev"
+    extractor_git: str = Field(default_factory=_resolved_git_sha)
     fetched_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     query: str = ""
 
