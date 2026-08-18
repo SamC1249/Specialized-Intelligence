@@ -59,9 +59,11 @@ redefine them locally.**
 
 ## `BenchmarkResult` (Pydantic model)
 
-Emitted by `specint.compare.harness.run`. One row per `(source, query)`
-pair plus an aggregate `total` row. Stored under
-`reports/compare-YYYY-MM-DD.json`.
+Emitted by `specint.compare.harness.run_comparison`. One row per
+`(source, query, profile)` triple plus an aggregate `__total__` row and
+a dedup-aware `__unique_total__` row. Stored under
+`reports/compare-YYYY-MM-DD.json`. When `--profile all` is used, the
+JSON also carries a `profiles` map keyed by profile name.
 
 | Field                   | Type      | Notes                                       |
 | ----------------------- | --------- | ------------------------------------------- |
@@ -75,6 +77,7 @@ pair plus an aggregate `total` row. Stored under
 | `p90_quality`           | `float`   |                                             |
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
+| `profile`               | `str`     | Name of the `quality.WEIGHT_PROFILES` entry used to compute quality (default: `"default"`). |
 
 ## Frontend / API contract (placeholder)
 
