@@ -1,0 +1,64 @@
+{
+  "query": {
+    "pages": {
+      "22001": {
+        "pageid": 22001,
+        "title": "File:Baking bread whole grain.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Baking_bread_whole_grain.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Baking_bread_whole_grain.webm",
+            "mime": "video/webm",
+            "duration": 480.0,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by/4.0"},
+              "Artist": {"value": "Bread Society"},
+              "DateTimeOriginal": {"value": "2023-11-01T09:00:00Z"}
+            }
+          }
+        ]
+      },
+      "22002": {
+        "pageid": 22002,
+        "title": "File:French omelette technique.ogv",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/f/f6/French_omelette_technique.ogv",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:French_omelette_technique.ogv",
+            "mime": "video/ogg",
+            "duration": 210.0,
+            "width": 1280,
+            "height": 720,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/publicdomain/zero/1.0/"},
+              "Artist": {"value": "Public Kitchen"},
+              "DateTimeOriginal": {"value": "2024-01-15T12:00:00Z"}
+            }
+          }
+        ]
+      },
+      "22003": {
+        "pageid": 22003,
+        "title": "File:Restricted_cooking_footage.mp4",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/g/g7/Restricted_cooking_footage.mp4",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Restricted_cooking_footage.mp4",
+            "mime": "video/mp4",
+            "duration": 60.0,
+            "width": 1280,
+            "height": 720,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY-NC 4.0"},
+              "Artist": {"value": "Studio X"}
+            }
+          }
+        ]
+      }
+    }
+  }
+}
