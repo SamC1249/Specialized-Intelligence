@@ -94,9 +94,16 @@ class BenchmarkResult(BaseModel):
     p90_quality: float
     unique_authors: int
     notes: str = ""
+    profile: str = "default"
 
     @classmethod
-    def empty(cls, source: str, query_terms: list[str], notes: str = "") -> BenchmarkResult:
+    def empty(
+        cls,
+        source: str,
+        query_terms: list[str],
+        notes: str = "",
+        profile: str = "default",
+    ) -> BenchmarkResult:
         return cls(
             source=source,
             query_terms=list(query_terms),
@@ -108,6 +115,7 @@ class BenchmarkResult(BaseModel):
             p90_quality=0.0,
             unique_authors=0,
             notes=notes,
+            profile=profile,
         )
 
 
