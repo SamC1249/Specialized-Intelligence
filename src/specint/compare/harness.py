@@ -1,9 +1,13 @@
 """Systematic comparison harness.
 
-Given a `SourceQuery` and a set of (source_slug, list_of_records) pairs —
-typically produced by feeding offline fixtures or live `search()` calls
-through `quality.score_records` — emit a deterministic list of
-`BenchmarkResult` rows: one per source plus an aggregate `__total__`.
+Given a `SourceQuery` and a set of `(source_slug, list_of_records)`
+pairs — typically produced by feeding offline fixtures or live
+`search()` calls through the quality scorer — emit a deterministic list
+of `BenchmarkResult` rows: one per source plus an aggregate `__total__`
+and a dedup-aware `__unique_total__`.
+
+Profiles: every entry in `quality.WEIGHT_PROFILES` is a valid
+`profile=`; each yields its own list of rows.
 
 The CLI wraps this so `python -m specint compare` always produces a
 reproducible, JSON-serialisable artifact under `reports/`.
@@ -14,7 +18,7 @@ from __future__ import annotations
 import statistics
 from collections.abc import Iterable, Mapping
 
-from specint.quality import score_records
+from specint.quality import WEIGHT_PROFILES, dedup_records, score_records
 from specint.records import BenchmarkResult, License, SourceQuery, VideoRecord
 
 
@@ -33,10 +37,11 @@ def aggregate(
     query_terms: list[str],
     records: Iterable[VideoRecord],
     notes: str = "",
+    profile: str = "default",
 ) -> BenchmarkResult:
     items = list(records)
     if not items:
-        return BenchmarkResult.empty(source, query_terms, notes=notes)
+        return BenchmarkResult.empty(source, query_terms, notes=notes, profile=profile)
 
     qualities = [r.quality_score or 0.0 for r in items]
     durations = [r.duration_s or 0.0 for r in items]
@@ -56,6 +61,7 @@ def aggregate(
         p90_quality=_percentile(qualities, 90),
         unique_authors=len(authors),
         notes=notes,
+        profile=profile,
     )
 
 
@@ -63,13 +69,42 @@ def run_comparison(
     query: SourceQuery,
     by_source: Mapping[str, list[VideoRecord]],
     notes: str = "",
+    profile: str = "default",
 ) -> list[BenchmarkResult]:
-    """Score, aggregate per source, and append a `__total__` row."""
+    """Score, aggregate per source, and append `__total__` +
+    `__unique_total__` rows (the latter after cross-source dedup).
+    """
+    if profile not in WEIGHT_PROFILES:
+        raise KeyError(f"unknown quality profile: {profile!r}")
+
     rows: list[BenchmarkResult] = []
     all_scored: list[VideoRecord] = []
     for source, records in sorted(by_source.items()):
-        scored = score_records(records)
+        scored = score_records(records, profile=profile)
         all_scored.extend(scored)
-        rows.append(aggregate(source, query.terms, scored, notes=notes))
-    rows.append(aggregate("__total__", query.terms, all_scored, notes=notes))
+        rows.append(aggregate(source, query.terms, scored, notes=notes, profile=profile))
+    rows.append(aggregate("__total__", query.terms, all_scored, notes=notes, profile=profile))
+
+    unique, _clusters = dedup_records(all_scored)
+    rows.append(
+        aggregate(
+            "__unique_total__",
+            query.terms,
+            unique,
+            notes=notes,
+            profile=profile,
+        )
+    )
     return rows
+
+
+def run_all_profiles(
+    query: SourceQuery,
+    by_source: Mapping[str, list[VideoRecord]],
+    notes: str = "",
+) -> dict[str, list[BenchmarkResult]]:
+    """Return `{profile: rows}` for every entry in `WEIGHT_PROFILES`."""
+    return {
+        profile: run_comparison(query, by_source, notes=notes, profile=profile)
+        for profile in sorted(WEIGHT_PROFILES.keys())
+    }

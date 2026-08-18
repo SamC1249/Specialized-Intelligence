@@ -23,6 +23,14 @@ pytest -q
 python -m specint compare --fixtures --terms cooking recipe \
   --output reports/example.json
 
+# Same run under every quality-weight profile:
+python -m specint compare --fixtures --terms cooking recipe \
+  --profile all --output reports/example-all.json
+
+# List registered sources and quality profiles:
+python -m specint sources
+python -m specint profiles
+
 # Live comparison (only with explicit opt-in):
 SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
 ```

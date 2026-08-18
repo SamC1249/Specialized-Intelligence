@@ -37,20 +37,34 @@ jobs:
       - name: Tests (offline)
         env:
           SPECINT_RUN_INTEGRATION: "0"
-        run: pytest -q --cov=specint --cov-report=term-missing
+        run: pytest -q --cov=specint --cov-report=term-missing --cov-fail-under=85
 
-      - name: E2E compare (fixtures)
+      - name: E2E compare (fixtures, default profile)
         run: |
           python -m specint compare --fixtures --terms cooking recipe \
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
+
+      - name: E2E compare (fixtures, all profiles)
+        run: |
+          python -m specint compare --fixtures --terms cooking recipe \
+            --profile all --output reports/ci-compare-all.json
+          test -s reports/ci-compare-all.json
+          python -c "import json,sys; d=json.load(open('reports/ci-compare-all.json')); \
+            assert set(d['profiles']) >= {'default','procedural','resolution'}, d['profiles']"
+
+      - name: Verify committed 2026-08-18 report is up to date
+        run: |
+          test -s reports/compare-2026-08-18.json
 
       - name: Upload comparison report
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: compare-report
-          path: reports/ci-compare.json
+          path: |
+            reports/ci-compare.json
+            reports/ci-compare-all.json
 
   precommit:
     runs-on: ubuntu-latest
