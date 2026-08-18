@@ -41,3 +41,31 @@ def test_score_records_attaches_quality():
     [scored] = score_records([r])
     assert scored.quality_score is not None
     assert 0.0 <= scored.quality_score <= 1.0
+
+
+def test_resolution_ladder_covers_all_tiers():
+    from specint.quality.metrics import _score_resolution
+
+    assert _score_resolution(_rec(height=None)) == 0.0
+    assert _score_resolution(_rec(height=0)) == 0.0
+    assert _score_resolution(_rec(height=1080)) == 1.0
+    assert _score_resolution(_rec(height=720)) == 0.8
+    assert _score_resolution(_rec(height=480)) == 0.5
+    assert _score_resolution(_rec(height=240)) == 0.2
+
+
+def test_text_density_is_zero_for_empty_record():
+    from specint.quality.metrics import _score_text_density
+
+    r = _rec(title="")
+    assert _score_text_density(r) == 0.0
+
+
+def test_duration_decays_beyond_target():
+    from specint.quality.metrics import _score_duration
+
+    assert _score_duration(_rec(duration_s=None)) == 0.0
+    assert _score_duration(_rec(duration_s=0.0)) == 0.0
+    assert _score_duration(_rec(duration_s=300.0)) == 1.0
+    long_score = _score_duration(_rec(duration_s=1200.0))
+    assert 0.0 < long_score < 1.0

@@ -1,0 +1,43 @@
+name: Integration (nightly, live network)
+
+on:
+  schedule:
+    # 07:00 UTC every day; well outside PR hours.
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+
+jobs:
+  live-search:
+    runs-on: ubuntu-latest
+    # Never gate the main branch on flaky upstream APIs.
+    continue-on-error: true
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Live compare (Wikimedia + Archive.org + PeerTube)
+        env:
+          SPECINT_RUN_INTEGRATION: "1"
+          SPECINT_GIT_SHA: ${{ github.sha }}
+        run: |
+          python -m specint compare \
+            --terms cooking recipe \
+            --only wikimedia archive_org peertube \
+            --max-results 5 \
+            --output reports/integration-$(date -u +%Y-%m-%d).json \
+            --notes "nightly-integration"
+
+      - name: Upload live report
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-report
+          path: reports/integration-*.json

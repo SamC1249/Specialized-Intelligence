@@ -25,21 +25,34 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
 
-      - name: Lint (ruff)
-        run: ruff check .
-
-      - name: Format check (ruff)
-        run: ruff format --check .
+      - name: Pre-commit (lint + format + custom hooks)
+        env:
+          SKIP: pytest-quick
+        run: |
+          pip install pre-commit
+          pre-commit run --all-files --show-diff-on-failure
 
       - name: Type check (mypy, best-effort)
         run: mypy src || true
 
-      - name: Tests (offline)
+      - name: Tests (offline) + coverage
         env:
           SPECINT_RUN_INTEGRATION: "0"
-        run: pytest -q --cov=specint --cov-report=term-missing
+          SPECINT_GIT_SHA: ${{ github.sha }}
+        run: |
+          pytest -q \
+            --cov=specint \
+            --cov-report=term-missing \
+            --cov-report=xml \
+            --cov-fail-under=80
+
+      - name: Core-module coverage floor (95%)
+        run: |
+          python scripts/check_core_coverage.py
 
       - name: E2E compare (fixtures)
+        env:
+          SPECINT_GIT_SHA: ${{ github.sha }}
         run: |
           python -m specint compare --fixtures --terms cooking recipe \
             --output reports/ci-compare.json
@@ -52,15 +65,22 @@ jobs:
           name: compare-report
           path: reports/ci-compare.json
 
-  precommit:
+      - name: Upload coverage.xml
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: coverage.xml
+
+  governance:
+    # Cheap, no-network guardrails that fail before more expensive jobs.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: pip
-      - name: Install pre-commit
-        run: pip install pre-commit
-      - name: Run pre-commit
-        run: pre-commit run --all-files --show-diff-on-failure
+      - name: 800-line per-file cap
+        run: python scripts/check_file_size.py
+      - name: No live URLs in offline tests
+        run: python scripts/check_no_live_urls_in_tests.py

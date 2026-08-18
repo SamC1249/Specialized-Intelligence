@@ -8,6 +8,9 @@ repos:
       - id: check-added-large-files
         args: ["--maxkb=512"]
       - id: check-merge-conflict
+      - id: check-toml
+      - id: check-json
+        exclude: "^tests/fixtures/.*\\.json$"
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.5.0
     hooks:
@@ -16,6 +19,21 @@ repos:
       - id: ruff-format
   - repo: local
     hooks:
+      - id: file-size-cap
+        name: 800-line file cap
+        entry: python scripts/check_file_size.py
+        language: system
+        pass_filenames: false
+      - id: no-live-urls-in-tests
+        name: No live URLs in offline tests
+        entry: python scripts/check_no_live_urls_in_tests.py
+        language: system
+        pass_filenames: false
+      - id: mypy
+        name: mypy (best-effort, non-blocking)
+        entry: bash -c 'mypy src || true'
+        language: system
+        pass_filenames: false
       - id: pytest-quick
         name: pytest (offline)
         entry: pytest -q
