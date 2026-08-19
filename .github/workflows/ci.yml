@@ -45,12 +45,35 @@ jobs:
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
 
-      - name: Upload comparison report
+      - name: E2E bench (v1 vs v2 Pareto)
+        run: |
+          python -m specint bench --terms cooking recipe \
+            --output reports/ci-bench.json
+          test -s reports/ci-bench.json
+          python - <<'PY'
+          import json, sys
+          d = json.load(open("reports/ci-bench.json"))
+          v = d["delta"]["verdict"]
+          if v == "dominated":
+              print(f"v2 profile is Pareto-dominated by v1: {d['delta']}", file=sys.stderr)
+              sys.exit(3)
+          print("bench verdict:", v)
+          PY
+
+      - name: Dedup report (fixtures)
+        run: |
+          python -m specint dedup-report > reports/ci-dedup.json
+          test -s reports/ci-dedup.json
+
+      - name: Upload comparison + bench + dedup reports
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: compare-report
-          path: reports/ci-compare.json
+          path: |
+            reports/ci-compare.json
+            reports/ci-bench.json
+            reports/ci-dedup.json
 
   precommit:
     runs-on: ubuntu-latest
