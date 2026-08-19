@@ -23,6 +23,12 @@ pytest -q
 python -m specint compare --fixtures --terms cooking recipe \
   --output reports/example.json
 
+# Pareto-compare scorer profiles (v1 vs v2_procedural) on fixtures:
+python -m specint bench --output reports/bench-example.json
+
+# Cross-source dedup report:
+python -m specint dedup-report
+
 # Live comparison (only with explicit opt-in):
 SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
 ```
