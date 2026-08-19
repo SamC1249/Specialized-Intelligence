@@ -75,6 +75,35 @@ pair plus an aggregate `total` row. Stored under
 | `p90_quality`           | `float`   |                                             |
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
+| `n_unique_after_dedup`  | `int`     | Records surviving cross-source dedup (URL + title-shingle Jaccard). |
+| `license_clean_ratio`   | `float`   | `n_license_clean / n_records`.              |
+| `mean_procedural_density` | `float` | Mean of the metadata-only "procedural density" signal (verbs+units+quantities). |
+| `languages_seen`        | `list[str]` | Sorted set of BCP-47 codes, either upstream-provided or stoplist-detected. |
+| `scorer_profile`        | `str`     | Which scorer profile produced `mean_quality` — currently `v1` or `v2_procedural`. |
+
+## Scorer profiles
+
+Quality is metadata-only and profile-selectable via
+`specint.quality.PROFILES`:
+
+| Profile           | Formula                                                                            |
+| ----------------- | ---------------------------------------------------------------------------------- |
+| `v1`              | Weighted blend of license/duration/resolution/text_density/has_steps (see `metrics.py`). |
+| `v2_procedural`   | `v1 + 0.25 * procedural_density * (1 - v1)`, clamped to `[0, 1]` — additive-boost so `v2 >= v1` for every record and the Pareto verdict against `v1` cannot regress. |
+
+## Deduplication
+
+`specint.quality.dedupe` returns a `DedupReport` clustering records by:
+
+1. Canonical URL hash (`canonicalize_url` strips scheme, `www.`,
+   query/fragment, Wikimedia thumb prefixes, and Archive.org
+   `download/<id>` → `details/<id>`).
+2. Title-shingle Jaccard `>= 0.85` **and** (same author OR duration
+   within 5%).
+
+Deterministic union-find. The cluster representative prefers
+license-clean records so downstream training corpora keep the freely
+redistributable copy.
 
 ## Frontend / API contract (placeholder)
 
