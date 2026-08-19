@@ -1,0 +1,36 @@
+{
+  "head": {
+    "vars": ["item", "itemLabel", "video", "license", "duration", "creatorLabel", "published"]
+  },
+  "results": {
+    "bindings": [
+      {
+        "item": {"type": "uri", "value": "http://www.wikidata.org/entity/Q42000001"},
+        "itemLabel": {"type": "literal", "value": "How to make béchamel sauce"},
+        "video": {"type": "uri", "value": "https://commons.wikimedia.org/wiki/File:Bechamel_sauce_demo.webm"},
+        "license": {"type": "uri", "value": "http://www.wikidata.org/entity/Q18199165"},
+        "duration": {"type": "literal", "value": "412.0"},
+        "creatorLabel": {"type": "literal", "value": "Community Kitchen"},
+        "published": {"type": "literal", "value": "2023-11-04T12:00:00Z"}
+      },
+      {
+        "item": {"type": "uri", "value": "http://www.wikidata.org/entity/Q42000002"},
+        "itemLabel": {"type": "literal", "value": "Basic knife skills for the home cook"},
+        "video": {"type": "uri", "value": "https://commons.wikimedia.org/wiki/File:Knife_skills_wd.ogv"},
+        "license": {"type": "uri", "value": "http://www.wikidata.org/entity/Q19068220"},
+        "duration": {"type": "literal", "value": "88.5"},
+        "creatorLabel": {"type": "literal", "value": "Public Kitchen"},
+        "published": {"type": "literal", "value": "2024-01-15T09:00:00Z"}
+      },
+      {
+        "item": {"type": "uri", "value": "http://www.wikidata.org/entity/Q42000003"},
+        "itemLabel": {"type": "literal", "value": "Non-free demo clip"},
+        "video": {"type": "uri", "value": "https://example.test/nonfree.mp4"},
+        "license": {"type": "uri", "value": "http://www.wikidata.org/entity/Q99999999"},
+        "duration": {"type": "literal", "value": "60.0"},
+        "creatorLabel": {"type": "literal", "value": "Unknown"},
+        "published": {"type": "literal", "value": "2022-05-01T00:00:00Z"}
+      }
+    ]
+  }
+}

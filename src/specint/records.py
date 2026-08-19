@@ -12,7 +12,7 @@ from typing import Any
 from pydantic import AnyHttpUrl, BaseModel, ConfigDict, Field
 
 
-class License(str, Enum):  # noqa: UP042 - keep classic str+Enum for Pydantic compatibility
+class License(str, Enum):  # - keep classic str+Enum for Pydantic compatibility
     CC0 = "CC0"
     CC_BY = "CC-BY"
     CC_BY_SA = "CC-BY-SA"
@@ -94,6 +94,11 @@ class BenchmarkResult(BaseModel):
     p90_quality: float
     unique_authors: int
     notes: str = ""
+    n_unique_after_dedup: int = 0
+    license_clean_ratio: float = 0.0
+    mean_procedural_density: float = 0.0
+    languages_seen: list[str] = Field(default_factory=list)
+    scorer_profile: str = "v1"
 
     @classmethod
     def empty(cls, source: str, query_terms: list[str], notes: str = "") -> BenchmarkResult:
@@ -108,6 +113,11 @@ class BenchmarkResult(BaseModel):
             p90_quality=0.0,
             unique_authors=0,
             notes=notes,
+            n_unique_after_dedup=0,
+            license_clean_ratio=0.0,
+            mean_procedural_density=0.0,
+            languages_seen=[],
+            scorer_profile="v1",
         )
 
 
