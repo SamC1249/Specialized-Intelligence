@@ -1,0 +1,49 @@
+{
+  "apikey": "TEST",
+  "success": true,
+  "requestNumber": 1,
+  "itemsCount": 3,
+  "totalResults": 3,
+  "items": [
+    {
+      "id": "/2020601/https___1914_1918_europeana_eu_contributions_23131",
+      "guid": "https://www.europeana.eu/en/item/2020601/https___1914_1918_europeana_eu_contributions_23131",
+      "type": "VIDEO",
+      "rights": ["http://creativecommons.org/licenses/by-sa/4.0/"],
+      "dcTitleLangAware": {"en": ["Traditional Italian pasta cooking demonstration"], "it": ["Dimostrazione di cucina italiana tradizionale"]},
+      "dcDescriptionLangAware": {"en": ["A short archival demonstration of hand-rolled pasta preparation recorded at a regional food festival."]},
+      "dcCreator": ["Archivio Regionale della Cucina"],
+      "edmDataProvider": ["Europeana Cuisine Collection"],
+      "edmIsShownBy": "https://media.europeana.eu/video/pasta_demo.webm",
+      "language": ["it"],
+      "dcSubject": ["cooking", "pasta", "italian cuisine"],
+      "timestamp_created": "2019-06-11T09:12:00Z"
+    },
+    {
+      "id": "/9200579/rr_kv_v_2_1_08",
+      "guid": "https://www.europeana.eu/en/item/9200579/rr_kv_v_2_1_08",
+      "type": "VIDEO",
+      "rights": ["http://creativecommons.org/publicdomain/mark/1.0/"],
+      "dcTitleLangAware": {"en": ["Public kitchen: bread baking, 1962"]},
+      "dcDescription": ["Public-domain newsreel footage of a community bread oven."],
+      "dcCreator": ["National Film Board (public domain)"],
+      "edmIsShownBy": "https://media.europeana.eu/video/bread_1962.mp4",
+      "language": ["en"],
+      "dcSubject": ["bread", "baking", "public kitchen"],
+      "timestamp_created": "1962-09-01T00:00:00Z"
+    },
+    {
+      "id": "/rest/rs-nc-only",
+      "guid": "https://www.europeana.eu/en/item/rest/rs-nc-only",
+      "type": "VIDEO",
+      "rights": ["http://rightsstatements.org/vocab/InC-EDU/1.0/"],
+      "dcTitleLangAware": {"en": ["Rights-restricted cooking archive footage"]},
+      "dcDescription": ["Should be filtered out downstream because rights are Rights-Statement InC-EDU."],
+      "dcCreator": ["Some Restricted Archive"],
+      "edmIsShownBy": "https://media.europeana.eu/video/restricted.mp4",
+      "language": ["en"],
+      "dcSubject": ["cooking"],
+      "timestamp_created": "2020-01-01T00:00:00Z"
+    }
+  ]
+}
