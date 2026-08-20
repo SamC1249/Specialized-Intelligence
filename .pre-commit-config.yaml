@@ -22,3 +22,9 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
+      - id: mypy-strict-core
+        name: mypy --strict on records/quality/dedup
+        entry: mypy --strict src/specint/records.py src/specint/quality src/specint/dedup
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
