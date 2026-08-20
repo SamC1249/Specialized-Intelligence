@@ -14,6 +14,7 @@ from __future__ import annotations
 import statistics
 from collections.abc import Iterable, Mapping
 
+from specint.dedup import dedup_records
 from specint.quality import score_records
 from specint.records import BenchmarkResult, License, SourceQuery, VideoRecord
 
@@ -64,7 +65,13 @@ def run_comparison(
     by_source: Mapping[str, list[VideoRecord]],
     notes: str = "",
 ) -> list[BenchmarkResult]:
-    """Score, aggregate per source, and append a `__total__` row."""
+    """Score, aggregate per source, and append `__total__` +
+    `__total_after_dedup__` rows.
+
+    Cross-source metadata dedup is applied *after* per-source aggregation,
+    so per-source `n_records` reflects gross ingest yield and the two
+    total rows expose the effect of dedup on the pooled corpus.
+    """
     rows: list[BenchmarkResult] = []
     all_scored: list[VideoRecord] = []
     for source, records in sorted(by_source.items()):
@@ -72,4 +79,14 @@ def run_comparison(
         all_scored.extend(scored)
         rows.append(aggregate(source, query.terms, scored, notes=notes))
     rows.append(aggregate("__total__", query.terms, all_scored, notes=notes))
+
+    dedup_result = dedup_records(all_scored)
+    dedup_notes = (
+        f"{notes};dedup_removed={dedup_result.n_duplicates_removed}"
+        if notes
+        else f"dedup_removed={dedup_result.n_duplicates_removed}"
+    )
+    rows.append(
+        aggregate("__total_after_dedup__", query.terms, dedup_result.kept, notes=dedup_notes)
+    )
     return rows

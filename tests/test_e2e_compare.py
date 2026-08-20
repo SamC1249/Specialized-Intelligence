@@ -15,8 +15,18 @@ from specint.compare import run_comparison
 from specint.records import SourceQuery
 from specint.sources.archive_org import ArchiveOrgSource
 from specint.sources.common_crawl import CommonCrawlRecipeSource
+from specint.sources.europeana import EuropeanaSource
 from specint.sources.peertube import PeerTubeSource
 from specint.sources.wikimedia import WikimediaCommonsSource
+
+EXPECTED_SOURCES = {
+    "wikimedia",
+    "archive_org",
+    "peertube",
+    "common_crawl",
+    "europeana",
+}
+AGGREGATE_ROWS = {"__total__", "__total_after_dedup__"}
 
 
 def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Path):
@@ -39,17 +49,24 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
             },
             query,
         ),
+        "europeana": EuropeanaSource().parse(
+            json.loads((fixtures_dir / "europeana/search_cooking.json").read_text()), query
+        ),
     }
 
     rows = run_comparison(query, by_source, notes="e2e-fixture")
 
     sources_seen = {row.source for row in rows}
-    assert sources_seen == {"wikimedia", "archive_org", "peertube", "common_crawl", "__total__"}
+    assert sources_seen == EXPECTED_SOURCES | AGGREGATE_ROWS
 
     total = next(r for r in rows if r.source == "__total__")
-    per_source_total = sum(r.n_records for r in rows if r.source != "__total__")
+    per_source_total = sum(r.n_records for r in rows if r.source not in AGGREGATE_ROWS)
     assert total.n_records == per_source_total
     assert total.n_records > 0
+
+    dedup_row = next(r for r in rows if r.source == "__total_after_dedup__")
+    assert dedup_row.n_records <= total.n_records
+    assert "dedup_removed=" in dedup_row.notes
 
     # License-clean count must be monotonically <= n_records.
     for row in rows:
@@ -64,4 +81,4 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
     out.write_text(json.dumps(payload, sort_keys=True))
     reloaded = json.loads(out.read_text())
     assert reloaded["query"]["terms"] == ["cooking", "recipe"]
-    assert len(reloaded["rows"]) == 5
+    assert len(reloaded["rows"]) == len(EXPECTED_SOURCES) + len(AGGREGATE_ROWS)

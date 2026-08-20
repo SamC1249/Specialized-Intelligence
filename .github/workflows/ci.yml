@@ -31,13 +31,16 @@ jobs:
       - name: Format check (ruff)
         run: ruff format --check .
 
-      - name: Type check (mypy, best-effort)
+      - name: Type check (mypy, best-effort on source adapters)
         run: mypy src || true
+
+      - name: Type check (mypy, strict on core modules)
+        run: mypy --strict src/specint/records.py src/specint/quality src/specint/dedup
 
       - name: Tests (offline)
         env:
           SPECINT_RUN_INTEGRATION: "0"
-        run: pytest -q --cov=specint --cov-report=term-missing
+        run: pytest -q --cov=specint --cov-report=term-missing --cov-fail-under=80
 
       - name: E2E compare (fixtures)
         run: |
