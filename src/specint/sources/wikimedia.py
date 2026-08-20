@@ -21,19 +21,26 @@ API_URL = "https://commons.wikimedia.org/w/api.php"
 
 
 def _coerce_license(short_name: str | None) -> License:
+    """Map a Wikimedia `LicenseShortName` value to our License enum.
+
+    Order matters: NC/ND must be detected *before* BY / BY-SA because
+    e.g. "CC BY-NC-SA 4.0" contains the substring "BY-...-SA" and we
+    must not classify that as CC-BY-SA.
+    """
     if not short_name:
         return License.UNKNOWN
     s = short_name.strip().upper().replace(" ", "")
+
+    if "NONCOMMERCIAL" in s or "BY-NC" in s or "BYNC" in s or "BY-ND" in s or "BYND" in s:
+        return License.RESTRICTED
+    if s == "PD" or s.startswith("PDM") or "PUBLICDOMAIN" in s:
+        return License.PUBLIC_DOMAIN
     if s.startswith("CC0"):
         return License.CC0
-    if "BY-SA" in s or "BYSA" in s:
+    if "BY-SA" in s or "BYSA" in s or "ATTRIBUTION-SHAREALIKE" in s or "ATTRIBUTIONSHAREALIKE" in s:
         return License.CC_BY_SA
-    if "BY-NC" in s or "BYNC" in s or "BY-ND" in s or "BYND" in s:
-        return License.RESTRICTED
-    if "CC-BY" in s or "CCBY" in s:
+    if "CC-BY" in s or "CCBY" in s or s.startswith("ATTRIBUTION"):
         return License.CC_BY
-    if "PUBLICDOMAIN" in s or s == "PD":
-        return License.PUBLIC_DOMAIN
     return License.UNKNOWN
 
 
