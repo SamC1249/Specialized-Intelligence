@@ -74,6 +74,7 @@ pair plus an aggregate `total` row. Stored under
 | `p50_quality`           | `float`   | Median quality.                             |
 | `p90_quality`           | `float`   |                                             |
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
+| `n_after_dedup`         | `int`     | Records surviving `quality.dedup.dedup_records`. 0 on per-source rows; populated on the `__total__` row when the harness runs with `dedup=True`. |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
 
 ## Frontend / API contract (placeholder)

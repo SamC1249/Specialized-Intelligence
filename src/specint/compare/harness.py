@@ -15,6 +15,7 @@ import statistics
 from collections.abc import Iterable, Mapping
 
 from specint.quality import score_records
+from specint.quality.dedup import dedup_records
 from specint.records import BenchmarkResult, License, SourceQuery, VideoRecord
 
 
@@ -63,13 +64,25 @@ def run_comparison(
     query: SourceQuery,
     by_source: Mapping[str, list[VideoRecord]],
     notes: str = "",
+    dedup: bool = True,
 ) -> list[BenchmarkResult]:
-    """Score, aggregate per source, and append a `__total__` row."""
+    """Score, aggregate per source, and append a `__total__` row.
+
+    When ``dedup=True`` (default) the aggregate row records the size of
+    the corpus after ``quality.dedup.dedup_records`` so callers can
+    quantify cross-source overlap. Per-source rows keep raw counts.
+    """
     rows: list[BenchmarkResult] = []
     all_scored: list[VideoRecord] = []
     for source, records in sorted(by_source.items()):
         scored = score_records(records)
         all_scored.extend(scored)
         rows.append(aggregate(source, query.terms, scored, notes=notes))
-    rows.append(aggregate("__total__", query.terms, all_scored, notes=notes))
+    total = aggregate("__total__", query.terms, all_scored, notes=notes)
+    if dedup:
+        deduped = dedup_records(all_scored)
+        total = total.model_copy(update={"n_after_dedup": len(deduped)})
+    else:
+        total = total.model_copy(update={"n_after_dedup": total.n_records})
+    rows.append(total)
     return rows
