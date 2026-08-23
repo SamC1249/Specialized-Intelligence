@@ -48,7 +48,12 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
-ignore = ["E501"]
+# UP038: `isinstance(x, X | Y)` was removed from defaults in modern ruff (>=0.5)
+#        and is *deprecated* — the tuple form is faster and clearer.
+# UP042: `class Foo(str, Enum)` -> `StrEnum` is source-incompatible with our
+#        Pydantic v2 models (see src/specint/records.py::License). We keep the
+#        classic form deliberately.
+ignore = ["E501", "UP038", "UP042"]
 
 [tool.ruff.format]
 quote-style = "double"
