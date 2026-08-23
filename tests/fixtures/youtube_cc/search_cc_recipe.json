@@ -1,0 +1,41 @@
+{
+  "items": [
+    {
+      "id": {"kind": "youtube#video", "videoId": "abc12345678"},
+      "snippet": {
+        "publishedAt": "2024-06-14T10:11:12Z",
+        "title": "How to Cook Perfect Risotto (CC-BY)",
+        "description": "A creative-commons risotto tutorial. Includes step-by-step recipe instructions in the kitchen.",
+        "channelTitle": "Open Kitchen",
+        "tags": ["risotto", "cooking", "italian", "recipe"],
+        "defaultAudioLanguage": "en"
+      },
+      "contentDetails": {"duration": "PT8M42S"},
+      "status": {"license": "creativeCommon"}
+    },
+    {
+      "id": {"kind": "youtube#video", "videoId": "def87654321"},
+      "snippet": {
+        "publishedAt": "2023-11-02T18:00:00Z",
+        "title": "Recette de crêpes suzette (CC-BY)",
+        "description": "Tutoriel cuisine : recette de crêpes suzette au beurre et à l'orange. Cuire, flamber, servir.",
+        "channelTitle": "Cuisine Libre",
+        "tags": ["crêpes", "recette", "cuisine"],
+        "defaultAudioLanguage": "fr"
+      },
+      "contentDetails": {"duration": "PT12M03S"},
+      "status": {"license": "creativeCommon"}
+    },
+    {
+      "id": {"kind": "youtube#video", "videoId": "zzznotcc9999"},
+      "snippet": {
+        "publishedAt": "2024-01-01T00:00:00Z",
+        "title": "Should be filtered — standard YouTube license",
+        "description": "Not CC.",
+        "channelTitle": "Random Channel"
+      },
+      "contentDetails": {"duration": "PT3M00S"},
+      "status": {"license": "youtube"}
+    }
+  ]
+}

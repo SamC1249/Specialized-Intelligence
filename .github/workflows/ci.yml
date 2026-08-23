@@ -41,9 +41,17 @@ jobs:
 
       - name: E2E compare (fixtures)
         run: |
-          python -m specint compare --fixtures --terms cooking recipe \
+          python -m specint compare --fixtures --fixtures-dir tests/fixtures \
+            --terms cooking recipe --notes ci-fixture \
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
+          python - <<'PY'
+          import json, sys
+          rows = json.load(open("reports/ci-compare.json"))["rows"]
+          total = next(r for r in rows if r["source"] == "__total__")
+          assert total["n_records"] > 0, "harness produced empty total row"
+          assert total["n_license_clean"] > 0, "no license-clean records in fixtures"
+          PY
 
       - name: Upload comparison report
         if: matrix.python-version == '3.12'

@@ -30,3 +30,16 @@ def test_wikimedia_parse_handles_empty():
     src = WikimediaCommonsSource()
     assert src.parse({}, SourceQuery(terms=["x"])) == []
     assert src.parse({"query": {"pages": {}}}, SourceQuery(terms=["x"])) == []
+
+
+def test_wikimedia_parse_multilingual_fixture_matches_french_seed(load_json):
+    """Regression fixture: French seed term should yield license-clean records."""
+    raw = load_json("wikimedia/search_recette.json")
+    src = WikimediaCommonsSource()
+    records = src.parse(raw, SourceQuery(terms=["recette"], max_results=10))
+    assert len(records) == 2
+    licenses = {r.license for r in records}
+    assert License.CC_BY in licenses
+    assert License.CC_BY_SA in licenses
+    for r in records:
+        assert r.media_url is not None

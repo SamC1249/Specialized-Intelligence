@@ -1,0 +1,46 @@
+{
+  "query": {
+    "pages": {
+      "22222": {
+        "pageid": 22222,
+        "title": "File:Recette de la ratatouille.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Recette_de_la_ratatouille.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Recette_de_la_ratatouille.webm",
+            "mime": "video/webm",
+            "duration": 415.0,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by/4.0"},
+              "Artist": {"value": "Cuisine Libre"},
+              "DateTimeOriginal": {"value": "2024-04-01T09:00:00Z"}
+            }
+          }
+        ]
+      },
+      "33333": {
+        "pageid": 33333,
+        "title": "File:Cooking pasta carbonara.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/a/a1/Cooking_pasta_carbonara.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Cooking_pasta_carbonara.webm",
+            "mime": "video/webm",
+            "duration": 312.4,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY-SA 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by-sa/4.0"},
+              "Artist": {"value": "Jane Cook"},
+              "DateTimeOriginal": {"value": "2024-03-12T10:00:00Z"}
+            }
+          }
+        ]
+      }
+    }
+  }
+}
