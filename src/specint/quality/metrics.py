@@ -12,6 +12,10 @@ Components (current):
   - resolution    : >=720p ramps from 0 to 1.
   - text_density  : combined length of title + description + recipe_steps.
   - has_steps     : 1 if recipe_steps non-empty (procedural supervision).
+  - cooking_vocab : multilingual cooking-word hit-rate. See
+                    ``specint.quality.vocab``. Rewards records whose
+                    metadata reads as genuinely cooking-related in *any*
+                    supported language, rather than just being wordy.
 
 Adding a component:
   1. Implement a new `_score_*` function returning a float in [0, 1].
@@ -24,14 +28,16 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
+from specint.quality.vocab import cooking_vocab_score
 from specint.records import VideoRecord
 
 WEIGHTS: dict[str, float] = {
-    "license_clean": 0.35,
+    "license_clean": 0.30,
     "duration": 0.15,
-    "resolution": 0.20,
-    "text_density": 0.15,
+    "resolution": 0.15,
+    "text_density": 0.10,
     "has_steps": 0.15,
+    "cooking_vocab": 0.15,
 }
 
 
@@ -75,12 +81,17 @@ def _score_has_steps(record: VideoRecord) -> float:
     return 1.0 if record.recipe_steps else 0.0
 
 
+def _score_cooking_vocab(record: VideoRecord) -> float:
+    return cooking_vocab_score(record)
+
+
 _COMPONENTS = {
     "license_clean": _score_license,
     "duration": _score_duration,
     "resolution": _score_resolution,
     "text_density": _score_text_density,
     "has_steps": _score_has_steps,
+    "cooking_vocab": _score_cooking_vocab,
 }
 
 
