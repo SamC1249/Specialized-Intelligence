@@ -16,6 +16,12 @@ repos:
       - id: ruff-format
   - repo: local
     hooks:
+      - id: audit-fixtures
+        name: audit tests/fixtures/ (offline, <1s)
+        entry: python3 scripts/audit_fixtures.py
+        language: system
+        pass_filenames: false
+        files: ^(tests/fixtures/|src/specint/sources/__init__\.py|scripts/audit_fixtures\.py)$
       - id: pytest-quick
         name: pytest (offline)
         entry: pytest -q

@@ -34,6 +34,9 @@ jobs:
       - name: Type check (mypy, best-effort)
         run: mypy src || true
 
+      - name: Fixture audit (fast, no deps)
+        run: python scripts/audit_fixtures.py
+
       - name: Tests (offline)
         env:
           SPECINT_RUN_INTEGRATION: "0"
@@ -64,3 +67,20 @@ jobs:
         run: pip install pre-commit
       - name: Run pre-commit
         run: pre-commit run --all-files --show-diff-on-failure
+
+  transparency-lint:
+    # Placeholder for the EU-AI-Act Art. 53(1)(d) transparency exporter
+    # (see docs/plan-2026-08-23.md D4 and docs/artifacts/2026-eu-ai-act-transparency.md).
+    # Today this only asserts that the artifact + plan documents exist so
+    # a future PR can land the exporter without a workflow diff.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify artifacts and plan are wired in
+        run: |
+          set -euo pipefail
+          test -f docs/artifacts/README.md
+          test -f docs/artifacts/2026-eu-ai-act-transparency.md
+          test -f docs/artifacts/2026-tdmrep-and-aipref.md
+          ls docs/plan-*.md >/dev/null
+          echo "transparency prerequisites wired in"
