@@ -14,6 +14,7 @@ from __future__ import annotations
 import statistics
 from collections.abc import Iterable, Mapping
 
+from specint.dedupe import merge_records
 from specint.quality import score_records
 from specint.records import BenchmarkResult, License, SourceQuery, VideoRecord
 
@@ -63,13 +64,29 @@ def run_comparison(
     query: SourceQuery,
     by_source: Mapping[str, list[VideoRecord]],
     notes: str = "",
+    dedupe_threshold: float = 0.85,
+    scorer=score_records,
 ) -> list[BenchmarkResult]:
-    """Score, aggregate per source, and append a `__total__` row."""
+    """Score, aggregate per source, append `__total__`, then a `__deduped__` row.
+
+    The `__deduped__` row must satisfy `n_records <= __total__.n_records`;
+    if it is ever equal *and* input contained obvious cross-source dupes,
+    tests should catch a degenerate dedup implementation.
+    """
     rows: list[BenchmarkResult] = []
     all_scored: list[VideoRecord] = []
     for source, records in sorted(by_source.items()):
-        scored = score_records(records)
+        scored = scorer(records)
         all_scored.extend(scored)
         rows.append(aggregate(source, query.terms, scored, notes=notes))
     rows.append(aggregate("__total__", query.terms, all_scored, notes=notes))
+    deduped = merge_records(all_scored, threshold=dedupe_threshold)
+    rows.append(
+        aggregate(
+            "__deduped__",
+            query.terms,
+            deduped,
+            notes=(notes + " (post-dedupe)").strip(),
+        )
+    )
     return rows

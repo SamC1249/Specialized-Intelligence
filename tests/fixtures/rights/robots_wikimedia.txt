@@ -1,0 +1,8 @@
+# commons.wikimedia.org — reduced excerpt for offline tests.
+User-agent: *
+Disallow: /w/
+Disallow: /wiki/Special:
+Allow: /wiki/Special:Search
+
+User-agent: specint
+Allow: /

@@ -14,7 +14,7 @@ from collections.abc import Iterable
 from datetime import datetime
 from typing import Any
 
-from specint.records import License, Provenance, SourceQuery, VideoRecord, utcnow
+from specint.records import License, SourceQuery, VideoRecord, make_provenance
 from specint.sources.base import BaseSource
 
 API_URL = "https://commons.wikimedia.org/w/api.php"
@@ -54,11 +54,7 @@ class WikimediaCommonsSource(BaseSource):
             return []
         pages = (raw.get("query") or {}).get("pages") or {}
         out: list[VideoRecord] = []
-        prov = Provenance(
-            extractor=__name__,
-            fetched_at=utcnow(),
-            query=query.serialize(),
-        )
+        prov = make_provenance(extractor=__name__, query=query.serialize(), raw=raw)
         for page_id, page in pages.items():
             title = page.get("title") or ""
             infos = page.get("imageinfo") or []

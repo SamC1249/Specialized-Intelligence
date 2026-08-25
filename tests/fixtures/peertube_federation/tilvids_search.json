@@ -1,0 +1,29 @@
+{
+  "total": 2,
+  "data": [
+    {
+      "id": 500,
+      "uuid": "shared-vid-1",
+      "name": "Sourdough with mother starter",
+      "description": "Same video, re-uploaded via ActivityPub federation.",
+      "duration": 900,
+      "publishedAt": "2024-01-15T12:00:00Z",
+      "language": {"id": "en", "label": "English"},
+      "licence": {"id": 1, "label": "Attribution"},
+      "tags": ["sourdough"],
+      "resolution": {"id": 720, "label": "720p"},
+      "files": [{"fileUrl": "https://tilvids.com/static/webseed/shared-vid-1.mp4"}],
+      "account": {"displayName": "Open Bakers", "host": "framatube.org", "name": "openbakers"}
+    },
+    {
+      "id": 501,
+      "uuid": "til-only-1",
+      "name": "TilVids exclusive cooking short",
+      "description": "Only exists on TilVids.",
+      "duration": 400,
+      "licence": {"id": 7, "label": "Public Domain Dedication"},
+      "files": [{"fileUrl": "https://tilvids.com/static/webseed/til-only-1.mp4"}],
+      "account": {"displayName": "Tilvids Chef", "host": "tilvids.com", "name": "tilchef"}
+    }
+  ]
+}

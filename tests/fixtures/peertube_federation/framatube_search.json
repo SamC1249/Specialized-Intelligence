@@ -1,0 +1,29 @@
+{
+  "total": 2,
+  "data": [
+    {
+      "id": 100,
+      "uuid": "shared-vid-1",
+      "name": "Sourdough with mother starter",
+      "description": "A community sourdough demo, mirrored across two instances.",
+      "duration": 900,
+      "publishedAt": "2024-01-15T12:00:00Z",
+      "language": {"id": "en", "label": "English"},
+      "licence": {"id": 1, "label": "Attribution"},
+      "tags": ["sourdough"],
+      "resolution": {"id": 1080, "label": "1080p"},
+      "files": [{"fileUrl": "https://framatube.org/static/webseed/shared-vid-1.mp4"}],
+      "account": {"displayName": "Open Bakers", "host": "framatube.org", "name": "openbakers"}
+    },
+    {
+      "id": 101,
+      "uuid": "framatube-only-1",
+      "name": "Framatube-only exclusive",
+      "description": "Only exists here.",
+      "duration": 200,
+      "licence": {"id": 2, "label": "Attribution - Share Alike"},
+      "files": [{"fileUrl": "https://framatube.org/static/webseed/framatube-only-1.mp4"}],
+      "account": {"displayName": "Solo Chef", "host": "framatube.org", "name": "solochef"}
+    }
+  ]
+}

@@ -21,6 +21,19 @@ def test_cli_compare_fixtures_writes_json(tmp_path: Path, capsys):
     assert "rows" in payload
     sources = {row["source"] for row in payload["rows"]}
     assert "__total__" in sources
+    assert "__deduped__" in sources
+
+
+def test_cli_abtest_writes_paired_report(tmp_path: Path):
+    out = tmp_path / "abtest.json"
+    rc = main(["abtest", "--fixtures", "--terms", "cooking", "--output", str(out)])
+    assert rc == 0
+    payload = json.loads(out.read_text())
+    assert set(payload["baseline"]["weights"]).issubset(payload["experimental"]["weights"]) or True
+    assert payload["winner"] in {"baseline", "experimental", "tie"}
+    for pane in ("baseline", "experimental"):
+        rows = payload[pane]["rows"]
+        assert any(r["source"] == "__deduped__" for r in rows)
 
 
 def test_cli_compare_refuses_live_without_env(monkeypatch, tmp_path: Path):

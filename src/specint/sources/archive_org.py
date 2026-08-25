@@ -12,7 +12,7 @@ from collections.abc import Iterable
 from datetime import datetime
 from typing import Any
 
-from specint.records import License, Provenance, SourceQuery, VideoRecord, utcnow
+from specint.records import License, SourceQuery, VideoRecord, make_provenance
 from specint.sources.base import BaseSource
 
 SEARCH_URL = "https://archive.org/advancedsearch.php"
@@ -51,11 +51,7 @@ class ArchiveOrgSource(BaseSource):
         if not isinstance(raw, dict):
             return []
         docs = ((raw.get("response") or {}).get("docs")) or []
-        prov = Provenance(
-            extractor=__name__,
-            fetched_at=utcnow(),
-            query=query.serialize(),
-        )
+        prov = make_provenance(extractor=__name__, query=query.serialize(), raw=raw)
         out: list[VideoRecord] = []
         for d in docs:
             identifier = d.get("identifier")
@@ -77,7 +73,7 @@ class ArchiveOrgSource(BaseSource):
                     duration_s = parts[0] * 3600 + parts[1] * 60 + parts[2]
                 elif len(parts) == 2:
                     duration_s = parts[0] * 60 + parts[1]
-            elif isinstance(duration, (int, float)):
+            elif isinstance(duration, int | float):
                 duration_s = float(duration)
 
             keywords: list[str] = []

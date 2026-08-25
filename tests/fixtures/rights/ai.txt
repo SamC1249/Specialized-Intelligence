@@ -1,0 +1,9 @@
+# Example ai.txt with wildcard opt-out and one specint carve-out.
+User-Agent: *
+Disallow: /
+
+User-Agent: specint
+Allow: /
+
+User-Agent: gptbot
+Disallow: /

@@ -21,7 +21,7 @@ from typing import Any
 
 from bs4 import BeautifulSoup
 
-from specint.records import License, Provenance, SourceQuery, VideoRecord, utcnow
+from specint.records import License, SourceQuery, VideoRecord, make_provenance
 from specint.sources.base import BaseSource
 
 ISO8601_DURATION_RE = re.compile(
@@ -68,7 +68,7 @@ def _safe_str(value: Any) -> str:
         return ""
     if isinstance(value, str):
         return value
-    if isinstance(value, (list, tuple)) and value:
+    if isinstance(value, list | tuple) and value:
         return _safe_str(value[0])
     return str(value)
 
@@ -95,11 +95,7 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
     recipes = [b for b in blocks if "Recipe" in _node_types(b)]
     recipe = recipes[0] if recipes else None
 
-    prov = Provenance(
-        extractor=__name__,
-        fetched_at=utcnow(),
-        query=query.serialize(),
-    )
+    prov = make_provenance(extractor=__name__, query=query.serialize(), raw=html)
 
     out: list[VideoRecord] = []
     for v in videos:
@@ -129,8 +125,8 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             ),
             language=None,
             duration_s=parse_iso8601_duration(v.get("duration")),
-            width=int(v["width"]) if isinstance(v.get("width"), (int, float)) else None,
-            height=int(v["height"]) if isinstance(v.get("height"), (int, float)) else None,
+            width=int(v["width"]) if isinstance(v.get("width"), int | float) else None,
+            height=int(v["height"]) if isinstance(v.get("height"), int | float) else None,
             fps=None,
             license=License.UNKNOWN,
             license_url=None,

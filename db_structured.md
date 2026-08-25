@@ -32,6 +32,8 @@ redefine them locally.**
 | `width`           | `int \| None`    | Pixels.                                                                                  |
 | `height`          | `int \| None`    | Pixels.                                                                                  |
 | `fps`             | `float \| None`  | Frames per second.                                                                       |
+| `aspect_ratio`    | `float \| None`  | Explicit aspect ratio (width / height) when upstream declares one, else derived.         |
+| `audio_present`   | `bool \| None`   | True if upstream metadata asserts audio is present; None when unknown.                   |
 | `license`         | `License`        | See enum above. Defaults to `UNKNOWN`.                                                   |
 | `license_url`     | `HttpUrl \| None`| Direct link to license page or upstream license metadata.                                |
 | `author`          | `str \| None`    | Required attribution string for CC-BY*.                                                  |
@@ -42,12 +44,25 @@ redefine them locally.**
 
 ## `Provenance` (Pydantic model)
 
-| Field            | Type        | Notes                                                |
-| ---------------- | ----------- | ---------------------------------------------------- |
-| `extractor`      | `str`       | Module path, e.g. `specint.sources.wikimedia`.       |
-| `extractor_git`  | `str`       | Short git SHA at extraction time (or `dev`).         |
-| `fetched_at`     | `datetime`  | UTC instant the upstream blob was retrieved.         |
-| `query`          | `str`       | Serialized `SourceQuery`.                            |
+| Field            | Type                  | Notes                                                              |
+| ---------------- | --------------------- | ------------------------------------------------------------------ |
+| `extractor`      | `str`                 | Module path, e.g. `specint.sources.wikimedia`.                     |
+| `extractor_git`  | `str`                 | Short git SHA at extraction time (`unknown` if not in a checkout). |
+| `fetched_at`     | `datetime`            | UTC instant the upstream blob was retrieved.                       |
+| `query`          | `str`                 | Serialized `SourceQuery`.                                          |
+| `raw_sha256`     | `str`                 | SHA-256 of the exact upstream payload (empty string if unknown).   |
+| `rights`         | `RightsSignal \| None`| Robots/TDMRep/ai.txt snapshot from `specint.compliance.rights`.    |
+
+## `RightsSignal` (Pydantic model)
+
+| Field            | Type                                    | Notes                                              |
+| ---------------- | --------------------------------------- | -------------------------------------------------- |
+| `source_url`     | `str`                                   | Base URL the signal covers.                        |
+| `fetched_at`     | `datetime`                              | UTC instant the signal was fetched.                |
+| `robots_allowed` | `bool \| None`                          | `robots.txt` decision for our agent, `None` if unfetched. |
+| `tdmrep`         | `TdmStatus` (`reserved`/`allowed`/`absent`) | TDMRep JSON + `TDM-Reservation` header verdict. |
+| `ai_txt`         | `dict[str, bool] \| None`               | Per-agent map from `ai.txt`; `None` when unfetched. |
+| `notes`          | `str`                                   | Free-form provenance note.                         |
 
 ## `SourceQuery` (Pydantic model)
 
@@ -59,9 +74,16 @@ redefine them locally.**
 
 ## `BenchmarkResult` (Pydantic model)
 
-Emitted by `specint.compare.harness.run`. One row per `(source, query)`
-pair plus an aggregate `total` row. Stored under
-`reports/compare-YYYY-MM-DD.json`.
+Emitted by `specint.compare.harness.run_comparison`. Row layout:
+
+- one row per source (`source == "wikimedia"`, ...),
+- an aggregate `__total__` row (raw sum),
+- a `__deduped__` row after cross-source `merge_records` collapse.
+
+Stored under `reports/compare-YYYY-MM-DD.json`. Paired baseline-vs-
+experimental weight A/B reports are emitted separately by
+`specint.compare.abtest.run_ab_test` to `reports/procedural-abtest-
+YYYY-MM-DD.json`.
 
 | Field                   | Type      | Notes                                       |
 | ----------------------- | --------- | ------------------------------------------- |

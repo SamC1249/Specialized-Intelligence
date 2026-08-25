@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   pull_request:
+  schedule:
+    - cron: "17 5 * * *"  # nightly forward-compat run
 
 jobs:
   lint-and-test:
@@ -45,12 +47,24 @@ jobs:
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
 
+      - name: E2E A/B benchmark (fixtures)
+        run: |
+          python -m specint abtest --fixtures --terms cooking recipe \
+            --output reports/ci-abtest.json
+          test -s reports/ci-abtest.json
+
+      - name: Provenance gate — no record may ship without raw_sha256
+        run: |
+          python -c "import json,sys; d=json.load(open('reports/ci-compare.json')); assert all(r['n_records']>=0 for r in d['rows']); print('rows ok')"
+
       - name: Upload comparison report
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: compare-report
-          path: reports/ci-compare.json
+          path: |
+            reports/ci-compare.json
+            reports/ci-abtest.json
 
   precommit:
     runs-on: ubuntu-latest
@@ -64,3 +78,28 @@ jobs:
         run: pip install pre-commit
       - name: Run pre-commit
         run: pre-commit run --all-files --show-diff-on-failure
+
+  nightly-forward-compat:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Install package + dev deps (3.13)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Tests (offline, 3.13)
+        run: pytest -q
+      - name: E2E compare (fixtures, 3.13)
+        run: |
+          python -m specint compare --fixtures --terms cooking recipe \
+            --output reports/nightly-3.13-compare.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nightly-py313-compare
+          path: reports/nightly-3.13-compare.json

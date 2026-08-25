@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /
+
+User-agent: specint
+Allow: /watch
+Allow: /results
+Disallow: /
