@@ -21,7 +21,7 @@ from collections.abc import Iterable
 from datetime import datetime
 from typing import Any
 
-from specint.records import License, Provenance, SourceQuery, VideoRecord, utcnow
+from specint.records import License, SourceQuery, VideoRecord, make_provenance
 from specint.sources.base import BaseSource
 
 DEFAULT_INSTANCES: tuple[str, ...] = (
@@ -63,11 +63,7 @@ class PeerTubeSource(BaseSource):
             return []
         data = raw.get("data") or []
         instance = raw.get("__instance__", "")
-        prov = Provenance(
-            extractor=__name__,
-            fetched_at=utcnow(),
-            query=query.serialize(),
-        )
+        prov = make_provenance(extractor=__name__, query=query.serialize(), raw=raw)
         out: list[VideoRecord] = []
         for v in data:
             licence = (v.get("licence") or {}).get("id")

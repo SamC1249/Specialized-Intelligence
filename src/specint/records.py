@@ -5,14 +5,19 @@ Every other module imports types from here. Do not redefine these locally.
 
 from __future__ import annotations
 
+import hashlib
+import json
 from datetime import UTC, datetime
 from enum import Enum
 from typing import Any
 
 from pydantic import AnyHttpUrl, BaseModel, ConfigDict, Field
 
+from specint.compliance import RightsSignal
+from specint.gitmeta import short_sha
 
-class License(str, Enum):  # noqa: UP042 - keep classic str+Enum for Pydantic compatibility
+
+class License(str, Enum):  # - keep classic str+Enum for Pydantic compatibility
     CC0 = "CC0"
     CC_BY = "CC-BY"
     CC_BY_SA = "CC-BY-SA"
@@ -39,6 +44,8 @@ class Provenance(BaseModel):
     extractor_git: str = "dev"
     fetched_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     query: str = ""
+    raw_sha256: str = ""
+    rights: RightsSignal | None = None
 
 
 class SourceQuery(BaseModel):
@@ -68,6 +75,8 @@ class VideoRecord(BaseModel):
     width: int | None = None
     height: int | None = None
     fps: float | None = None
+    aspect_ratio: float | None = None
+    audio_present: bool | None = None
     license: License = License.UNKNOWN
     license_url: AnyHttpUrl | None = None
     author: str | None = None
@@ -117,3 +126,35 @@ def utcnow() -> datetime:
 
 def serialize_records(records: list[VideoRecord]) -> list[dict[str, Any]]:
     return [r.model_dump(mode="json") for r in records]
+
+
+def make_provenance(
+    extractor: str,
+    query: str,
+    raw: Any = None,
+    rights: RightsSignal | None = None,
+) -> Provenance:
+    """Factory that fills in `extractor_git` and `raw_sha256` consistently."""
+    return Provenance(
+        extractor=extractor,
+        extractor_git=short_sha(),
+        fetched_at=utcnow(),
+        query=query,
+        raw_sha256=sha256_of_raw(raw) if raw is not None else "",
+        rights=rights,
+    )
+
+
+def sha256_of_raw(raw: Any) -> str:
+    """Content-addressed hash of a raw upstream payload.
+
+    Accepts str (used as-is), bytes (used as-is), or any JSON-serializable
+    value (serialised deterministically). Callers must feed the *exact*
+    bytes/text they received from the upstream so replays are auditable.
+    """
+    if isinstance(raw, bytes):
+        return hashlib.sha256(raw).hexdigest()
+    if isinstance(raw, str):
+        return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+    encoded = json.dumps(raw, sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
