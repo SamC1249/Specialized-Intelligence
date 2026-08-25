@@ -1,0 +1,11 @@
+# Seed PeerTube instance list for federation search.
+# Format: <https url>  # provenance / notes
+# Only instances that operate under EU-compliant TOS and expose the
+# default /api/v1/search/videos endpoint.
+
+https://framatube.org             # Framasoft — CC-permissive
+https://video.blender.org         # Blender Foundation official videos
+https://tilvids.com               # Educational, community-run
+https://tube.tchncs.de            # tchncs.de — mixed content, per-video licence
+https://diode.zone                # Electronics/maker community
+https://peertube.tv               # Aggregator with strict federation
