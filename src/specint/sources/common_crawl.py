@@ -21,6 +21,7 @@ from typing import Any
 
 from bs4 import BeautifulSoup
 
+from specint.provenance import resolve_extractor_git
 from specint.records import License, Provenance, SourceQuery, VideoRecord, utcnow
 from specint.sources.base import BaseSource
 
@@ -97,6 +98,7 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
 
     prov = Provenance(
         extractor=__name__,
+        extractor_git=resolve_extractor_git(),
         fetched_at=utcnow(),
         query=query.serialize(),
     )
