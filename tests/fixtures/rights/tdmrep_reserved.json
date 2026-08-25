@@ -1,0 +1,6 @@
+{
+  "tdmrep": [
+    { "location": "/premium/", "tdm-reservation": 1 },
+    { "location": "/public/", "tdm-reservation": 0 }
+  ]
+}
