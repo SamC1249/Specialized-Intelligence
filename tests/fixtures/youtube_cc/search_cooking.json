@@ -1,0 +1,52 @@
+{
+  "kind": "youtube#searchListResponse",
+  "items": [
+    {
+      "id": {"kind": "youtube#video", "videoId": "cc_clean_1"},
+      "snippet": {
+        "title": "Homemade Pasta from Scratch (CC-BY, full recipe)",
+        "description": "Step by step recipe: mix, knead, rest, roll, cut, cook. Cook time 20 minutes.",
+        "channelTitle": "PublicKitchen",
+        "publishedAt": "2025-11-04T15:00:00Z",
+        "defaultAudioLanguage": "en",
+        "tags": ["pasta", "recipe", "cooking"]
+      }
+    },
+    {
+      "id": {"kind": "youtube#video", "videoId": "cc_contradict_2"},
+      "snippet": {
+        "title": "Cooking with third-party clips (mixed license)",
+        "description": "Uses copyrighted stock footage; declared CC by uploader.",
+        "channelTitle": "AmbiguousChef",
+        "publishedAt": "2025-09-01T09:00:00Z",
+        "defaultAudioLanguage": "en"
+      }
+    },
+    {
+      "id": {"kind": "youtube#video", "videoId": "std_license_3"},
+      "snippet": {
+        "title": "Standard licensed cooking short",
+        "description": "This should never be marked CC.",
+        "channelTitle": "OtherChannel",
+        "publishedAt": "2025-06-30T00:00:00Z"
+      }
+    }
+  ],
+  "videos": [
+    {
+      "id": "cc_clean_1",
+      "status": {"license": "creativeCommon"},
+      "contentDetails": {"duration": "PT4M32S", "dimension": "2d", "licensedContent": false}
+    },
+    {
+      "id": "cc_contradict_2",
+      "status": {"license": "creativeCommon"},
+      "contentDetails": {"duration": "PT12M0S", "dimension": "2d", "licensedContent": true}
+    },
+    {
+      "id": "std_license_3",
+      "status": {"license": "youtube"},
+      "contentDetails": {"duration": "PT0M45S", "dimension": "2d", "licensedContent": false}
+    }
+  ]
+}
