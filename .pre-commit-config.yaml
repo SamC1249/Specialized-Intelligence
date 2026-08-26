@@ -14,6 +14,18 @@ repos:
       - id: ruff
         args: ["--fix"]
       - id: ruff-format
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+        additional_dependencies: ["tomli"]
+        args: ["--ignore-words-list=cook,cooks,te,thi,nd,mater"]
+        exclude: |
+          (?x)^(
+            reports/.*|
+            tests/fixtures/.*|
+            agent-tools/.*
+          )$
   - repo: local
     hooks:
       - id: pytest-quick
@@ -22,3 +34,9 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
+      - id: mypy-schema
+        name: mypy (records.py — schema module, blocking)
+        entry: mypy src/specint/records.py
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]

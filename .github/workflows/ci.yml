@@ -31,7 +31,10 @@ jobs:
       - name: Format check (ruff)
         run: ruff format --check .
 
-      - name: Type check (mypy, best-effort)
+      - name: Type check schema module (mypy, blocking)
+        run: mypy src/specint/records.py
+
+      - name: Type check rest of tree (mypy, best-effort)
         run: mypy src || true
 
       - name: Tests (offline)
