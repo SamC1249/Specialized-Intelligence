@@ -1,0 +1,66 @@
+{
+  "kind": "youtube#videoListResponse",
+  "items": [
+    {
+      "kind": "youtube#video",
+      "id": "abc12345678",
+      "snippet": {
+        "publishedAt": "2024-03-11T15:22:00Z",
+        "channelId": "UC_openkitchen",
+        "channelTitle": "Open Kitchen",
+        "title": "Perfect Pasta Carbonara — 8 Minutes",
+        "description": "A step-by-step CC-BY cooking tutorial covering guanciale, pecorino, and emulsion technique. Full timestamps in the description.",
+        "tags": ["cooking", "pasta", "italian", "carbonara"],
+        "defaultAudioLanguage": "en"
+      },
+      "contentDetails": {
+        "duration": "PT8M12S",
+        "definition": "hd"
+      },
+      "status": {
+        "license": "creativeCommon",
+        "privacyStatus": "public"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "id": "def87654321",
+      "snippet": {
+        "publishedAt": "2023-11-02T09:00:00Z",
+        "channelId": "UC_labkitchen",
+        "channelTitle": "Lab Kitchen",
+        "title": "Sourdough Bread From Starter to Loaf",
+        "description": "Long-form CC-BY bake-along, roughly 42 minutes, covering autolyse, bulk fermentation, shaping, cold proof, and score.",
+        "tags": ["bread", "sourdough", "baking"],
+        "defaultAudioLanguage": "en"
+      },
+      "contentDetails": {
+        "duration": "PT42M07S",
+        "definition": "hd"
+      },
+      "status": {
+        "license": "creativeCommon",
+        "privacyStatus": "public"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "id": "restricted999",
+      "snippet": {
+        "publishedAt": "2024-01-15T00:00:00Z",
+        "channelId": "UC_paywalled",
+        "channelTitle": "Paywalled Channel",
+        "title": "Should not appear",
+        "description": "Standard YouTube licence — must be filtered out."
+      },
+      "contentDetails": {
+        "duration": "PT5M00S",
+        "definition": "sd"
+      },
+      "status": {
+        "license": "youtube",
+        "privacyStatus": "public"
+      }
+    }
+  ]
+}

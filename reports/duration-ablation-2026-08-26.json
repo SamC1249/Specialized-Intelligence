@@ -1,0 +1,120 @@
+{
+  "delta_long_minus_short": {
+    "__total__": {
+      "delta_mean_quality": -0.017437505055932112
+    },
+    "archive_org": {
+      "delta_mean_quality": -0.020158338580193336
+    },
+    "common_crawl": {
+      "delta_mean_quality": -0.03380533163686705
+    },
+    "peertube": {
+      "delta_mean_quality": -0.007434449217849637
+    },
+    "wikimedia": {
+      "delta_mean_quality": -0.027139723113496217
+    },
+    "youtube_cc": {
+      "delta_mean_quality": -0.005473179259590899
+    }
+  },
+  "per_profile": {
+    "long_form": {
+      "__total__": {
+        "mean_quality": 0.5097066616107346,
+        "n_duplicates_removed": 0,
+        "n_records": 10,
+        "p50_quality": 0.497132168363133,
+        "p90_quality": 0.6867724142447172
+      },
+      "archive_org": {
+        "mean_quality": 0.33832082808647335,
+        "n_duplicates_removed": 0,
+        "n_records": 3,
+        "p50_quality": 0.463569668363133,
+        "p90_quality": 0.4831509521907935
+      },
+      "common_crawl": {
+        "mean_quality": 0.497132168363133,
+        "n_duplicates_removed": 0,
+        "n_records": 1,
+        "p50_quality": 0.497132168363133,
+        "p90_quality": 0.497132168363133
+      },
+      "peertube": {
+        "mean_quality": 0.5644405507821504,
+        "n_duplicates_removed": 0,
+        "n_records": 2,
+        "p50_quality": 0.4186168637054935,
+        "p90_quality": 0.7102642378588073
+      },
+      "wikimedia": {
+        "mean_quality": 0.5943831935531705,
+        "n_duplicates_removed": 0,
+        "n_records": 2,
+        "p50_quality": 0.5172594738955557,
+        "p90_quality": 0.6715069132107852
+      },
+      "youtube_cc": {
+        "mean_quality": 0.6336622374070757,
+        "n_duplicates_removed": 0,
+        "n_records": 2,
+        "p50_quality": 0.5805520605694342,
+        "p90_quality": 0.6867724142447172
+      }
+    },
+    "short_form": {
+      "__total__": {
+        "mean_quality": 0.5271441666666667,
+        "n_duplicates_removed": 0,
+        "n_records": 10,
+        "p50_quality": 0.5309375000000001,
+        "p90_quality": 0.6964375
+      },
+      "archive_org": {
+        "mean_quality": 0.3584791666666667,
+        "n_duplicates_removed": 0,
+        "n_records": 3,
+        "p50_quality": 0.48112499999999997,
+        "p90_quality": 0.497375
+      },
+      "common_crawl": {
+        "mean_quality": 0.5309375000000001,
+        "n_duplicates_removed": 0,
+        "n_records": 1,
+        "p50_quality": 0.5309375000000001,
+        "p90_quality": 0.5309375000000001
+      },
+      "peertube": {
+        "mean_quality": 0.571875,
+        "n_duplicates_removed": 0,
+        "n_records": 2,
+        "p50_quality": 0.4473125,
+        "p90_quality": 0.6964375
+      },
+      "wikimedia": {
+        "mean_quality": 0.6215229166666667,
+        "n_duplicates_removed": 0,
+        "n_records": 2,
+        "p50_quality": 0.537375,
+        "p90_quality": 0.7056708333333334
+      },
+      "youtube_cc": {
+        "mean_quality": 0.6391354166666666,
+        "n_duplicates_removed": 0,
+        "n_records": 2,
+        "p50_quality": 0.5958958333333333,
+        "p90_quality": 0.682375
+      }
+    }
+  },
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  }
+}

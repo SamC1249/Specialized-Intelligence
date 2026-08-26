@@ -74,7 +74,18 @@ pair plus an aggregate `total` row. Stored under
 | `p50_quality`           | `float`   | Median quality.                             |
 | `p90_quality`           | `float`   |                                             |
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
+| `n_duplicates_removed`  | `int`     | Cross-source duplicates dropped from this row (only non-zero on the `__total__` row when dedup is enabled). |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
+
+## Quality scoring: `DurationProfile` (enum)
+
+Selects which duration curve `specint.quality.metrics` uses when
+scoring a record. Both profiles keep every other component identical.
+
+| Value        | Meaning                                                                                                    |
+| ------------ | ---------------------------------------------------------------------------------------------------------- |
+| `short_form` | Piecewise-linear, peaks at 300 s, decays to 0 by ~1 h. Default; matches `reports/baseline-2026-06-20.json`. |
+| `long_form`  | Log-normal-shaped, peaks around 600 s, gentler decay out to ~45 min (W4 in `docs/plan-2026-08-25.md`).      |
 
 ## Frontend / API contract (placeholder)
 
