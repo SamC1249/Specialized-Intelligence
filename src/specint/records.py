@@ -12,7 +12,7 @@ from typing import Any
 from pydantic import AnyHttpUrl, BaseModel, ConfigDict, Field
 
 
-class License(str, Enum):  # noqa: UP042 - keep classic str+Enum for Pydantic compatibility
+class License(str, Enum):
     CC0 = "CC0"
     CC_BY = "CC-BY"
     CC_BY_SA = "CC-BY-SA"
@@ -94,9 +94,20 @@ class BenchmarkResult(BaseModel):
     p90_quality: float
     unique_authors: int
     notes: str = ""
+    # Added 2026-09-11: quality profile + dedup metadata. Backwards-
+    # compatible defaults so old JSON reports still parse.
+    profile: str = "v1"
+    n_unique: int | None = None
+    duplicate_rate: float = 0.0
 
     @classmethod
-    def empty(cls, source: str, query_terms: list[str], notes: str = "") -> BenchmarkResult:
+    def empty(
+        cls,
+        source: str,
+        query_terms: list[str],
+        notes: str = "",
+        profile: str = "v1",
+    ) -> BenchmarkResult:
         return cls(
             source=source,
             query_terms=list(query_terms),
@@ -108,6 +119,9 @@ class BenchmarkResult(BaseModel):
             p90_quality=0.0,
             unique_authors=0,
             notes=notes,
+            profile=profile,
+            n_unique=0,
+            duplicate_rate=0.0,
         )
 
 
