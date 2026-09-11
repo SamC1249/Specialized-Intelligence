@@ -1,0 +1,28 @@
+{
+  "response": {
+    "docs": [
+      {
+        "identifier": "NASAKitchenPhysics101",
+        "title": "NASA Kitchen Physics 101",
+        "description": "Same NASA Educational clip on emulsions, mirrored on the Internet Archive.",
+        "creator": "NASA Educational",
+        "subject": ["cooking", "physics", "education"],
+        "language": "eng",
+        "licenseurl": "https://creativecommons.org/publicdomain/mark/1.0/",
+        "runtime": "0:05:04",
+        "publicdate": "2020-01-15T00:00:00Z"
+      },
+      {
+        "identifier": "UniqueArchivalCookingReel",
+        "title": "Depression-era Home Cooking Reel",
+        "description": "Chop, mix, saute, simmer — vintage step-by-step cookery footage.",
+        "creator": "Regional Historical Society",
+        "subject": ["cooking", "historical"],
+        "language": "eng",
+        "licenseurl": "https://creativecommons.org/publicdomain/mark/1.0/",
+        "runtime": "0:12:00",
+        "publicdate": "2005-06-01T00:00:00Z"
+      }
+    ]
+  }
+}

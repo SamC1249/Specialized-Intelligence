@@ -65,3 +65,55 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
     reloaded = json.loads(out.read_text())
     assert reloaded["query"]["terms"] == ["cooking", "recipe"]
     assert len(reloaded["rows"]) == 5
+
+
+def test_e2e_dedup_and_v2_profile(fixtures_dir: Path):
+    """Ship the dupe fixtures through the CLI-style loader path.
+
+    We invoke the harness directly (not the CLI) but load *all* JSON /
+    HTML files per source, exactly like `python -m specint compare
+    --fixtures` does.
+    """
+    import json as _json
+
+    from specint.compare import run_comparison
+    from specint.records import SourceQuery
+
+    query = SourceQuery(terms=["cooking", "recipe"], max_results=25)
+
+    def _load_json_dir(sub: str, cls):
+        parsed = []
+        for p in sorted((fixtures_dir / sub).glob("*.json")):
+            parsed.extend(cls().parse(_json.loads(p.read_text()), query))
+        return parsed
+
+    by_source = {
+        "wikimedia": _load_json_dir("wikimedia", WikimediaCommonsSource),
+        "archive_org": _load_json_dir("archive_org", ArchiveOrgSource),
+        "peertube": _load_json_dir("peertube", PeerTubeSource),
+        "common_crawl": [
+            *CommonCrawlRecipeSource().parse(
+                {
+                    "html": (fixtures_dir / "common_crawl/recipe_page.html").read_text(),
+                    "url": "https://example.test/recipes/garlic-butter-pasta",
+                },
+                query,
+            )
+        ],
+    }
+
+    v1_no_dedup = run_comparison(query, by_source, notes="e2e", profile="v1", dedup=False)
+    v1_dedup = run_comparison(query, by_source, notes="e2e", profile="v1", dedup=True)
+    v2_dedup = run_comparison(query, by_source, notes="e2e", profile="v2", dedup=True)
+
+    total_no_dedup = next(r for r in v1_no_dedup if r.source == "__total__")
+    total_dedup = next(r for r in v1_dedup if r.source == "__total__")
+
+    # The NASA fixture is intentionally mirrored across wikimedia and
+    # archive_org — dedup must drop at least one record.
+    assert total_dedup.n_unique < total_no_dedup.n_records
+    assert total_dedup.duplicate_rate > 0.0
+
+    for row in v2_dedup:
+        assert row.profile == "v2"
+        assert 0.0 <= row.mean_quality <= 1.0

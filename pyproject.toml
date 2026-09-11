@@ -48,7 +48,10 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
-ignore = ["E501"]
+# UP042: `str + Enum` is required for Pydantic v1/v2 JSON serialisation
+# compatibility with our `License` enum. Different ruff versions in
+# pre-commit vs local also disagree on whether the noqa is redundant.
+ignore = ["E501", "UP042"]
 
 [tool.ruff.format]
 quote-style = "double"
