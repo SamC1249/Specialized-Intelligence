@@ -1,0 +1,51 @@
+{
+  "projected_pages": 20,
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  },
+  "sources": [
+    {
+      "hours_license_clean": 0.6711111111111111,
+      "hours_projected": 13.422222222222222,
+      "mean_duration_s": 604.0,
+      "n_license_clean": 4,
+      "n_records": 5,
+      "notes": "",
+      "source": "archive_org"
+    },
+    {
+      "hours_license_clean": 0.0,
+      "hours_projected": 0.0,
+      "mean_duration_s": 0.0,
+      "n_license_clean": 0,
+      "n_records": 1,
+      "notes": "",
+      "source": "common_crawl"
+    },
+    {
+      "hours_license_clean": 0.22833333333333333,
+      "hours_projected": 4.566666666666666,
+      "mean_duration_s": 411.0,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "",
+      "source": "peertube"
+    },
+    {
+      "hours_license_clean": 0.18316666666666667,
+      "hours_projected": 3.6633333333333336,
+      "mean_duration_s": 219.79999999999998,
+      "n_license_clean": 3,
+      "n_records": 3,
+      "notes": "",
+      "source": "wikimedia"
+    }
+  ],
+  "total_hours_license_clean": 1.0826111111111112,
+  "total_hours_projected": 21.65222222222222
+}
