@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11", "3.12"]
+        python-version: ["3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
 
@@ -45,6 +45,23 @@ jobs:
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
 
+      - name: E2E compare determinism (re-run + diff)
+        run: |
+          python -m specint compare --fixtures --terms cooking recipe \
+            --output reports/ci-compare-2.json
+          diff -q reports/ci-compare.json reports/ci-compare-2.json
+
+      - name: License-clean media invariant
+        run: |
+          python - <<'PY'
+          import json, sys
+          from pathlib import Path
+          payload = json.loads(Path("reports/ci-compare.json").read_text())
+          for row in payload["rows"]:
+              assert row["n_license_clean"] <= row["n_records"], row
+          print("license-clean invariant OK for", len(payload["rows"]), "rows")
+          PY
+
       - name: Upload comparison report
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
@@ -64,3 +81,13 @@ jobs:
         run: pip install pre-commit
       - name: Run pre-commit
         run: pre-commit run --all-files --show-diff-on-failure
+
+  plan-summary-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Every plan-*.md must have a plan.md summary entry
+        run: python scripts/check_plan_summary.py --all
