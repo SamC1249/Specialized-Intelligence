@@ -1,0 +1,26 @@
+{
+  "query": {
+    "pages": {
+      "22222": {
+        "pageid": 22222,
+        "title": "File:NASA Kitchen Physics 101.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/NASA_Kitchen_Physics_101.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:NASA_Kitchen_Physics_101.webm",
+            "mime": "video/webm",
+            "duration": 302.0,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "Public domain"},
+              "LicenseUrl": {"value": "https://creativecommons.org/publicdomain/mark/1.0/"},
+              "Artist": {"value": "NASA Educational"},
+              "DateTimeOriginal": {"value": "2019-04-01T09:00:00Z"}
+            }
+          }
+        ]
+      }
+    }
+  }
+}
