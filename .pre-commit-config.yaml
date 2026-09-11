@@ -22,3 +22,11 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
+      - id: plan-summary-updated
+        name: plan-summary-updated
+        description: >-
+          When docs/plan-YYYY-MM-DD.md is added or modified, plan.md must
+          contain a matching dated summary line (AGENTS.md §5).
+        entry: python scripts/check_plan_summary.py
+        language: system
+        files: ^docs/plan-\d{4}-\d{2}-\d{2}\.md$
