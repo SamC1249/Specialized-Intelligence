@@ -39,18 +39,46 @@ jobs:
           SPECINT_RUN_INTEGRATION: "0"
         run: pytest -q --cov=specint --cov-report=term-missing
 
-      - name: E2E compare (fixtures)
+      - name: E2E compare (fixtures, v1 baseline)
         run: |
           python -m specint compare --fixtures --terms cooking recipe \
-            --output reports/ci-compare.json
-          test -s reports/ci-compare.json
+            --output reports/ci-compare-v1.json
+          test -s reports/ci-compare-v1.json
 
-      - name: Upload comparison report
+      - name: E2E compare (fixtures, v2 profile + dedup)
+        run: |
+          python -m specint compare --fixtures --terms cooking recipe \
+            --profile v2 --dedup \
+            --output reports/ci-compare-v2-dedup.json
+          test -s reports/ci-compare-v2-dedup.json
+          python - <<'PY'
+          import json, sys
+          d = json.load(open("reports/ci-compare-v2-dedup.json"))
+          total = [r for r in d["rows"] if r["source"] == "__total__"][0]
+          # Dedup must at least be a no-op; on the shipped fixtures the
+          # intentional NASA duplicate should reliably fire, so we assert
+          # strictly. Failing this signals a regression in the dedup path.
+          assert d["profile"] == "v2", d
+          assert d["dedup"] is True, d
+          assert total["n_unique"] <= total["n_records"], total
+          assert total["duplicate_rate"] > 0.0, total
+          PY
+
+      - name: E2E yield estimate (fixtures)
+        run: |
+          python -m specint estimate --fixtures --projected-pages 20 \
+            --output reports/ci-estimate.json
+          test -s reports/ci-estimate.json
+
+      - name: Upload comparison + estimate reports
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: compare-report
-          path: reports/ci-compare.json
+          path: |
+            reports/ci-compare-v1.json
+            reports/ci-compare-v2-dedup.json
+            reports/ci-estimate.json
 
   precommit:
     runs-on: ubuntu-latest
