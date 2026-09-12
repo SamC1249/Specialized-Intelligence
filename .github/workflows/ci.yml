@@ -34,10 +34,11 @@ jobs:
       - name: Type check (mypy, best-effort)
         run: mypy src || true
 
-      - name: Tests (offline)
+      - name: Tests (offline, ≥85% coverage on src/specint)
         env:
           SPECINT_RUN_INTEGRATION: "0"
-        run: pytest -q --cov=specint --cov-report=term-missing
+        run: |
+          pytest -q --cov=specint --cov-report=term-missing --cov-fail-under=85
 
       - name: E2E compare (fixtures)
         run: |
@@ -45,12 +46,29 @@ jobs:
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
 
+      - name: E2E dedup (fixtures)
+        run: |
+          python -m specint dedup --fixtures --terms cooking recipe \
+            --output reports/ci-dedup.json
+          test -s reports/ci-dedup.json
+
+      - name: License / provenance invariants (fixtures)
+        run: |
+          python -m specint check-invariants
+
       - name: Upload comparison report
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: compare-report
           path: reports/ci-compare.json
+
+      - name: Upload dedup report
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dedup-report
+          path: reports/ci-dedup.json
 
   precommit:
     runs-on: ubuntu-latest
