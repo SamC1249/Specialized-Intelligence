@@ -39,18 +39,29 @@ jobs:
           SPECINT_RUN_INTEGRATION: "0"
         run: pytest -q --cov=specint --cov-report=term-missing
 
-      - name: E2E compare (fixtures)
+      - name: E2E compare v1 (fixtures)
         run: |
           python -m specint compare --fixtures --terms cooking recipe \
-            --output reports/ci-compare.json
-          test -s reports/ci-compare.json
+            --scorer v1 --output reports/ci-compare-v1.json
+          test -s reports/ci-compare-v1.json
 
-      - name: Upload comparison report
+      - name: E2E compare v2 (fixtures) + dedup
+        run: |
+          python -m specint compare --fixtures --preset cooking_multi \
+            --scorer v2 --dedup --output reports/ci-compare-v2.json
+          test -s reports/ci-compare-v2.json
+
+      - name: Sanity check reports
+        run: |
+          python -c "import json; d=json.load(open('reports/ci-compare-v1.json')); assert d['scorer']=='v1' and any(r['source']=='__total__' for r in d['rows'])"
+          python -c "import json; d=json.load(open('reports/ci-compare-v2.json')); assert d['scorer']=='v2' and d['dedup'] is True"
+
+      - name: Upload comparison reports
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
-          name: compare-report
-          path: reports/ci-compare.json
+          name: compare-reports
+          path: reports/ci-compare-*.json
 
   precommit:
     runs-on: ubuntu-latest
