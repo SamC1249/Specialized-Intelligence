@@ -74,6 +74,8 @@ pair plus an aggregate `total` row. Stored under
 | `p50_quality`           | `float`   | Median quality.                             |
 | `p90_quality`           | `float`   |                                             |
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
+| `n_duplicates_removed`  | `int`     | Records dropped by cross-source dedup (0 when dedup off). |
+| `scorer`                | `str`     | Scorer id, e.g. `v1`, `v2`. Reports must record which scorer produced the numbers. |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
 
 ## Frontend / API contract (placeholder)
