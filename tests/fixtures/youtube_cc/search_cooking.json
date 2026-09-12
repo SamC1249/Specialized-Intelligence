@@ -1,0 +1,68 @@
+{
+  "kind": "youtube#videoListResponse",
+  "items": [
+    {
+      "kind": "youtube#video",
+      "id": "aBcDefGhIjK",
+      "snippet": {
+        "publishedAt": "2024-11-04T12:00:00Z",
+        "channelId": "UC-cook",
+        "channelTitle": "Public Domain Kitchen",
+        "title": "How to make garlic butter pasta step by step",
+        "description": "Boil the water, cook the pasta, brown the butter, toss and serve. A 5-minute weeknight recipe demonstrated in a real home kitchen.",
+        "defaultAudioLanguage": "en",
+        "tags": ["pasta", "cooking", "recipe", "tutorial"]
+      },
+      "contentDetails": {
+        "duration": "PT5M12S",
+        "definition": "hd"
+      },
+      "status": {
+        "uploadStatus": "processed",
+        "license": "creativeCommon"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "id": "lMnOpQrStUv",
+      "snippet": {
+        "publishedAt": "2023-04-01T00:00:00Z",
+        "channelId": "UC-lecture",
+        "channelTitle": "Food History Talks",
+        "title": "The history of the fork: a lecture",
+        "description": "An academic lecture on the evolution of eating utensils. Standard YouTube license.",
+        "defaultAudioLanguage": "en",
+        "tags": ["history", "food"]
+      },
+      "contentDetails": {
+        "duration": "PT48M2S",
+        "definition": "sd"
+      },
+      "status": {
+        "uploadStatus": "processed",
+        "license": "youtube"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "id": "wXyZ012345",
+      "snippet": {
+        "publishedAt": "2025-01-15T09:30:00Z",
+        "channelId": "UC-french",
+        "channelTitle": "Cuisine Ouverte",
+        "title": "Recette de la ratatouille",
+        "description": "Chauffez l'huile, ajoutez les oignons, faites revenir les légumes, laissez mijoter.",
+        "defaultAudioLanguage": "fr",
+        "tags": ["ratatouille", "recette", "cuisine"]
+      },
+      "contentDetails": {
+        "duration": "PT7M45S",
+        "definition": "hd"
+      },
+      "status": {
+        "uploadStatus": "processed",
+        "license": "creativeCommon"
+      }
+    }
+  ]
+}
