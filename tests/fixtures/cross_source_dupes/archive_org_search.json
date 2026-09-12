@@ -1,0 +1,28 @@
+{
+  "response": {
+    "docs": [
+      {
+        "identifier": "ModernChefDemonstration2018",
+        "title": "Modern Chef Demonstration",
+        "description": "Mirror upload of the knife-skills demo.",
+        "creator": "Open Kitchen Collective",
+        "subject": ["cooking", "knife skills"],
+        "language": "eng",
+        "licenseurl": "https://creativecommons.org/licenses/by/4.0/",
+        "runtime": "0:04:32",
+        "publicdate": "2019-01-15T00:00:00Z"
+      },
+      {
+        "identifier": "SolarStoveDemo",
+        "title": "Solar Stove Field Demonstration",
+        "description": "Outdoor cooking with a parabolic solar stove.",
+        "creator": "Renewable Kitchen",
+        "subject": ["cooking", "solar", "outdoor"],
+        "language": "eng",
+        "licenseurl": "https://creativecommons.org/licenses/by/4.0/",
+        "runtime": "0:07:12",
+        "publicdate": "2022-04-01T00:00:00Z"
+      }
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "query": {
+    "pages": {
+      "22222": {
+        "pageid": 22222,
+        "title": "File:Cooking pasta carbonara.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/a/a1/Cooking_pasta_carbonara.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Cooking_pasta_carbonara.webm?utm_source=federation&utm_campaign=mirror",
+            "mime": "video/webm",
+            "duration": 312.4,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY-SA 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by-sa/4.0"},
+              "Artist": {"value": "Jane Cook"},
+              "DateTimeOriginal": {"value": "2024-03-12T10:00:00Z"}
+            }
+          }
+        ]
+      },
+      "33333": {
+        "pageid": 33333,
+        "title": "File:Chocolate souffle tutorial.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Chocolate_souffle_tutorial.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Chocolate_souffle_tutorial.webm",
+            "mime": "video/webm",
+            "duration": 480.0,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by/4.0"},
+              "Artist": {"value": "Sugar Studio"},
+              "DateTimeOriginal": {"value": "2025-01-10T12:00:00Z"}
+            }
+          }
+        ]
+      }
+    }
+  }
+}
