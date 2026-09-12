@@ -23,8 +23,17 @@ pytest -q
 python -m specint compare --fixtures --terms cooking recipe \
   --output reports/example.json
 
+# Offline comparison with v2 scorer, multilingual preset, cross-source dedup:
+python -m specint compare --fixtures --preset cooking_multi \
+  --scorer v2 --dedup --output reports/example-v2.json
+
 # Live comparison (only with explicit opt-in):
 SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
+
+# List registered sources / scorers / presets:
+python -m specint sources
+python -m specint scorers
+python -m specint presets
 ```
 
 ## Layout
