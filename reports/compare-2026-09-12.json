@@ -1,0 +1,87 @@
+{
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  },
+  "rows": [
+    {
+      "mean_quality": 0.0,
+      "n_license_clean": 0,
+      "n_records": 0,
+      "notes": "",
+      "p50_quality": 0.0,
+      "p90_quality": 0.0,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "archive_org",
+      "total_duration_s": 0.0,
+      "unique_authors": 0
+    },
+    {
+      "mean_quality": 0.0,
+      "n_license_clean": 0,
+      "n_records": 0,
+      "notes": "",
+      "p50_quality": 0.0,
+      "p90_quality": 0.0,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "common_crawl",
+      "total_duration_s": 0.0,
+      "unique_authors": 0
+    },
+    {
+      "mean_quality": 0.0,
+      "n_license_clean": 0,
+      "n_records": 0,
+      "notes": "",
+      "p50_quality": 0.0,
+      "p90_quality": 0.0,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "peertube",
+      "total_duration_s": 0.0,
+      "unique_authors": 0
+    },
+    {
+      "mean_quality": 0.0,
+      "n_license_clean": 0,
+      "n_records": 0,
+      "notes": "",
+      "p50_quality": 0.0,
+      "p90_quality": 0.0,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "wikimedia",
+      "total_duration_s": 0.0,
+      "unique_authors": 0
+    },
+    {
+      "mean_quality": 0.0,
+      "n_license_clean": 0,
+      "n_records": 0,
+      "notes": "",
+      "p50_quality": 0.0,
+      "p90_quality": 0.0,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "__total__",
+      "total_duration_s": 0.0,
+      "unique_authors": 0
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "notes": "",
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  },
+  "rows": [
+    {
+      "dup_rate": 0.2,
+      "duplicate_groups": [
+        {
+          "member_ids": [
+            "archive_org:ChefDemo2018",
+            "archive_org:ModernChefDemonstration2018"
+          ],
+          "reason": "title+duration",
+          "representative_id": "archive_org:ChefDemo2018",
+          "size": 2
+        }
+      ],
+      "n_duplicates": 1,
+      "n_records": 5,
+      "n_unique": 4,
+      "source": "archive_org"
+    },
+    {
+      "dup_rate": 0.0,
+      "duplicate_groups": [],
+      "n_duplicates": 0,
+      "n_records": 1,
+      "n_unique": 1,
+      "source": "common_crawl"
+    },
+    {
+      "dup_rate": 0.0,
+      "duplicate_groups": [],
+      "n_duplicates": 0,
+      "n_records": 2,
+      "n_unique": 2,
+      "source": "peertube"
+    },
+    {
+      "dup_rate": 0.25,
+      "duplicate_groups": [
+        {
+          "member_ids": [
+            "wikimedia:12345",
+            "wikimedia:22222"
+          ],
+          "reason": "url",
+          "representative_id": "wikimedia:12345",
+          "size": 2
+        }
+      ],
+      "n_duplicates": 1,
+      "n_records": 4,
+      "n_unique": 3,
+      "source": "wikimedia"
+    },
+    {
+      "dup_rate": 0.166667,
+      "duplicate_groups": [
+        {
+          "member_ids": [
+            "archive_org:ChefDemo2018",
+            "archive_org:ModernChefDemonstration2018"
+          ],
+          "reason": "title+duration",
+          "representative_id": "archive_org:ChefDemo2018",
+          "size": 2
+        },
+        {
+          "member_ids": [
+            "wikimedia:12345",
+            "wikimedia:22222"
+          ],
+          "reason": "url",
+          "representative_id": "wikimedia:12345",
+          "size": 2
+        }
+      ],
+      "n_duplicates": 2,
+      "n_records": 12,
+      "n_unique": 10,
+      "source": "__total__"
+    }
+  ]
+}
