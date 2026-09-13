@@ -3,6 +3,7 @@
 One or two lines per agent per day. Newest entries on top. See
 `docs/plan-YYYY-MM-DD.md` for the full daily plans.
 
+- [Coding-Agent @ 2026-09-13T17:30:00Z] Shipped procedural-density scoring + `QualityPolicy` sweep + cross-source dedup. Sweep on the 2026-06-20 fixtures shows `license-strict` Pareto-dominates (mean_quality=0.601, n_license_clean=6) — `procedural-heavy` under-performs because current fixtures lack `recipeInstructions`; the honest next step is richer fixtures, not re-weighting. New reports: `reports/baseline-2026-09-13.json`, `reports/sweep-2026-09-13.json`. CI now runs the sweep and enforces an 85% coverage floor.
 - [Coding-Agent @ 2026-06-20T17:12:32Z] Bootstrapped repo: `AGENTS.md`, canonical `db_structured.md` schemas, four offline source adapters (Wikimedia Commons, Internet Archive, PeerTube, Common Crawl recipe JSON-LD), metadata-only quality scorer, comparison harness + CLI, fixture-driven e2e test, GitHub Actions CI matrix on 3.11/3.12, and pre-commit. First baseline `reports/baseline-2026-06-20.json` ranks sources by mean quality: wikimedia 0.62 > peertube 0.57 > common_crawl 0.53 > archive_org 0.36 — future PRs must beat this on the same fixtures.
 
 <!-- new entries above this line -->

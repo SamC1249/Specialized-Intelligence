@@ -76,6 +76,32 @@ pair plus an aggregate `total` row. Stored under
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
 
+## `QualityPolicy` (dataclass)
+
+Registered in `specint.quality.policies.POLICIES`. A named weight vector
+over `specint.quality.metrics.COMPONENTS`. Any new policy must be added
+here and swept via `python -m specint sweep`; the resulting JSON is the
+comparable artifact, not a single scalar.
+
+| Field     | Type              | Notes                                     |
+| --------- | ----------------- | ----------------------------------------- |
+| `name`    | `str`             | Unique registry key.                      |
+| `weights` | `dict[str,float]` | Keys must exist in `COMPONENTS`.          |
+| `notes`   | `str`             | One-line rationale (why this weighting?). |
+
+Current components (see `specint.quality.metrics.COMPONENTS`):
+`license_clean`, `duration`, `resolution`, `text_density`, `has_steps`,
+`procedural_density`.
+
+## `DedupReport` / `DedupCluster` (Pydantic models)
+
+Emitted by `specint.compare.dedup.build_report`. Cross-source dedup is
+blocked on `(normalize_title(title), duration_bucket(duration_s))`; false
+negatives are preferred over false positives (see `docs/plan-2026-09-13.md`).
+
+`DedupReport` fields: `n_records_in`, `n_records_out`,
+`n_duplicates_collapsed`, `n_cross_source_clusters`, `clusters`.
+
 ## Frontend / API contract (placeholder)
 
 There is no HTTP API yet. When one is added, all request/response bodies

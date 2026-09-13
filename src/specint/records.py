@@ -6,13 +6,13 @@ Every other module imports types from here. Do not redefine these locally.
 from __future__ import annotations
 
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import AnyHttpUrl, BaseModel, ConfigDict, Field
 
 
-class License(str, Enum):  # noqa: UP042 - keep classic str+Enum for Pydantic compatibility
+class License(StrEnum):
     CC0 = "CC0"
     CC_BY = "CC-BY"
     CC_BY_SA = "CC-BY-SA"

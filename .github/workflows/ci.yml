@@ -37,7 +37,7 @@ jobs:
       - name: Tests (offline)
         env:
           SPECINT_RUN_INTEGRATION: "0"
-        run: pytest -q --cov=specint --cov-report=term-missing
+        run: pytest -q --cov=specint --cov-report=term-missing --cov-fail-under=85
 
       - name: E2E compare (fixtures)
         run: |
@@ -45,12 +45,20 @@ jobs:
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
 
-      - name: Upload comparison report
+      - name: E2E sweep (fixtures)
+        run: |
+          python -m specint sweep --fixtures --terms cooking recipe \
+            --output reports/ci-sweep.json
+          python -c "import json,sys; d=json.load(open('reports/ci-sweep.json')); assert d['policies'], d; assert d['rows'], d; assert 'frontier' in d and 'dedup' in d, d; print('sweep ok:', len(d['rows']),'rows,', len(d['frontier']),'on frontier')"
+
+      - name: Upload comparison + sweep reports
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
-          name: compare-report
-          path: reports/ci-compare.json
+          name: compare-reports
+          path: |
+            reports/ci-compare.json
+            reports/ci-sweep.json
 
   precommit:
     runs-on: ubuntu-latest
