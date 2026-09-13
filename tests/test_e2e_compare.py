@@ -11,7 +11,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from specint.compare import run_comparison
+from specint.compare import run_comparison, run_sweep
+from specint.quality import POLICIES
 from specint.records import SourceQuery
 from specint.sources.archive_org import ArchiveOrgSource
 from specint.sources.common_crawl import CommonCrawlRecipeSource
@@ -65,3 +66,35 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
     reloaded = json.loads(out.read_text())
     assert reloaded["query"]["terms"] == ["cooking", "recipe"]
     assert len(reloaded["rows"]) == 5
+
+
+def test_e2e_sweep_across_policies(fixtures_dir: Path, tmp_path: Path):
+    """The sweep must produce a serialisable payload with every policy."""
+
+    query = SourceQuery(terms=["cooking", "recipe"], max_results=25)
+    by_source = {
+        "wikimedia": WikimediaCommonsSource().parse(
+            json.loads((fixtures_dir / "wikimedia/search_pasta.json").read_text()), query
+        ),
+        "archive_org": ArchiveOrgSource().parse(
+            json.loads((fixtures_dir / "archive_org/search_cooking.json").read_text()), query
+        ),
+        "peertube": PeerTubeSource().parse(
+            json.loads((fixtures_dir / "peertube/search_cooking.json").read_text()), query
+        ),
+        "common_crawl": CommonCrawlRecipeSource().parse(
+            {
+                "html": (fixtures_dir / "common_crawl/recipe_page.html").read_text(),
+                "url": "https://example.test/recipes/garlic-butter-pasta",
+            },
+            query,
+        ),
+    }
+
+    payload = run_sweep(query, by_source, notes="e2e")
+    (tmp_path / "sweep.json").write_text(json.dumps(payload, sort_keys=True))
+    reloaded = json.loads((tmp_path / "sweep.json").read_text())
+    assert sorted(reloaded["policies"]) == sorted(POLICIES)
+    totals = [r for r in reloaded["rows"] if r["source"] == "__total__"]
+    assert len(totals) == len(POLICIES)
+    assert reloaded["dedup"]["n_records_in"] > 0

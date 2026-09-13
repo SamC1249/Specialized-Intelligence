@@ -68,7 +68,7 @@ def _safe_str(value: Any) -> str:
         return ""
     if isinstance(value, str):
         return value
-    if isinstance(value, (list, tuple)) and value:
+    if isinstance(value, list | tuple) and value:
         return _safe_str(value[0])
     return str(value)
 
@@ -129,8 +129,8 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             ),
             language=None,
             duration_s=parse_iso8601_duration(v.get("duration")),
-            width=int(v["width"]) if isinstance(v.get("width"), (int, float)) else None,
-            height=int(v["height"]) if isinstance(v.get("height"), (int, float)) else None,
+            width=int(v["width"]) if isinstance(v.get("width"), int | float) else None,
+            height=int(v["height"]) if isinstance(v.get("height"), int | float) else None,
             fps=None,
             license=License.UNKNOWN,
             license_url=None,

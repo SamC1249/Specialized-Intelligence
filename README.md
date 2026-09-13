@@ -23,6 +23,13 @@ pytest -q
 python -m specint compare --fixtures --terms cooking recipe \
   --output reports/example.json
 
+# Offline policy sweep (Pareto frontier + cross-source dedup):
+python -m specint sweep --fixtures --terms cooking recipe \
+  --output reports/example-sweep.json
+
+# List registered quality policies:
+python -m specint policies
+
 # Live comparison (only with explicit opt-in):
 SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
 ```
@@ -45,5 +52,5 @@ SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
 
 ## License & contribution
 
-MIT for code. See `AGENTS.md` for the agent collaboration loop and
-`docs/plan-2026-06-20.md` for the seed research plan.
+MIT for code. See `AGENTS.md` for the agent collaboration loop and the
+latest `docs/plan-YYYY-MM-DD.md` for the current research plan.
