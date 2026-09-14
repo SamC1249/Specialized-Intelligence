@@ -23,6 +23,17 @@ pytest -q
 python -m specint compare --fixtures --terms cooking recipe \
   --output reports/example.json
 
+# Domain profiles cover multiple domains + languages out of the box:
+python -m specint domains
+python -m specint compare --fixtures --domain cooking --language fr \
+  --output reports/example-fr.json
+
+# Diff any two reports per source (candidate - baseline):
+python -m specint compare-diff \
+  --baseline reports/baseline-2026-06-20.json \
+  --candidate reports/compare-2026-09-14.json \
+  --output reports/diff-2026-09-14.json
+
 # Live comparison (only with explicit opt-in):
 SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
 ```
@@ -39,6 +50,9 @@ SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
 | `src/specint/sources/`          | Per-upstream adapters (BaseSource subclasses).        |
 | `src/specint/quality/`          | Metadata-only quality scorers.                        |
 | `src/specint/compare/`          | Systematic benchmark harness.                         |
+| `src/specint/licenses.py`       | Central license URL/short-name classifier.            |
+| `src/specint/language.py`       | Dependency-free BCP-47 detection (signal-only).       |
+| `src/specint/domains.py`        | Multilingual seed-term registry (cooking, surgery, ...) |
 | `src/specint/cli.py`            | `python -m specint`.                                  |
 | `tests/`                        | Offline-only pytest suite + fixtures.                 |
 | `.github/workflows/ci.yml`      | Lint, types, unit, e2e-fixture tests.                 |

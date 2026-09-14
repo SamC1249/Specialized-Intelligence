@@ -81,3 +81,37 @@ pair plus an aggregate `total` row. Stored under
 There is no HTTP API yet. When one is added, all request/response bodies
 **must** reuse the Pydantic models above; do not redefine them in
 `api/*.py`.
+
+## Cross-cutting utilities
+
+The following library modules are **the** single source of truth for
+their concerns. Adapters MUST NOT reimplement these locally.
+
+| Module                     | Responsibility                                                                    |
+| -------------------------- | --------------------------------------------------------------------------------- |
+| `specint.licenses`         | URL / SPDX / MediaWiki short-name → `License`. `combine()` merges page + record.  |
+| `specint.language`         | Dependency-free BCP-47 detection (script + stopword vote). Signal only, never licensing. |
+| `specint.domains`          | `DOMAINS` registry: `{ domain: { bcp47: (terms,...) } }`. `terms_for(domain, language)`. |
+
+## Quality-scorer components (canonical list)
+
+Every component in `specint.quality.metrics.WEIGHTS` must be listed here
+so `Reviewer-Agent` can spot silent additions.
+
+| Component         | Weight | Rationale                                                       |
+| ----------------- | ------ | --------------------------------------------------------------- |
+| `license_clean`   | 0.30   | Downstream can only train on redistributable licenses.          |
+| `duration`        | 0.15   | Peaks at 5 minutes (procedural sweet spot).                     |
+| `resolution`      | 0.18   | 720p+ ramps to 1.0; 1080p+ = 1.0.                               |
+| `text_density`    | 0.14   | `len(title+desc+steps)/800` — proxy for supervisable text.      |
+| `has_steps`       | 0.13   | 1 iff `recipe_steps` is non-empty (procedural supervision).     |
+| `language_tagged` | 0.10   | 1 iff record has an explicit language OR our detector is sure.  |
+
+## CLI commands (canonical list)
+
+| Command                | Purpose                                                                    |
+| ---------------------- | -------------------------------------------------------------------------- |
+| `sources`              | List every registered `BaseSource` slug and its Python path.               |
+| `domains`              | List every domain profile and its supported BCP-47 languages.              |
+| `compare`              | Run the comparison harness (offline `--fixtures`, or live with env var).   |
+| `compare-diff`         | Diff two comparison JSON reports per source: `mean_quality`, license-clean. |

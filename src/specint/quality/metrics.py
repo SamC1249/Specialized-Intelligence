@@ -6,12 +6,15 @@ we can rank a backlog of millions of candidates before deciding which to
 actually download.
 
 Components (current):
-  - license_clean : 1 if license is redistributable, else 0.
-  - duration      : peaks at 5 minutes (procedural sweet spot for a single
-                    recipe), penalizes very short and very long.
-  - resolution    : >=720p ramps from 0 to 1.
-  - text_density  : combined length of title + description + recipe_steps.
-  - has_steps     : 1 if recipe_steps non-empty (procedural supervision).
+  - license_clean   : 1 if license is redistributable, else 0.
+  - duration        : peaks at 5 minutes (procedural sweet spot for a
+                      single recipe), penalizes very short and very long.
+  - resolution      : >=720p ramps from 0 to 1.
+  - text_density    : combined length of title + description + recipe_steps.
+  - has_steps       : 1 if recipe_steps non-empty (procedural supervision).
+  - language_tagged : 1 if the record has an explicit language tag OR
+                      our script/stopword detector is confident about
+                      one — lets us stratify multilingual corpora.
 
 Adding a component:
   1. Implement a new `_score_*` function returning a float in [0, 1].
@@ -24,14 +27,16 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
+from specint.language import detect_language
 from specint.records import VideoRecord
 
 WEIGHTS: dict[str, float] = {
-    "license_clean": 0.35,
+    "license_clean": 0.30,
     "duration": 0.15,
-    "resolution": 0.20,
-    "text_density": 0.15,
-    "has_steps": 0.15,
+    "resolution": 0.18,
+    "text_density": 0.14,
+    "has_steps": 0.13,
+    "language_tagged": 0.10,
 }
 
 
@@ -75,12 +80,20 @@ def _score_has_steps(record: VideoRecord) -> float:
     return 1.0 if record.recipe_steps else 0.0
 
 
+def _score_language_tagged(record: VideoRecord) -> float:
+    if record.language:
+        return 1.0
+    detected = detect_language(record.title, record.description)
+    return 1.0 if detected else 0.0
+
+
 _COMPONENTS = {
     "license_clean": _score_license,
     "duration": _score_duration,
     "resolution": _score_resolution,
     "text_density": _score_text_density,
     "has_steps": _score_has_steps,
+    "language_tagged": _score_language_tagged,
 }
 
 

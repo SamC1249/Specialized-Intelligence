@@ -1,0 +1,61 @@
+{
+  "baseline_path": "reports/baseline-2026-06-20.json",
+  "candidate_path": "reports/compare-2026-09-14.json",
+  "deltas": [
+    {
+      "baseline_mean_quality": 0.4991463541666667,
+      "baseline_n_license_clean": 6,
+      "baseline_n_records": 8,
+      "candidate_mean_quality": 0.5487322916666666,
+      "candidate_n_license_clean": 7,
+      "candidate_n_records": 8,
+      "mean_quality_delta": 0.0495859374999999,
+      "n_license_clean_delta": 1.0,
+      "source": "__total__"
+    },
+    {
+      "baseline_mean_quality": 0.3584791666666667,
+      "baseline_n_license_clean": 2,
+      "baseline_n_records": 3,
+      "candidate_mean_quality": 0.424375,
+      "candidate_n_license_clean": 2,
+      "candidate_n_records": 3,
+      "mean_quality_delta": 0.06589583333333332,
+      "n_license_clean_delta": 0.0,
+      "source": "archive_org"
+    },
+    {
+      "baseline_mean_quality": 0.5309375000000001,
+      "baseline_n_license_clean": 0,
+      "baseline_n_records": 1,
+      "candidate_mean_quality": 0.887875,
+      "candidate_n_license_clean": 1,
+      "candidate_n_records": 1,
+      "mean_quality_delta": 0.3569374999999999,
+      "n_license_clean_delta": 1.0,
+      "source": "common_crawl"
+    },
+    {
+      "baseline_mean_quality": 0.571875,
+      "baseline_n_license_clean": 2,
+      "baseline_n_records": 2,
+      "candidate_mean_quality": 0.561275,
+      "candidate_n_license_clean": 2,
+      "candidate_n_records": 2,
+      "mean_quality_delta": -0.010600000000000054,
+      "n_license_clean_delta": 0.0,
+      "source": "peertube"
+    },
+    {
+      "baseline_mean_quality": 0.6215229166666667,
+      "baseline_n_license_clean": 2,
+      "baseline_n_records": 2,
+      "candidate_mean_quality": 0.5531541666666666,
+      "candidate_n_license_clean": 2,
+      "candidate_n_records": 2,
+      "mean_quality_delta": -0.06836875000000009,
+      "n_license_clean_delta": 0.0,
+      "source": "wikimedia"
+    }
+  ]
+}

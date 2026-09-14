@@ -19,6 +19,53 @@ from specint.sources.peertube import PeerTubeSource
 from specint.sources.wikimedia import WikimediaCommonsSource
 
 
+def test_e2e_offline_compare_beats_seed_baseline(fixtures_dir: Path):
+    """New score/license logic must not regress the seed baseline aggregate."""
+    query = SourceQuery(terms=["cooking", "recipe"], max_results=25)
+    by_source = {
+        "wikimedia": WikimediaCommonsSource().parse(
+            json.loads((fixtures_dir / "wikimedia/search_pasta.json").read_text()), query
+        ),
+        "archive_org": ArchiveOrgSource().parse(
+            json.loads((fixtures_dir / "archive_org/search_cooking.json").read_text()), query
+        ),
+        "peertube": PeerTubeSource().parse(
+            json.loads((fixtures_dir / "peertube/search_cooking.json").read_text()), query
+        ),
+        "common_crawl": CommonCrawlRecipeSource().parse(
+            {
+                "html": (fixtures_dir / "common_crawl/recipe_page.html").read_text(),
+                "url": "https://example.test/recipes/garlic-butter-pasta",
+            },
+            query,
+        ),
+    }
+    rows = run_comparison(query, by_source, notes="e2e-regression")
+    total = next(r for r in rows if r.source == "__total__")
+    # Seed baseline (reports/baseline-2026-06-20.json) total mean_quality was 0.499.
+    # Any new scorer/pipeline change must not silently regress that number.
+    assert total.mean_quality >= 0.499, (
+        f"regressed seed baseline mean_quality (0.499): got {total.mean_quality:.3f}"
+    )
+    assert total.n_license_clean >= 6, (
+        f"regressed seed baseline n_license_clean (6): got {total.n_license_clean}"
+    )
+
+
+def test_e2e_lying_common_crawl_page_is_rejected(fixtures_dir: Path):
+    query = SourceQuery(terms=["ragu"], max_results=1)
+    records = CommonCrawlRecipeSource().parse(
+        {
+            "html": (fixtures_dir / "common_crawl/recipe_page_lying.html").read_text(),
+            "url": "https://example.test/recipes/secret-ragu",
+        },
+        query,
+    )
+    assert len(records) == 1
+    assert not records[0].license.is_redistributable
+    assert records[0].media_url is None
+
+
 def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Path):
     query = SourceQuery(terms=["cooking", "recipe"], max_results=25)
 
