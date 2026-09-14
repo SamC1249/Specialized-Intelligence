@@ -17,3 +17,5 @@ reports/ci-*.json
 reports/example*.json
 !reports/.gitkeep
 !reports/baseline-*.json
+!reports/compare-*.json
+!reports/diff-*.json

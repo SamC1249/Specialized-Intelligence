@@ -1,0 +1,87 @@
+{
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  },
+  "rows": [
+    {
+      "mean_quality": 0.424375,
+      "n_license_clean": 2,
+      "n_records": 3,
+      "notes": "compare-2026-09-14 license+language+page-license",
+      "p50_quality": 0.5301,
+      "p90_quality": 0.54655,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "archive_org",
+      "total_duration_s": 1572.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.887875,
+      "n_license_clean": 1,
+      "n_records": 1,
+      "notes": "compare-2026-09-14 license+language+page-license",
+      "p50_quality": 0.887875,
+      "p90_quality": 0.887875,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "common_crawl",
+      "total_duration_s": 270.0,
+      "unique_authors": 1
+    },
+    {
+      "mean_quality": 0.561275,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "compare-2026-09-14 license+language+page-license",
+      "p50_quality": 0.396825,
+      "p90_quality": 0.725725,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "peertube",
+      "total_duration_s": 822.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.5531541666666666,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "compare-2026-09-14 license+language+page-license",
+      "p50_quality": 0.47104999999999997,
+      "p90_quality": 0.6352583333333333,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "wikimedia",
+      "total_duration_s": 357.4,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.5487322916666666,
+      "n_license_clean": 7,
+      "n_records": 8,
+      "notes": "compare-2026-09-14 license+language+page-license",
+      "p50_quality": 0.54655,
+      "p90_quality": 0.725725,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "__total__",
+      "total_duration_s": 3021.4,
+      "unique_authors": 8
+    }
+  ]
+}
