@@ -26,8 +26,10 @@ def test_common_crawl_parse_recipe_html(load_text):
     assert r.duration_s == 270.0
     assert r.height == 1080
     assert r.author == "Sam Cook"
-    assert r.license is License.UNKNOWN  # we never auto-trust embedded license
-    assert r.media_url is None  # never expose media for unknown license
+    # Page has an explicit <link rel="license"> that we do trust.
+    assert r.license is License.CC_BY_SA
+    assert r.license_url is not None
+    assert r.media_url is None  # we still never expose an unverified media URL
     assert len(r.recipe_steps) == 4
     assert any("al dente" in s for s in r.recipe_steps)
 

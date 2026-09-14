@@ -21,6 +21,7 @@ from typing import Any
 
 from bs4 import BeautifulSoup
 
+from specint.licenses import classify, combine
 from specint.records import License, Provenance, SourceQuery, VideoRecord, utcnow
 from specint.sources.base import BaseSource
 
@@ -82,6 +83,41 @@ def _parse_iso(value: str | None) -> datetime | None:
         return None
 
 
+def extract_page_license(soup: BeautifulSoup) -> tuple[License, str | None]:
+    """Return the license declared by the *page*, not by any embedded video.
+
+    Checks (in order):
+      1. `<link rel="license" href="...">`
+      2. `<meta name="license" content="...">`
+      3. `<meta name="copyright" content="...">`
+      4. `<a rel="license" href="...">`
+
+    This is the authoritative signal for Common Crawl records; the
+    per-video JSON-LD block is untrusted (risk #3 in seed plan).
+    """
+    for tag in soup.find_all("link", attrs={"rel": True}):
+        rel = tag.get("rel")
+        rel_val = " ".join(rel) if isinstance(rel, list) else str(rel or "")
+        if "license" in rel_val.lower() and tag.get("href"):
+            href = str(tag["href"])
+            return classify(href), href
+
+    for name in ("license", "copyright", "dcterms.rights"):
+        meta = soup.find("meta", attrs={"name": name})
+        if meta and meta.get("content"):
+            content = str(meta["content"])
+            return classify(content), content
+
+    for tag in soup.find_all("a", attrs={"rel": True}):
+        rel = tag.get("rel")
+        rel_val = " ".join(rel) if isinstance(rel, list) else str(rel or "")
+        if "license" in rel_val.lower() and tag.get("href"):
+            href = str(tag["href"])
+            return classify(href), href
+
+    return License.UNKNOWN, None
+
+
 def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[VideoRecord]:
     soup = BeautifulSoup(html, "lxml")
     blocks: list[dict[str, Any]] = []
@@ -95,6 +131,8 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
     recipes = [b for b in blocks if "Recipe" in _node_types(b)]
     recipe = recipes[0] if recipes else None
 
+    page_license, page_license_url = extract_page_license(soup)
+
     prov = Provenance(
         extractor=__name__,
         fetched_at=utcnow(),
@@ -105,6 +143,8 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
     for v in videos:
         embed = _safe_str(v.get("embedUrl") or v.get("contentUrl") or page_url)
         native_id = _safe_str(v.get("@id") or v.get("identifier") or embed)
+        embedded_license = classify(_safe_str(v.get("license")))
+        record_license = combine(page_license, embedded_license)
         steps: list[str] = []
         if recipe:
             instructions = recipe.get("recipeInstructions")
@@ -132,8 +172,8 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             width=int(v["width"]) if isinstance(v.get("width"), (int, float)) else None,
             height=int(v["height"]) if isinstance(v.get("height"), (int, float)) else None,
             fps=None,
-            license=License.UNKNOWN,
-            license_url=None,
+            license=record_license,
+            license_url=page_license_url,
             author=_safe_str(
                 (v.get("author") or {}).get("name")
                 if isinstance(v.get("author"), dict)
