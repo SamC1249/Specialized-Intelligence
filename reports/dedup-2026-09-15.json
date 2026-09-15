@@ -1,0 +1,23 @@
+{
+  "collision_matrix": {},
+  "collisions_by_key": {},
+  "n_collisions": 0,
+  "n_input": 11,
+  "n_unique": 11,
+  "notes": "2026-09-15-baseline",
+  "per_source_unique": {
+    "archive_org": 3,
+    "common_crawl": 1,
+    "peertube": 2,
+    "wikimedia": 2,
+    "youtube_cc": 3
+  },
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  }
+}

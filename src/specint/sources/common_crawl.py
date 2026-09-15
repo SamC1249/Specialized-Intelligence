@@ -21,6 +21,7 @@ from typing import Any
 
 from bs4 import BeautifulSoup
 
+from specint.provenance_git import current_git_sha
 from specint.records import License, Provenance, SourceQuery, VideoRecord, utcnow
 from specint.sources.base import BaseSource
 
@@ -68,7 +69,7 @@ def _safe_str(value: Any) -> str:
         return ""
     if isinstance(value, str):
         return value
-    if isinstance(value, (list, tuple)) and value:
+    if isinstance(value, list | tuple) and value:
         return _safe_str(value[0])
     return str(value)
 
@@ -97,6 +98,7 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
 
     prov = Provenance(
         extractor=__name__,
+        extractor_git=current_git_sha(),
         fetched_at=utcnow(),
         query=query.serialize(),
     )
@@ -129,8 +131,8 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             ),
             language=None,
             duration_s=parse_iso8601_duration(v.get("duration")),
-            width=int(v["width"]) if isinstance(v.get("width"), (int, float)) else None,
-            height=int(v["height"]) if isinstance(v.get("height"), (int, float)) else None,
+            width=int(v["width"]) if isinstance(v.get("width"), int | float) else None,
+            height=int(v["height"]) if isinstance(v.get("height"), int | float) else None,
             fps=None,
             license=License.UNKNOWN,
             license_url=None,

@@ -76,6 +76,36 @@ pair plus an aggregate `total` row. Stored under
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
 
+## `DedupReport` (Pydantic model)
+
+Emitted by `specint.quality.dedup.deduplicate` alongside the deduped
+`VideoRecord` list. Persisted at `reports/dedup-YYYY-MM-DD.json`.
+
+| Field                | Type                | Notes                                                                                    |
+| -------------------- | ------------------- | ---------------------------------------------------------------------------------------- |
+| `n_input`            | `int`               | Records fed in.                                                                          |
+| `n_unique`           | `int`               | Records kept after collapsing collisions.                                                |
+| `n_collisions`       | `int`               | `n_input - n_unique`.                                                                    |
+| `collisions_by_key`  | `dict[str, int]`    | Counts per collision key (`media_url`, `url`, `fingerprint`).                            |
+| `collision_matrix`   | `dict[str, int]`    | `"source_a::source_b"` (alphabetised pair) → number of times the two mirrored a record.  |
+| `per_source_unique`  | `dict[str, int]`    | Per-source unique-record count after dedup.                                              |
+
+## Scoring profiles
+
+`specint.quality.metrics.SCORING_PROFILES` publishes named weight
+vectors so ablation is a first-class output rather than a note in a
+notebook. Current profiles:
+
+| Profile             | Emphasis                                                                     |
+| ------------------- | ---------------------------------------------------------------------------- |
+| `balanced` (default)| Equal-ish weight; `license_clean` dominates but procedural signal is real.   |
+| `license_first`     | Legal safety > everything (`license_clean=0.55`).                            |
+| `procedural_first`  | Rewards imperative-verb density and step count over pure resolution/license. |
+
+`specint.compare.ablation.run_ablation` runs every profile and emits a
+per-profile source ranking so PRs can defend the shape of the frontier,
+not just a single mean.
+
 ## Frontend / API contract (placeholder)
 
 There is no HTTP API yet. When one is added, all request/response bodies

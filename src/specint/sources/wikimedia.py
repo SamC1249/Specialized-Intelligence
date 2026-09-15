@@ -14,6 +14,7 @@ from collections.abc import Iterable
 from datetime import datetime
 from typing import Any
 
+from specint.provenance_git import current_git_sha
 from specint.records import License, Provenance, SourceQuery, VideoRecord, utcnow
 from specint.sources.base import BaseSource
 
@@ -56,6 +57,7 @@ class WikimediaCommonsSource(BaseSource):
         out: list[VideoRecord] = []
         prov = Provenance(
             extractor=__name__,
+            extractor_git=current_git_sha(),
             fetched_at=utcnow(),
             query=query.serialize(),
         )

@@ -1,0 +1,53 @@
+{
+  "kind": "youtube#searchListResponse",
+  "items": [
+    {
+      "kind": "youtube#searchResult",
+      "id": {"kind": "youtube#video", "videoId": "abc123EXAMPLE"},
+      "snippet": {
+        "publishedAt": "2025-04-11T14:00:00Z",
+        "channelId": "UCcookingCC",
+        "title": "Simple Garlic Butter Pasta — CC-BY",
+        "description": "Bring water to a boil. Chop garlic. Melt butter. Toss pasta. A short weeknight cooking recipe.",
+        "channelTitle": "Open Kitchen",
+        "defaultAudioLanguage": "en",
+        "tags": ["cooking", "pasta", "cc-by"]
+      },
+      "contentDetails": {
+        "duration": "PT4M30S"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "id": {"kind": "youtube#video", "videoId": "def456EXAMPLE"},
+      "snippet": {
+        "publishedAt": "2025-01-02T09:30:00Z",
+        "channelId": "UCcookingCC",
+        "title": "Knife Skills Basics — CC-BY tutorial",
+        "description": "Learn to dice, mince, and julienne. Cover cooking knife safety and demonstrate how to slice onions, chop herbs, and cube vegetables.",
+        "channelTitle": "Open Kitchen",
+        "defaultAudioLanguage": "en",
+        "tags": ["knife skills", "tutorial", "cooking"]
+      },
+      "contentDetails": {
+        "duration": "PT12M15S"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "id": {"kind": "youtube#video", "videoId": "ghi789EXAMPLE"},
+      "snippet": {
+        "publishedAt": "2024-11-20T18:00:00Z",
+        "channelId": "UCanotherCC",
+        "title": "Baking Sourdough Bread",
+        "description": "Mix flour, water, and starter. Knead, fold, rest, bake. Recipe walkthrough.",
+        "channelTitle": "Fermented Studio",
+        "defaultAudioLanguage": "en",
+        "tags": ["baking", "sourdough", "bread"]
+      },
+      "contentDetails": {
+        "duration": "PT8M0S"
+      }
+    }
+  ]
+}

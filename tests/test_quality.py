@@ -1,6 +1,8 @@
 from datetime import UTC, datetime
 
-from specint.quality import score_record, score_records
+import pytest
+
+from specint.quality import SCORING_PROFILES, score_record, score_records
 from specint.records import License, Provenance, VideoRecord
 
 
@@ -41,3 +43,42 @@ def test_score_records_attaches_quality():
     [scored] = score_records([r])
     assert scored.quality_score is not None
     assert 0.0 <= scored.quality_score <= 1.0
+
+
+def test_procedural_verbs_boost_score():
+    bland = _rec(
+        license=License.CC_BY,
+        duration_s=300.0,
+        height=1080,
+        title="A relaxing afternoon by the lake",
+        description="A calm scenic tour with slow pacing and no instructions at all.",
+    )
+    procedural = _rec(
+        license=License.CC_BY,
+        duration_s=300.0,
+        height=1080,
+        title="Chop, sear, deglaze, and simmer",
+        description="Chop garlic. Sear the steak. Deglaze the pan. Simmer until reduced.",
+        recipe_steps=["chop garlic", "sear steak", "deglaze pan", "simmer sauce"],
+    )
+    assert score_record(procedural) > score_record(bland)
+
+
+def test_named_profiles_are_all_normalised():
+    r = _rec(license=License.CC_BY, duration_s=300.0, height=1080)
+    for name in SCORING_PROFILES:
+        s = score_record(r, profile=name)
+        assert 0.0 <= s <= 1.0
+
+
+def test_unknown_profile_raises():
+    r = _rec()
+    with pytest.raises(KeyError):
+        score_record(r, profile="nonexistent")
+
+
+def test_license_first_profile_penalises_unknown_license_more():
+    unknown = _rec(license=License.UNKNOWN, duration_s=300.0, height=1080)
+    balanced = score_record(unknown, profile="balanced")
+    license_first = score_record(unknown, profile="license_first")
+    assert license_first < balanced
