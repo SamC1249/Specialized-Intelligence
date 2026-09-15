@@ -9,9 +9,9 @@ from specint.quality.metrics import (
 
 __all__ = [
     "DEFAULT_PROFILE",
-    "DedupReport",
     "SCORING_PROFILES",
     "WEIGHTS",
+    "DedupReport",
     "deduplicate",
     "score_record",
     "score_records",

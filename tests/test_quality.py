@@ -1,6 +1,7 @@
 from datetime import UTC, datetime
 
 import pytest
+
 from specint.quality import SCORING_PROFILES, score_record, score_records
 from specint.records import License, Provenance, VideoRecord
 

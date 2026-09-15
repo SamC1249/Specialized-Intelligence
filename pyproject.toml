@@ -21,7 +21,8 @@ dependencies = [
 dev = [
     "pytest>=8.0",
     "pytest-cov>=5.0",
-    "ruff>=0.5",
+    # Keep in sync with .pre-commit-config.yaml so lint agrees locally and in CI.
+    "ruff==0.6.9",
     "mypy>=1.10",
     "pre-commit>=3.7",
 ]
