@@ -34,6 +34,9 @@ jobs:
       - name: Type check (mypy, best-effort)
         run: mypy src || true
 
+      - name: Plan-entry consistency
+        run: python scripts/check_plan_entry.py
+
       - name: Tests (offline)
         env:
           SPECINT_RUN_INTEGRATION: "0"

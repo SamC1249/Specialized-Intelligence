@@ -22,3 +22,9 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
+      - id: check-plan-entry
+        name: check plan.md has a dated line for each docs/plan-*.md
+        entry: python scripts/check_plan_entry.py
+        language: system
+        pass_filenames: false
+        files: ^(plan\.md|docs/plan-.*\.md)$
