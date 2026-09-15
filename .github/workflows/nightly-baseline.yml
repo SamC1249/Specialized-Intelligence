@@ -1,0 +1,83 @@
+name: nightly-baseline
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  compare-vs-seed-baseline:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Regenerate fixture compare
+        run: |
+          mkdir -p reports
+          python -m specint compare \
+            --fixtures \
+            --terms cooking recipe \
+            --output reports/nightly-latest.json \
+            --notes "nightly-fixture"
+
+      - name: Diff vs baseline (±5% drift floor)
+        run: |
+          python - <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          baseline = json.loads(Path("reports/baseline-2026-06-20.json").read_text())
+          latest = json.loads(Path("reports/nightly-latest.json").read_text())
+
+          def row(rows, source):
+              for r in rows:
+                  if r["source"] == source:
+                      return r
+              raise SystemExit(f"missing source {source} in nightly report")
+
+          drift_report = []
+          any_bad = False
+          for base_row in baseline["rows"]:
+              new_row = row(latest["rows"], base_row["source"])
+              base_q = base_row["mean_quality"]
+              new_q = new_row["mean_quality"]
+              delta = new_q - base_q
+              rel = (delta / base_q) if base_q else 0.0
+              flag = "OK"
+              if abs(rel) > 0.05 and base_row["source"] != "__total__":
+                  flag = "DRIFT"
+                  any_bad = True
+              if abs(rel) > 0.10 and base_row["source"] == "__total__":
+                  flag = "TOTAL_DRIFT"
+                  any_bad = True
+              drift_report.append(
+                  f"{flag:14s} {base_row['source']:14s} "
+                  f"base={base_q:.4f} new={new_q:.4f} "
+                  f"delta={delta:+.4f} ({rel*100:+.2f}%)"
+              )
+
+          print("\n".join(drift_report))
+          if any_bad:
+              print("::warning::mean_quality drifted more than allowed")
+              sys.exit(1)
+          PY
+
+      - name: Upload nightly report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-compare-report
+          path: reports/nightly-latest.json
