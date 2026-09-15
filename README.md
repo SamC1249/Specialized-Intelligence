@@ -23,8 +23,19 @@ pytest -q
 python -m specint compare --fixtures --terms cooking recipe \
   --output reports/example.json
 
+# Ablate across every scoring profile:
+python -m specint ablate --fixtures --terms cooking recipe \
+  --output reports/example-ablation.json
+
+# Deduplicate across sources & get a collision matrix:
+python -m specint dedup --fixtures --terms cooking recipe \
+  --output reports/example-dedup.json
+
 # Live comparison (only with explicit opt-in):
 SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
+
+# Regenerate the committed baseline reports from shipped fixtures:
+python scripts/emit_baseline_reports.py --date $(date +%F)
 ```
 
 ## Layout
@@ -46,4 +57,7 @@ SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
 ## License & contribution
 
 MIT for code. See `AGENTS.md` for the agent collaboration loop and
-`docs/plan-2026-06-20.md` for the seed research plan.
+`docs/plan-2026-06-20.md` for the seed research plan (2026-09-15 plan
+adds cross-source dedup, procedural-density scoring, a first
+scoring-profile ablation, multilingual seed terms, and a YouTube
+CC-BY listings adapter).
