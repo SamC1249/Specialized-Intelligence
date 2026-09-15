@@ -14,6 +14,9 @@ jobs:
         python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Required so `provenance_git.current_git_sha()` sees the real SHA.
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -45,12 +48,37 @@ jobs:
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
 
-      - name: Upload comparison report
+      - name: E2E ablate (fixtures)
+        run: |
+          python -m specint ablate --fixtures --terms cooking recipe \
+            --output reports/ci-ablation.json
+          test -s reports/ci-ablation.json
+
+      - name: E2E dedup (fixtures)
+        run: |
+          python -m specint dedup --fixtures --terms cooking recipe \
+            --output reports/ci-dedup.json
+          test -s reports/ci-dedup.json
+
+      - name: Baseline reports from shipped fixtures
+        run: |
+          python scripts/emit_baseline_reports.py --date ci --notes ci-run
+          test -s reports/compare-balanced-ci.json
+          test -s reports/ablation-ci.json
+          test -s reports/dedup-ci.json
+
+      - name: Upload comparison reports
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
-          name: compare-report
-          path: reports/ci-compare.json
+          name: compare-reports
+          path: |
+            reports/ci-compare.json
+            reports/ci-ablation.json
+            reports/ci-dedup.json
+            reports/compare-balanced-ci.json
+            reports/ablation-ci.json
+            reports/dedup-ci.json
 
   precommit:
     runs-on: ubuntu-latest
