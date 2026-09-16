@@ -10,6 +10,7 @@ from datetime import date
 from pathlib import Path
 
 from specint.compare import run_comparison
+from specint.fixtures import load_by_source, resolve_fixtures_dir
 from specint.records import SourceQuery
 from specint.sources import REGISTRY
 
@@ -28,12 +29,13 @@ def _cmd_compare(args: argparse.Namespace) -> int:
     only = set(args.only) if args.only else None
 
     by_source: dict[str, list] = {}
-    if args.fixtures:
-        for slug in REGISTRY:
+    if args.fixtures is not None:
+        fixtures_root = resolve_fixtures_dir(args.fixtures or None)
+        loaded = load_by_source(query, fixtures_root)
+        for slug, records in loaded.items():
             if only and slug not in only:
                 continue
-            by_source[slug] = []
-        # No live calls in --fixtures mode; the harness reports zeros so CI is reproducible.
+            by_source[slug] = records
     elif os.environ.get("SPECINT_RUN_INTEGRATION") != "1":
         print(
             "refusing to hit live network without SPECINT_RUN_INTEGRATION=1; pass --fixtures for an offline dry run.",
@@ -79,7 +81,13 @@ def build_parser() -> argparse.ArgumentParser:
     p_cmp.add_argument("--terms", nargs="*", help="search terms")
     p_cmp.add_argument("--only", nargs="*", help="restrict to these source slugs")
     p_cmp.add_argument("--max-results", type=int, default=25)
-    p_cmp.add_argument("--fixtures", action="store_true", help="offline mode (no network)")
+    p_cmp.add_argument(
+        "--fixtures",
+        nargs="?",
+        const="",
+        default=None,
+        help="offline mode (no network); optional PATH to a fixtures dir (defaults to ./tests/fixtures)",
+    )
     p_cmp.add_argument("--output", help="output JSON path")
     p_cmp.add_argument("--notes", help="free-form note attached to every row")
     p_cmp.set_defaults(func=_cmd_compare)
