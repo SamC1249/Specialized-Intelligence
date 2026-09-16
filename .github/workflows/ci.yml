@@ -45,12 +45,21 @@ jobs:
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
 
+      - name: Regression vs frozen baseline
+        run: |
+          python -m specint compare-to-baseline \
+            --baseline reports/baseline-2026-09-16.json \
+            --tolerance 0.02 \
+            --output reports/ci-regression.json
+
       - name: Upload comparison report
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: compare-report
-          path: reports/ci-compare.json
+          path: |
+            reports/ci-compare.json
+            reports/ci-regression.json
 
   precommit:
     runs-on: ubuntu-latest
