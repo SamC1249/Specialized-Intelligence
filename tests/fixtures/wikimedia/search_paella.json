@@ -1,0 +1,46 @@
+{
+  "query": {
+    "pages": {
+      "22222": {
+        "pageid": 22222,
+        "title": "File:Cocinando paella valenciana.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Cocinando_paella_valenciana.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Cocinando_paella_valenciana.webm",
+            "mime": "video/webm",
+            "duration": 480.5,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by/4.0"},
+              "Artist": {"value": "Cocina Abierta"},
+              "DateTimeOriginal": {"value": "2025-01-08T14:30:00Z"}
+            }
+          }
+        ]
+      },
+      "33333": {
+        "pageid": 33333,
+        "title": "File:料理の基本 - ラーメンの作り方.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Ramen_no_tsukurikata.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:%E6%96%99%E7%90%86%E3%81%AE%E5%9F%BA%E6%9C%AC.webm",
+            "mime": "video/webm",
+            "duration": 360.0,
+            "width": 1280,
+            "height": 720,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY-SA 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by-sa/4.0"},
+              "Artist": {"value": "厨房オープンチャンネル"},
+              "DateTimeOriginal": {"value": "2025-02-11T09:00:00Z"}
+            }
+          }
+        ]
+      }
+    }
+  }
+}

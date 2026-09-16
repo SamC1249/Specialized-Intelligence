@@ -1,0 +1,39 @@
+{
+  "__instance__": "https://tilvids.com",
+  "total": 2,
+  "data": [
+    {
+      "id": 9101,
+      "uuid": "mnop-2001",
+      "shortUUID": "mnop",
+      "name": "Receta: paella con azafrán",
+      "description": "Cocinar paella tradicional en 10 pasos.",
+      "duration": 720,
+      "publishedAt": "2025-03-04T10:00:00Z",
+      "language": {"id": "es", "label": "Español"},
+      "licence": {"id": 1, "label": "Attribution"},
+      "tags": ["paella", "cocina", "receta"],
+      "resolution": {"id": 1080, "label": "1080p"},
+      "files": [
+        {"fileUrl": "https://tilvids.com/static/webseed/mnop-2001.mp4"}
+      ],
+      "account": {"displayName": "Cocina Libre", "host": "tilvids.com"}
+    },
+    {
+      "id": 9102,
+      "uuid": "qrst-3002",
+      "name": "料理チャンネル: ラーメンの作り方",
+      "description": "自宅で作る本格ラーメンのレシピと調理手順。",
+      "duration": 540,
+      "publishedAt": "2025-05-19T09:15:00Z",
+      "language": {"id": "ja", "label": "日本語"},
+      "licence": {"id": 2, "label": "Attribution - Share Alike"},
+      "tags": ["ラーメン", "料理", "レシピ"],
+      "resolution": {"id": 720, "label": "720p"},
+      "files": [
+        {"fileUrl": "https://tilvids.com/static/webseed/qrst-3002.mp4"}
+      ],
+      "account": {"displayName": "厨房ノート", "host": "tilvids.com"}
+    }
+  ]
+}

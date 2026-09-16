@@ -1,0 +1,89 @@
+{
+  "deduplicate": true,
+  "profile": "cooking",
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  },
+  "rows": [
+    {
+      "mean_quality": 0.448575,
+      "n_license_clean": 2,
+      "n_records": 3,
+      "notes": "fixture-baseline-2026-09-16-cooking-dedup :: {\"n_duplicates_dropped\": 0, \"n_relevance_clean\": 3}",
+      "p50_quality": 0.5528500000000001,
+      "p90_quality": 0.61625,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "archive_org",
+      "total_duration_s": 1572.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.6222375,
+      "n_license_clean": 0,
+      "n_records": 2,
+      "notes": "fixture-baseline-2026-09-16-cooking-dedup :: {\"n_duplicates_dropped\": 0, \"n_relevance_clean\": 2}",
+      "p50_quality": 0.618625,
+      "p90_quality": 0.62585,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "common_crawl",
+      "total_duration_s": 582.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.63586875,
+      "n_license_clean": 4,
+      "n_records": 4,
+      "notes": "fixture-baseline-2026-09-16-cooking-dedup :: {\"n_duplicates_dropped\": 0, \"n_relevance_clean\": 3}",
+      "p50_quality": 0.73675,
+      "p90_quality": 0.7641249999999999,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "peertube",
+      "total_duration_s": 2082.0,
+      "unique_authors": 4
+    },
+    {
+      "mean_quality": 0.631205,
+      "n_license_clean": 4,
+      "n_records": 4,
+      "notes": "fixture-baseline-2026-09-16-cooking-dedup :: {\"n_duplicates_dropped\": 0, \"n_relevance_clean\": 3}",
+      "p50_quality": 0.69125,
+      "p90_quality": 0.7237116666666668,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "wikimedia",
+      "total_duration_s": 1197.9,
+      "unique_authors": 4
+    },
+    {
+      "mean_quality": 0.5860537499999999,
+      "n_license_clean": 10,
+      "n_records": 12,
+      "notes": "fixture-baseline-2026-09-16-cooking-dedup :: {\"n_duplicates_dropped\": 1, \"n_relevance_clean\": 10}",
+      "p50_quality": 0.665725,
+      "p90_quality": 0.73675,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "__total__",
+      "total_duration_s": 5121.9,
+      "unique_authors": 12
+    }
+  ]
+}

@@ -8,6 +8,8 @@ repos:
       - id: check-added-large-files
         args: ["--maxkb=512"]
       - id: check-merge-conflict
+      - id: check-json
+        exclude: '\.ipynb$'
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.5.0
     hooks:
@@ -22,3 +24,8 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
+      - id: reports-json-shape
+        name: reports/*.json shape check
+        entry: python3 scripts/check_reports_json.py
+        language: system
+        files: ^reports/.*\.json$
