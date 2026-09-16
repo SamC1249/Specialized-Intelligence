@@ -21,6 +21,27 @@ def test_cli_compare_fixtures_writes_json(tmp_path: Path, capsys):
     assert "rows" in payload
     sources = {row["source"] for row in payload["rows"]}
     assert "__total__" in sources
+    total = next(r for r in payload["rows"] if r["source"] == "__total__")
+    assert total["n_records"] > 0, "fixture mode must load real records, not zero"
+
+
+def test_cli_compare_fixtures_accepts_explicit_path(tmp_path: Path):
+    out = tmp_path / "explicit.json"
+    rc = main(
+        [
+            "compare",
+            "--fixtures",
+            "tests/fixtures",
+            "--terms",
+            "cooking",
+            "--output",
+            str(out),
+        ]
+    )
+    assert rc == 0
+    payload = json.loads(out.read_text())
+    total = next(r for r in payload["rows"] if r["source"] == "__total__")
+    assert total["n_records"] > 0
 
 
 def test_cli_compare_refuses_live_without_env(monkeypatch, tmp_path: Path):
