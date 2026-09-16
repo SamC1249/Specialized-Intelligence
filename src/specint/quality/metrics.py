@@ -1,38 +1,47 @@
 """Metadata-only quality scoring.
 
-Each scoring component returns a value in [0, 1]; the final score is a
-weighted sum, also in [0, 1]. Scoring is deliberately *metadata-only* so
-we can rank a backlog of millions of candidates before deciding which to
-actually download.
+Each scoring component returns a value in `[0, 1]`; the final score is a
+weighted sum, also in `[0, 1]`. Scoring is deliberately *metadata-only*
+so we can rank a backlog of millions of candidates before deciding
+which to actually download.
 
 Components (current):
   - license_clean : 1 if license is redistributable, else 0.
-  - duration      : peaks at 5 minutes (procedural sweet spot for a single
-                    recipe), penalizes very short and very long.
+  - duration      : peaks at 5 minutes (procedural sweet spot for a
+                    single recipe), penalizes very short and very long.
   - resolution    : >=720p ramps from 0 to 1.
-  - text_density  : combined length of title + description + recipe_steps.
-  - has_steps     : 1 if recipe_steps non-empty (procedural supervision).
+  - text_density  : combined length of title + description +
+                    recipe_steps.
+  - has_steps     : 1 if recipe_steps non-empty (procedural
+                    supervision signal).
+  - relevance     : multilingual cooking-relevance from
+                    `quality.relevance.score_relevance` (used by the
+                    `cooking` profile; not part of the frozen
+                    `baseline` profile).
 
 Adding a component:
   1. Implement a new `_score_*` function returning a float in [0, 1].
-  2. Add it to `WEIGHTS` with a documented rationale.
-  3. Update tests in `tests/test_quality.py` with the new lower/upper
+  2. Register it in `_COMPONENTS` below.
+  3. Add it (with a documented rationale) to a profile in
+     `quality/profiles.py`.
+  4. Update tests in `tests/test_quality.py` with the new lower/upper
      bounds.
+
+Backwards compat:
+  `WEIGHTS` is the frozen "baseline" profile and stays exported so
+  existing imports and reports keep working. `score_record` /
+  `score_records` continue to default to the baseline profile.
 """
 
 from __future__ import annotations
 
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable, Mapping
 
+from specint.quality.profiles import BASELINE, get_profile
+from specint.quality.relevance import score_relevance
 from specint.records import VideoRecord
 
-WEIGHTS: dict[str, float] = {
-    "license_clean": 0.35,
-    "duration": 0.15,
-    "resolution": 0.20,
-    "text_density": 0.15,
-    "has_steps": 0.15,
-}
+WEIGHTS: dict[str, float] = dict(BASELINE)
 
 
 def _score_license(record: VideoRecord) -> float:
@@ -75,20 +84,47 @@ def _score_has_steps(record: VideoRecord) -> float:
     return 1.0 if record.recipe_steps else 0.0
 
 
-_COMPONENTS = {
+def _score_relevance(record: VideoRecord) -> float:
+    return score_relevance(record).score
+
+
+_COMPONENTS: dict[str, Callable[[VideoRecord], float]] = {
     "license_clean": _score_license,
     "duration": _score_duration,
     "resolution": _score_resolution,
     "text_density": _score_text_density,
     "has_steps": _score_has_steps,
+    "relevance": _score_relevance,
 }
 
 
-def score_record(record: VideoRecord) -> float:
-    total_weight = sum(WEIGHTS.values())
-    raw = sum(WEIGHTS[name] * fn(record) for name, fn in _COMPONENTS.items())
-    return raw / total_weight if total_weight else 0.0
+def _resolve_profile(profile: str | Mapping[str, float] | None) -> Mapping[str, float]:
+    if profile is None:
+        return BASELINE
+    if isinstance(profile, str):
+        return get_profile(profile)
+    return profile
 
 
-def score_records(records: Iterable[VideoRecord]) -> list[VideoRecord]:
-    return [r.with_quality(score_record(r)) for r in records]
+def score_record(
+    record: VideoRecord,
+    profile: str | Mapping[str, float] | None = None,
+) -> float:
+    weights = _resolve_profile(profile)
+    total_weight = sum(weights.values())
+    if not total_weight:
+        return 0.0
+    raw = 0.0
+    for name, weight in weights.items():
+        fn = _COMPONENTS.get(name)
+        if fn is None:
+            raise KeyError(f"unknown scoring component: {name!r}")
+        raw += weight * fn(record)
+    return raw / total_weight
+
+
+def score_records(
+    records: Iterable[VideoRecord],
+    profile: str | Mapping[str, float] | None = None,
+) -> list[VideoRecord]:
+    return [r.with_quality(score_record(r, profile=profile)) for r in records]
