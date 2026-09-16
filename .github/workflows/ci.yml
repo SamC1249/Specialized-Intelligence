@@ -14,6 +14,8 @@ jobs:
         python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -31,19 +33,24 @@ jobs:
       - name: Format check (ruff)
         run: ruff format --check .
 
-      - name: Type check (mypy, best-effort)
-        run: mypy src || true
+      - name: Type check (strict core; best-effort elsewhere)
+        run: |
+          mypy src/specint/records.py src/specint/quality --strict --ignore-missing-imports
+          mypy src || true
 
       - name: Tests (offline)
         env:
           SPECINT_RUN_INTEGRATION: "0"
-        run: pytest -q --cov=specint --cov-report=term-missing
+        run: pytest -q --cov=specint --cov-report=term-missing --cov-fail-under=80
 
       - name: E2E compare (fixtures)
         run: |
-          python -m specint compare --fixtures --terms cooking recipe \
+          python -m specint compare --fixtures tests/fixtures --terms cooking recipe \
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
+          python -c "import json,sys; p=json.load(open('reports/ci-compare.json')); \
+                     t=next(r for r in p['rows'] if r['source']=='__total__'); \
+                     sys.exit(0 if t['n_records']>0 else 'ci-compare.json has zero records')"
 
       - name: Upload comparison report
         if: matrix.python-version == '3.12'
@@ -64,3 +71,21 @@ jobs:
         run: pip install pre-commit
       - name: Run pre-commit
         run: pre-commit run --all-files --show-diff-on-failure
+
+  supply-chain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install pip-audit
+        run: pip install pip-audit
+      - name: Install package (to enumerate installed dependency versions)
+        run: pip install -e ".[dev]"
+      - name: Audit installed dependencies
+        # non-blocking: report upstream advisories without failing PRs for
+        # unrelated transitive vulns; upgrade to blocking once dependabot
+        # is landing PRs regularly.
+        run: pip-audit --strict --progress-spinner=off || true
