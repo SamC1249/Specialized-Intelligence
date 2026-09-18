@@ -26,10 +26,25 @@ def test_common_crawl_parse_recipe_html(load_text):
     assert r.duration_s == 270.0
     assert r.height == 1080
     assert r.author == "Sam Cook"
-    assert r.license is License.UNKNOWN  # we never auto-trust embedded license
+    assert r.license is License.UNKNOWN  # no page-level licence in this fixture
     assert r.media_url is None  # never expose media for unknown license
     assert len(r.recipe_steps) == 4
     assert any("al dente" in s for s in r.recipe_steps)
+
+
+def test_common_crawl_page_level_license_wins(load_text):
+    html = load_text("common_crawl/recipe_page_cc_by.html")
+    records = parse_recipe_html(
+        html,
+        page_url="https://example.test/recipes/miso-sweet-potatoes",
+        query=SourceQuery(terms=["miso"], max_results=10),
+    )
+    assert len(records) == 1
+    r = records[0]
+    assert r.license is License.CC_BY
+    assert r.license_url is not None
+    assert r.duration_s == 6 * 60 + 45
+    assert len(r.recipe_steps) == 5
 
 
 def test_common_crawl_source_parse_dispatch(load_text):

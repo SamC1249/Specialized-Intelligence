@@ -21,6 +21,7 @@ from typing import Any
 
 from bs4 import BeautifulSoup
 
+from specint.quality.licenses import classify, classify_any
 from specint.records import License, Provenance, SourceQuery, VideoRecord, utcnow
 from specint.sources.base import BaseSource
 
@@ -68,7 +69,7 @@ def _safe_str(value: Any) -> str:
         return ""
     if isinstance(value, str):
         return value
-    if isinstance(value, (list, tuple)) and value:
+    if isinstance(value, list | tuple) and value:
         return _safe_str(value[0])
     return str(value)
 
@@ -80,6 +81,44 @@ def _parse_iso(value: str | None) -> datetime | None:
         return datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError:
         return None
+
+
+def extract_page_license(soup: BeautifulSoup) -> tuple[License, str | None]:
+    """Return the *page-level* license as declared by HTML meta/link/anchor.
+
+    Common Crawl JSON-LD ``VideoObject`` blocks frequently lie about
+    ``contentUrl`` (they point at an all-rights-reserved YouTube embed even
+    when the surrounding page is CC-BY). The page-level declaration is the
+    authoritative signal we care about for redistribution.
+
+    Precedence:
+      1. ``<link rel="license" href=...>``
+      2. ``<a rel="license" href=...>`` (RDFa/microformats)
+      3. ``<meta name="license" content=...>`` / ``<meta property="license">``
+      4. ``schema.org/CreativeWork.license`` on any JSON-LD block.
+    """
+
+    for tag in soup.find_all("link", attrs={"rel": True}):
+        rels = tag.get("rel") or []
+        if isinstance(rels, str):
+            rels = [rels]
+        if "license" in [r.lower() for r in rels] and tag.get("href"):
+            href = tag.get("href")
+            return classify(href), href
+    for tag in soup.find_all("a", attrs={"rel": True}):
+        rels = tag.get("rel") or []
+        if isinstance(rels, str):
+            rels = [rels]
+        if "license" in [r.lower() for r in rels] and tag.get("href"):
+            href = tag.get("href")
+            return classify(href), href
+    for tag in soup.find_all("meta"):
+        key = (tag.get("name") or tag.get("property") or "").lower()
+        if key in {"license", "dc.rights", "dcterms.license"}:
+            content = tag.get("content")
+            if content:
+                return classify(content), content
+    return License.UNKNOWN, None
 
 
 def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[VideoRecord]:
@@ -95,6 +134,16 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
     recipes = [b for b in blocks if "Recipe" in _node_types(b)]
     recipe = recipes[0] if recipes else None
 
+    page_license, page_license_url = extract_page_license(soup)
+    if page_license is License.UNKNOWN:
+        for block in blocks:
+            block_license = block.get("license")
+            if isinstance(block_license, str):
+                classified = classify(block_license)
+                if classified is not License.UNKNOWN:
+                    page_license, page_license_url = classified, block_license
+                    break
+
     prov = Provenance(
         extractor=__name__,
         fetched_at=utcnow(),
@@ -105,6 +154,11 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
     for v in videos:
         embed = _safe_str(v.get("embedUrl") or v.get("contentUrl") or page_url)
         native_id = _safe_str(v.get("@id") or v.get("identifier") or embed)
+        video_license = classify_any(
+            v.get("license") if isinstance(v.get("license"), str) else None
+        )
+        resolved_license = video_license if video_license is not License.UNKNOWN else page_license
+        resolved_license_url = page_license_url
         steps: list[str] = []
         if recipe:
             instructions = recipe.get("recipeInstructions")
@@ -129,11 +183,11 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             ),
             language=None,
             duration_s=parse_iso8601_duration(v.get("duration")),
-            width=int(v["width"]) if isinstance(v.get("width"), (int, float)) else None,
-            height=int(v["height"]) if isinstance(v.get("height"), (int, float)) else None,
+            width=int(v["width"]) if isinstance(v.get("width"), int | float) else None,
+            height=int(v["height"]) if isinstance(v.get("height"), int | float) else None,
             fps=None,
-            license=License.UNKNOWN,
-            license_url=None,
+            license=resolved_license,
+            license_url=resolved_license_url,
             author=_safe_str(
                 (v.get("author") or {}).get("name")
                 if isinstance(v.get("author"), dict)
