@@ -21,7 +21,7 @@ redefine them locally.**
 | Field             | Type             | Notes                                                                                    |
 | ----------------- | ---------------- | ---------------------------------------------------------------------------------------- |
 | `id`              | `str`            | `f"{source}:{source_native_id}"`. Stable across re-crawls.                               |
-| `source`          | `str`            | Source slug, e.g. `wikimedia`, `archive_org`, `peertube`, `common_crawl`.                |
+| `source`          | `str`            | Source slug, e.g. `wikimedia`, `archive_org`, `peertube`, `common_crawl`, `youtube_cc`.  |
 | `source_native_id`| `str`            | Whatever the upstream calls its primary key.                                             |
 | `url`             | `HttpUrl`        | Canonical landing page URL. **Never** a CDN URL.                                         |
 | `media_url`       | `HttpUrl \| None`| Direct media URL **only** if the license permits redistribution (CC0/CC-BY/CC-BY-SA/PD). |
