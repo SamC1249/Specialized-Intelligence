@@ -23,9 +23,30 @@ pytest -q
 python -m specint compare --fixtures --terms cooking recipe \
   --output reports/example.json
 
+# Multilingual seed terms (English, Spanish, French, German, Italian, Portuguese, Dutch):
+python -m specint compare --fixtures --lang es --output reports/example-es.json
+
+# Regression-check today's run against a committed baseline:
+python -m specint compare-diff \
+  reports/baseline-2026-09-18.json reports/example.json --strict
+
 # Live comparison (only with explicit opt-in):
 SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
+
+# YouTube CC-BY listings additionally require:
+YOUTUBE_API_KEY=... SPECINT_RUN_INTEGRATION=1 \
+  python -m specint compare --only youtube_cc --terms cooking
 ```
+
+## Registered sources
+
+| slug          | licenses accepted                    | media?    |
+| ------------- | ------------------------------------ | --------- |
+| `wikimedia`   | CC0 / CC-BY / CC-BY-SA / PD          | yes       |
+| `archive_org` | CC family / PD (per-item)            | yes       |
+| `peertube`    | CC-BY / CC-BY-SA / CC0 (per-item)    | yes       |
+| `common_crawl`| Page-level `rel="license"` only      | url only  |
+| `youtube_cc`  | CC-BY (only if `status.license=creativeCommon`) | url only |
 
 ## Layout
 

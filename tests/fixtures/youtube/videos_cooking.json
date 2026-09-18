@@ -1,0 +1,68 @@
+{
+  "kind": "youtube#videoListResponse",
+  "items": [
+    {
+      "kind": "youtube#video",
+      "id": "abc123XYZ01",
+      "snippet": {
+        "publishedAt": "2025-08-14T10:00:00Z",
+        "channelId": "UC_test_channel_a",
+        "channelTitle": "Open Kitchen Lab",
+        "title": "Weeknight Pesto Pasta in 8 Minutes",
+        "description": "A short weeknight pesto pasta walkthrough. Licensed CC-BY for anyone to reuse.",
+        "tags": ["pasta", "pesto", "cooking", "weeknight"],
+        "defaultAudioLanguage": "en"
+      },
+      "contentDetails": {
+        "duration": "PT8M12S",
+        "definition": "hd"
+      },
+      "status": {
+        "license": "creativeCommon",
+        "embeddable": true,
+        "publicStatsViewable": true
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "id": "def456UVW02",
+      "snippet": {
+        "publishedAt": "2025-01-30T18:00:00Z",
+        "channelId": "UC_test_channel_b",
+        "channelTitle": "Culinary Physics",
+        "title": "Emulsions Explained: Hollandaise from First Principles",
+        "description": "Slow, mechanistic walkthrough of hollandaise. Attribution required.",
+        "tags": ["hollandaise", "emulsion", "cooking", "science"],
+        "defaultAudioLanguage": "en"
+      },
+      "contentDetails": {
+        "duration": "PT23M04S",
+        "definition": "hd"
+      },
+      "status": {
+        "license": "creativeCommon",
+        "embeddable": true,
+        "publicStatsViewable": true
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "id": "ghi789RST03",
+      "snippet": {
+        "publishedAt": "2024-11-11T09:00:00Z",
+        "channelId": "UC_test_channel_c",
+        "channelTitle": "Suspicious Uploader",
+        "title": "Reupload of a movie clip about a chef",
+        "description": "Says CC but is actually a copyrighted movie clip.",
+        "tags": ["movie", "clip"]
+      },
+      "contentDetails": {
+        "duration": "PT2M00S",
+        "definition": "hd"
+      },
+      "status": {
+        "license": "youtube"
+      }
+    }
+  ]
+}

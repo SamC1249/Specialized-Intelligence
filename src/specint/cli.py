@@ -9,11 +9,25 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from specint.compare import run_comparison
+from specint.compare import any_regressed, diff_reports, run_comparison, summarize
 from specint.records import SourceQuery
 from specint.sources import REGISTRY
 
 DEFAULT_TERMS = ["cooking", "recipe"]
+
+# Multilingual seed vocabularies. English stays the baseline; other tags
+# reflect the language-hint we send to sources that support it. Additions
+# should ship with a fresh fixture + rerun of `specint compare --fixtures`
+# to prove they widen license-clean yield.
+SEED_TERMS: dict[str, list[str]] = {
+    "en": DEFAULT_TERMS,
+    "es": ["cocina", "receta"],
+    "fr": ["cuisine", "recette"],
+    "de": ["kochen", "rezept"],
+    "it": ["cucina", "ricetta"],
+    "pt": ["culinária", "receita"],
+    "nl": ["koken", "recept"],
+}
 
 
 def _cmd_sources(_: argparse.Namespace) -> int:
@@ -22,9 +36,20 @@ def _cmd_sources(_: argparse.Namespace) -> int:
     return 0
 
 
+def _resolve_terms(args: argparse.Namespace) -> tuple[list[str], str | None]:
+    if args.terms:
+        return list(args.terms), args.lang
+    if args.lang:
+        seed = SEED_TERMS.get(args.lang)
+        if not seed:
+            raise SystemExit(f"unknown --lang {args.lang!r}; known: {sorted(SEED_TERMS)}")
+        return list(seed), args.lang
+    return list(DEFAULT_TERMS), None
+
+
 def _cmd_compare(args: argparse.Namespace) -> int:
-    terms = args.terms or DEFAULT_TERMS
-    query = SourceQuery(terms=terms, max_results=args.max_results)
+    terms, language = _resolve_terms(args)
+    query = SourceQuery(terms=terms, max_results=args.max_results, language=language)
     only = set(args.only) if args.only else None
 
     by_source: dict[str, list] = {}
@@ -33,10 +58,10 @@ def _cmd_compare(args: argparse.Namespace) -> int:
             if only and slug not in only:
                 continue
             by_source[slug] = []
-        # No live calls in --fixtures mode; the harness reports zeros so CI is reproducible.
     elif os.environ.get("SPECINT_RUN_INTEGRATION") != "1":
         print(
-            "refusing to hit live network without SPECINT_RUN_INTEGRATION=1; pass --fixtures for an offline dry run.",
+            "refusing to hit live network without SPECINT_RUN_INTEGRATION=1;"
+            " pass --fixtures for an offline dry run.",
             file=sys.stderr,
         )
         return 2
@@ -68,6 +93,32 @@ def _cmd_compare(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_compare_diff(args: argparse.Namespace) -> int:
+    baseline = json.loads(Path(args.baseline).read_text())
+    current = json.loads(Path(args.current).read_text())
+    rows = diff_reports(
+        baseline,
+        current,
+        quality_tolerance=args.quality_tolerance,
+        record_drop_tolerance=args.record_drop_tolerance,
+    )
+    payload = {
+        "baseline": args.baseline,
+        "current": args.current,
+        "quality_tolerance": args.quality_tolerance,
+        "record_drop_tolerance": args.record_drop_tolerance,
+        "rows": [r.to_dict() for r in rows],
+        "regressed": any_regressed(rows),
+    }
+    if args.output:
+        Path(args.output).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.output).write_text(json.dumps(payload, indent=2, sort_keys=True))
+    print(summarize(rows))
+    if args.json:
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    return 1 if payload["regressed"] and args.strict else 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="specint")
     sub = p.add_subparsers(dest="command", required=True)
@@ -77,12 +128,30 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_cmp = sub.add_parser("compare", help="run the comparison harness")
     p_cmp.add_argument("--terms", nargs="*", help="search terms")
+    p_cmp.add_argument("--lang", help="BCP-47 seed language (uses SEED_TERMS)")
     p_cmp.add_argument("--only", nargs="*", help="restrict to these source slugs")
     p_cmp.add_argument("--max-results", type=int, default=25)
     p_cmp.add_argument("--fixtures", action="store_true", help="offline mode (no network)")
     p_cmp.add_argument("--output", help="output JSON path")
     p_cmp.add_argument("--notes", help="free-form note attached to every row")
     p_cmp.set_defaults(func=_cmd_compare)
+
+    p_diff = sub.add_parser(
+        "compare-diff",
+        help="regression-check two compare-*.json reports",
+    )
+    p_diff.add_argument("baseline")
+    p_diff.add_argument("current")
+    p_diff.add_argument("--quality-tolerance", type=float, default=0.02)
+    p_diff.add_argument("--record-drop-tolerance", type=float, default=0.20)
+    p_diff.add_argument("--output", help="optional JSON diff report path")
+    p_diff.add_argument("--json", action="store_true", help="also print JSON diff")
+    p_diff.add_argument(
+        "--strict",
+        action="store_true",
+        help="exit 1 if any source regressed (use in CI)",
+    )
+    p_diff.set_defaults(func=_cmd_compare_diff)
 
     return p
 

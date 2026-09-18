@@ -45,12 +45,24 @@ jobs:
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
 
-      - name: Upload comparison report
+      - name: Regression check against last committed baseline
+        run: |
+          latest_baseline=$(ls -1 reports/baseline-*.json | sort | tail -n1)
+          echo "diffing $latest_baseline against reports/ci-compare.json"
+          python -m specint compare-diff "$latest_baseline" reports/ci-compare.json \
+            --output reports/ci-diff.json || true
+          # Do not fail CI on baseline diff yet — the fixture-only harness
+          # produces empty per-source rows in `--fixtures` mode. This step
+          # exists so regressions become visible in the artifact upload.
+
+      - name: Upload comparison + diff reports
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: compare-report
-          path: reports/ci-compare.json
+          path: |
+            reports/ci-compare.json
+            reports/ci-diff.json
 
   precommit:
     runs-on: ubuntu-latest
