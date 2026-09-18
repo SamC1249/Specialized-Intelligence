@@ -1,0 +1,102 @@
+{
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  },
+  "rows": [
+    {
+      "mean_quality": 0.4217930555555556,
+      "n_license_clean": 2,
+      "n_records": 3,
+      "notes": "fixture-baseline-2026-09-18",
+      "p50_quality": 0.5336416666666667,
+      "p90_quality": 0.547725,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "archive_org",
+      "total_duration_s": 1572.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.7451541666666668,
+      "n_license_clean": 1,
+      "n_records": 2,
+      "notes": "fixture-baseline-2026-09-18",
+      "p50_quality": 0.5768125000000001,
+      "p90_quality": 0.9134958333333334,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "common_crawl",
+      "total_duration_s": 675.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.565625,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-baseline-2026-09-18",
+      "p50_quality": 0.4043375,
+      "p90_quality": 0.7269125,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "peertube",
+      "total_duration_s": 822.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.5613198611111111,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-baseline-2026-09-18",
+      "p50_quality": 0.487725,
+      "p90_quality": 0.6349147222222222,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "wikimedia",
+      "total_duration_s": 357.4,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.4192532407407408,
+      "n_license_clean": 2,
+      "n_records": 3,
+      "notes": "fixture-baseline-2026-09-18",
+      "p50_quality": 0.5305180555555555,
+      "p90_quality": 0.5612666666666667,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "youtube_cc",
+      "total_duration_s": 1996.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.5222780787037037,
+      "n_license_clean": 9,
+      "n_records": 12,
+      "notes": "fixture-baseline-2026-09-18",
+      "p50_quality": 0.547725,
+      "p90_quality": 0.7269125,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "__total__",
+      "total_duration_s": 5422.4,
+      "unique_authors": 12
+    }
+  ]
+}

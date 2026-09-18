@@ -17,10 +17,25 @@ from specint.sources.archive_org import ArchiveOrgSource
 from specint.sources.common_crawl import CommonCrawlRecipeSource
 from specint.sources.peertube import PeerTubeSource
 from specint.sources.wikimedia import WikimediaCommonsSource
+from specint.sources.youtube import YouTubeCreativeCommonsSource
 
 
 def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Path):
     query = SourceQuery(terms=["cooking", "recipe"], max_results=25)
+
+    cc_records = CommonCrawlRecipeSource().parse(
+        {
+            "html": (fixtures_dir / "common_crawl/recipe_page.html").read_text(),
+            "url": "https://example.test/recipes/garlic-butter-pasta",
+        },
+        query,
+    ) + CommonCrawlRecipeSource().parse(
+        {
+            "html": (fixtures_dir / "common_crawl/recipe_page_cc_by.html").read_text(),
+            "url": "https://example.test/recipes/miso-sweet-potatoes",
+        },
+        query,
+    )
 
     by_source = {
         "wikimedia": WikimediaCommonsSource().parse(
@@ -32,30 +47,32 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
         "peertube": PeerTubeSource().parse(
             json.loads((fixtures_dir / "peertube/search_cooking.json").read_text()), query
         ),
-        "common_crawl": CommonCrawlRecipeSource().parse(
-            {
-                "html": (fixtures_dir / "common_crawl/recipe_page.html").read_text(),
-                "url": "https://example.test/recipes/garlic-butter-pasta",
-            },
-            query,
+        "common_crawl": cc_records,
+        "youtube_cc": YouTubeCreativeCommonsSource().parse(
+            json.loads((fixtures_dir / "youtube/videos_cooking.json").read_text()), query
         ),
     }
 
     rows = run_comparison(query, by_source, notes="e2e-fixture")
 
     sources_seen = {row.source for row in rows}
-    assert sources_seen == {"wikimedia", "archive_org", "peertube", "common_crawl", "__total__"}
+    assert sources_seen == {
+        "wikimedia",
+        "archive_org",
+        "peertube",
+        "common_crawl",
+        "youtube_cc",
+        "__total__",
+    }
 
     total = next(r for r in rows if r.source == "__total__")
     per_source_total = sum(r.n_records for r in rows if r.source != "__total__")
     assert total.n_records == per_source_total
     assert total.n_records > 0
 
-    # License-clean count must be monotonically <= n_records.
     for row in rows:
         assert row.n_license_clean <= row.n_records
 
-    # Persist a sample report to validate the JSON serialisation contract.
     payload = {
         "query": query.model_dump(mode="json"),
         "rows": [r.model_dump(mode="json") for r in rows],
@@ -64,4 +81,4 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
     out.write_text(json.dumps(payload, sort_keys=True))
     reloaded = json.loads(out.read_text())
     assert reloaded["query"]["terms"] == ["cooking", "recipe"]
-    assert len(reloaded["rows"]) == 5
+    assert len(reloaded["rows"]) == 6
