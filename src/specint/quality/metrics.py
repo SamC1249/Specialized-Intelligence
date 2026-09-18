@@ -12,6 +12,8 @@ Components (current):
   - resolution    : >=720p ramps from 0 to 1.
   - text_density  : combined length of title + description + recipe_steps.
   - has_steps     : 1 if recipe_steps non-empty (procedural supervision).
+  - language_known: 1 if BCP-47 language is set (either from upstream or
+                    detected by the offline heuristic).
 
 Adding a component:
   1. Implement a new `_score_*` function returning a float in [0, 1].
@@ -24,14 +26,16 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
+from specint.quality.language import detect_language
 from specint.records import VideoRecord
 
 WEIGHTS: dict[str, float] = {
-    "license_clean": 0.35,
-    "duration": 0.15,
-    "resolution": 0.20,
-    "text_density": 0.15,
-    "has_steps": 0.15,
+    "license_clean": 0.32,
+    "duration": 0.13,
+    "resolution": 0.18,
+    "text_density": 0.13,
+    "has_steps": 0.14,
+    "language_known": 0.10,
 }
 
 
@@ -75,20 +79,46 @@ def _score_has_steps(record: VideoRecord) -> float:
     return 1.0 if record.recipe_steps else 0.0
 
 
+def _score_language_known(record: VideoRecord) -> float:
+    return 1.0 if enrich_language(record).language else 0.0
+
+
 _COMPONENTS = {
     "license_clean": _score_license,
     "duration": _score_duration,
     "resolution": _score_resolution,
     "text_density": _score_text_density,
     "has_steps": _score_has_steps,
+    "language_known": _score_language_known,
 }
 
 
+def enrich_language(record: VideoRecord) -> VideoRecord:
+    """Fill ``record.language`` in-place-like via detection when upstream missed it.
+
+    Returns a new VideoRecord (records are frozen semantically via pydantic
+    copy) with ``language`` set when we can confidently infer it, otherwise
+    returns the input unchanged.
+    """
+
+    if record.language:
+        return record
+    detected = detect_language(record.title, record.description)
+    if detected:
+        return record.model_copy(update={"language": detected})
+    return record
+
+
 def score_record(record: VideoRecord) -> float:
+    enriched = enrich_language(record)
     total_weight = sum(WEIGHTS.values())
-    raw = sum(WEIGHTS[name] * fn(record) for name, fn in _COMPONENTS.items())
+    raw = sum(WEIGHTS[name] * fn(enriched) for name, fn in _COMPONENTS.items())
     return raw / total_weight if total_weight else 0.0
 
 
 def score_records(records: Iterable[VideoRecord]) -> list[VideoRecord]:
-    return [r.with_quality(score_record(r)) for r in records]
+    scored: list[VideoRecord] = []
+    for r in records:
+        enriched = enrich_language(r)
+        scored.append(enriched.with_quality(score_record(enriched)))
+    return scored
