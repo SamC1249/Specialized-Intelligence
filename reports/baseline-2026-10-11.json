@@ -1,0 +1,118 @@
+{
+  "query": {
+    "language": "en",
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe",
+      "how to cook"
+    ]
+  },
+  "rows": [
+    {
+      "license_clean_hours": 0.386667,
+      "mean_quality": 0.35462499999999997,
+      "median_height": null,
+      "n_duplicates_dropped": 0,
+      "n_license_clean": 2,
+      "n_records": 3,
+      "n_with_steps": 0,
+      "notes": "baseline-2026-10-11 (cc_by+dedupe+procedural_density+language)",
+      "p50_quality": 0.476,
+      "p90_quality": 0.49324999999999997,
+      "query_terms": [
+        "cooking",
+        "recipe",
+        "how to cook"
+      ],
+      "source": "archive_org",
+      "top10_mean_quality": 0.35462499999999997,
+      "total_duration_s": 1572.0,
+      "unique_authors": 3
+    },
+    {
+      "license_clean_hours": 0.103333,
+      "mean_quality": 0.6295416666666667,
+      "median_height": 1080,
+      "n_duplicates_dropped": 0,
+      "n_license_clean": 1,
+      "n_records": 2,
+      "n_with_steps": 2,
+      "notes": "baseline-2026-10-11 (cc_by+dedupe+procedural_density+language)",
+      "p50_quality": 0.4322916666666667,
+      "p90_quality": 0.8267916666666667,
+      "query_terms": [
+        "cooking",
+        "recipe",
+        "how to cook"
+      ],
+      "source": "common_crawl",
+      "top10_mean_quality": 0.6295416666666667,
+      "total_duration_s": 642.0,
+      "unique_authors": 2
+    },
+    {
+      "license_clean_hours": 0.228333,
+      "mean_quality": 0.568875,
+      "median_height": 1080,
+      "n_duplicates_dropped": 0,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "n_with_steps": 0,
+      "notes": "baseline-2026-10-11 (cc_by+dedupe+procedural_density+language)",
+      "p50_quality": 0.44487499999999996,
+      "p90_quality": 0.692875,
+      "query_terms": [
+        "cooking",
+        "recipe",
+        "how to cook"
+      ],
+      "source": "peertube",
+      "top10_mean_quality": 0.568875,
+      "total_duration_s": 822.0,
+      "unique_authors": 2
+    },
+    {
+      "license_clean_hours": 0.099278,
+      "mean_quality": 0.6196791666666667,
+      "median_height": 1080,
+      "n_duplicates_dropped": 0,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "n_with_steps": 0,
+      "notes": "baseline-2026-10-11 (cc_by+dedupe+procedural_density+language)",
+      "p50_quality": 0.5357500000000001,
+      "p90_quality": 0.7036083333333333,
+      "query_terms": [
+        "cooking",
+        "recipe",
+        "how to cook"
+      ],
+      "source": "wikimedia",
+      "top10_mean_quality": 0.6196791666666667,
+      "total_duration_s": 357.4,
+      "unique_authors": 2
+    },
+    {
+      "license_clean_hours": 0.817611,
+      "mean_quality": 0.5222296296296296,
+      "median_height": 1080,
+      "n_duplicates_dropped": 0,
+      "n_license_clean": 7,
+      "n_records": 9,
+      "n_with_steps": 2,
+      "notes": "baseline-2026-10-11 (cc_by+dedupe+procedural_density+language)",
+      "p50_quality": 0.49324999999999997,
+      "p90_quality": 0.7036083333333333,
+      "query_terms": [
+        "cooking",
+        "recipe",
+        "how to cook"
+      ],
+      "source": "__total__",
+      "top10_mean_quality": 0.5222296296296296,
+      "total_duration_s": 3393.4,
+      "unique_authors": 9
+    }
+  ]
+}

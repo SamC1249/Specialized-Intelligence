@@ -1,0 +1,283 @@
+{
+  "base": "reports/baseline-2026-06-20.json",
+  "diffs": [
+    {
+      "license_clean_hours": {
+        "base": 0,
+        "delta": 0.817611,
+        "new": 0.817611
+      },
+      "mean_quality": {
+        "base": 0.4991463541666667,
+        "delta": 0.023083275462962904,
+        "new": 0.5222296296296296
+      },
+      "n_duplicates_dropped": {
+        "base": 0,
+        "delta": 0,
+        "new": 0
+      },
+      "n_license_clean": {
+        "base": 6,
+        "delta": 1,
+        "new": 7
+      },
+      "n_records": {
+        "base": 8,
+        "delta": 1,
+        "new": 9
+      },
+      "n_with_steps": {
+        "base": 0,
+        "delta": 2,
+        "new": 2
+      },
+      "p50_quality": {
+        "base": 0.5309375000000001,
+        "delta": -0.037687500000000096,
+        "new": 0.49324999999999997
+      },
+      "p90_quality": {
+        "base": 0.6964375,
+        "delta": 0.0071708333333332375,
+        "new": 0.7036083333333333
+      },
+      "source": "__total__",
+      "top10_mean_quality": {
+        "base": 0,
+        "delta": 0.5222296296296296,
+        "new": 0.5222296296296296
+      },
+      "total_duration_s": {
+        "base": 3021.4,
+        "delta": 372.0,
+        "new": 3393.4
+      }
+    },
+    {
+      "license_clean_hours": {
+        "base": 0,
+        "delta": 0.386667,
+        "new": 0.386667
+      },
+      "mean_quality": {
+        "base": 0.3584791666666667,
+        "delta": -0.003854166666666714,
+        "new": 0.35462499999999997
+      },
+      "n_duplicates_dropped": {
+        "base": 0,
+        "delta": 0,
+        "new": 0
+      },
+      "n_license_clean": {
+        "base": 2,
+        "delta": 0,
+        "new": 2
+      },
+      "n_records": {
+        "base": 3,
+        "delta": 0,
+        "new": 3
+      },
+      "n_with_steps": {
+        "base": 0,
+        "delta": 0,
+        "new": 0
+      },
+      "p50_quality": {
+        "base": 0.48112499999999997,
+        "delta": -0.005124999999999991,
+        "new": 0.476
+      },
+      "p90_quality": {
+        "base": 0.497375,
+        "delta": -0.004125000000000045,
+        "new": 0.49324999999999997
+      },
+      "source": "archive_org",
+      "top10_mean_quality": {
+        "base": 0,
+        "delta": 0.35462499999999997,
+        "new": 0.35462499999999997
+      },
+      "total_duration_s": {
+        "base": 1572.0,
+        "delta": 0.0,
+        "new": 1572.0
+      }
+    },
+    {
+      "license_clean_hours": {
+        "base": 0,
+        "delta": 0.103333,
+        "new": 0.103333
+      },
+      "mean_quality": {
+        "base": 0.5309375000000001,
+        "delta": 0.0986041666666666,
+        "new": 0.6295416666666667
+      },
+      "n_duplicates_dropped": {
+        "base": 0,
+        "delta": 0,
+        "new": 0
+      },
+      "n_license_clean": {
+        "base": 0,
+        "delta": 1,
+        "new": 1
+      },
+      "n_records": {
+        "base": 1,
+        "delta": 1,
+        "new": 2
+      },
+      "n_with_steps": {
+        "base": 0,
+        "delta": 2,
+        "new": 2
+      },
+      "p50_quality": {
+        "base": 0.5309375000000001,
+        "delta": -0.09864583333333338,
+        "new": 0.4322916666666667
+      },
+      "p90_quality": {
+        "base": 0.5309375000000001,
+        "delta": 0.29585416666666664,
+        "new": 0.8267916666666667
+      },
+      "source": "common_crawl",
+      "top10_mean_quality": {
+        "base": 0,
+        "delta": 0.6295416666666667,
+        "new": 0.6295416666666667
+      },
+      "total_duration_s": {
+        "base": 270.0,
+        "delta": 372.0,
+        "new": 642.0
+      }
+    },
+    {
+      "license_clean_hours": {
+        "base": 0,
+        "delta": 0.228333,
+        "new": 0.228333
+      },
+      "mean_quality": {
+        "base": 0.571875,
+        "delta": -0.0030000000000000027,
+        "new": 0.568875
+      },
+      "n_duplicates_dropped": {
+        "base": 0,
+        "delta": 0,
+        "new": 0
+      },
+      "n_license_clean": {
+        "base": 2,
+        "delta": 0,
+        "new": 2
+      },
+      "n_records": {
+        "base": 2,
+        "delta": 0,
+        "new": 2
+      },
+      "n_with_steps": {
+        "base": 0,
+        "delta": 0,
+        "new": 0
+      },
+      "p50_quality": {
+        "base": 0.4473125,
+        "delta": -0.002437500000000037,
+        "new": 0.44487499999999996
+      },
+      "p90_quality": {
+        "base": 0.6964375,
+        "delta": -0.003562500000000024,
+        "new": 0.692875
+      },
+      "source": "peertube",
+      "top10_mean_quality": {
+        "base": 0,
+        "delta": 0.568875,
+        "new": 0.568875
+      },
+      "total_duration_s": {
+        "base": 822.0,
+        "delta": 0.0,
+        "new": 822.0
+      }
+    },
+    {
+      "license_clean_hours": {
+        "base": 0,
+        "delta": 0.099278,
+        "new": 0.099278
+      },
+      "mean_quality": {
+        "base": 0.6215229166666667,
+        "delta": -0.0018437500000000329,
+        "new": 0.6196791666666667
+      },
+      "n_duplicates_dropped": {
+        "base": 0,
+        "delta": 0,
+        "new": 0
+      },
+      "n_license_clean": {
+        "base": 2,
+        "delta": 0,
+        "new": 2
+      },
+      "n_records": {
+        "base": 2,
+        "delta": 0,
+        "new": 2
+      },
+      "n_with_steps": {
+        "base": 0,
+        "delta": 0,
+        "new": 0
+      },
+      "p50_quality": {
+        "base": 0.537375,
+        "delta": -0.0016249999999999876,
+        "new": 0.5357500000000001
+      },
+      "p90_quality": {
+        "base": 0.7056708333333334,
+        "delta": -0.002062500000000078,
+        "new": 0.7036083333333333
+      },
+      "source": "wikimedia",
+      "top10_mean_quality": {
+        "base": 0,
+        "delta": 0.6196791666666667,
+        "new": 0.6196791666666667
+      },
+      "total_duration_s": {
+        "base": 357.4,
+        "delta": 0.0,
+        "new": 357.4
+      }
+    }
+  ],
+  "metrics": [
+    "n_records",
+    "n_license_clean",
+    "license_clean_hours",
+    "total_duration_s",
+    "mean_quality",
+    "p50_quality",
+    "p90_quality",
+    "top10_mean_quality",
+    "n_with_steps",
+    "n_duplicates_dropped"
+  ],
+  "new": "reports/baseline-2026-10-11.json"
+}

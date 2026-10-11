@@ -60,7 +60,7 @@ def _normalize_url(value: str | None) -> str:
 def _duration_bucket(seconds: float | None, bucket: float = 15.0) -> int | None:
     if seconds is None or seconds <= 0:
         return None
-    return int(round(seconds / bucket))
+    return round(seconds / bucket)
 
 
 def _record_sort_key(record: VideoRecord) -> tuple:

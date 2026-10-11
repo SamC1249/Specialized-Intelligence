@@ -76,8 +76,7 @@ def test_license_clean_tiebreak_when_quality_equal():
 
 def test_order_is_deterministic_on_shuffle():
     records = [
-        _rec(id=f"s:{i}", source="s", title=f"Clip {i}", duration_s=100.0 + i)
-        for i in range(5)
+        _rec(id=f"s:{i}", source="s", title=f"Clip {i}", duration_s=100.0 + i) for i in range(5)
     ]
     out_a, _ = dedupe_records(records)
     out_b, _ = dedupe_records(list(reversed(records)))
