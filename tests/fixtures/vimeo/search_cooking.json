@@ -1,0 +1,97 @@
+{
+  "total": 4,
+  "page": 1,
+  "per_page": 25,
+  "paging": {"next": null, "previous": null, "first": "/videos?page=1&query=cooking&filter=CC", "last": "/videos?page=1&query=cooking&filter=CC"},
+  "data": [
+    {
+      "uri": "/videos/111222333",
+      "name": "Sourdough from a 100-year-old starter",
+      "description": "Full 12-step walkthrough of a classic sourdough loaf, hand-held camera in a home kitchen. Released CC-BY.",
+      "type": "video",
+      "link": "https://vimeo.com/111222333",
+      "duration": 612,
+      "width": 1920,
+      "height": 1080,
+      "language": "en",
+      "created_time": "2024-11-04T18:12:00Z",
+      "release_time": "2024-11-05T09:00:00Z",
+      "license": "by",
+      "user": {"uri": "/users/555", "name": "Maya Flour", "link": "https://vimeo.com/mayaflour"},
+      "tags": [
+        {"name": "cooking", "canonical": "cooking"},
+        {"name": "bread", "canonical": "bread"},
+        {"name": "sourdough", "canonical": "sourdough"}
+      ],
+      "files": [
+        {"quality": "hd", "type": "video/mp4", "width": 1920, "height": 1080, "link": "https://player.vimeo.com/progressive_redirect/playback/111222333/rendition/1080p/file.mp4"},
+        {"quality": "sd", "type": "video/mp4", "width": 1280, "height": 720, "link": "https://player.vimeo.com/progressive_redirect/playback/111222333/rendition/720p/file.mp4"},
+        {"quality": "hls", "type": "video/mp4", "link": "https://player.vimeo.com/external/111222333.m3u8"}
+      ]
+    },
+    {
+      "uri": "/videos/222333444",
+      "name": "Weeknight dal, 15 minutes",
+      "description": "Overhead-cam recipe for a lentil dal, released into the public domain so anyone can learn or remix.",
+      "type": "video",
+      "link": "https://vimeo.com/222333444",
+      "duration": 900,
+      "width": 3840,
+      "height": 2160,
+      "language": "en",
+      "created_time": "2025-02-10T12:00:00Z",
+      "release_time": "2025-02-10T12:00:00Z",
+      "license": "cc0",
+      "user": {"uri": "/users/777", "name": "Open Kitchen Collective", "link": "https://vimeo.com/openkitchen"},
+      "tags": [
+        {"name": "cooking", "canonical": "cooking"},
+        {"name": "lentils", "canonical": "lentils"}
+      ],
+      "files": [
+        {"quality": "uhd", "type": "video/mp4", "width": 3840, "height": 2160, "link": "https://player.vimeo.com/progressive_redirect/playback/222333444/rendition/4k/file.mp4"}
+      ]
+    },
+    {
+      "uri": "/videos/333444555",
+      "name": "Private restaurant tour (do not share)",
+      "description": "Behind-the-scenes tour. Non-commercial only.",
+      "type": "video",
+      "link": "https://vimeo.com/333444555",
+      "duration": 540,
+      "width": 1280,
+      "height": 720,
+      "language": "en",
+      "created_time": "2024-07-01T00:00:00Z",
+      "release_time": "2024-07-01T00:00:00Z",
+      "license": "by-nc-nd",
+      "user": {"uri": "/users/999", "name": "Example Restaurant"},
+      "tags": [{"name": "restaurant"}],
+      "files": [
+        {"quality": "sd", "type": "video/mp4", "width": 854, "height": 480, "link": "https://player.vimeo.com/progressive_redirect/playback/333444555/rendition/480p/file.mp4"}
+      ]
+    },
+    {
+      "uri": "/videos/444555666",
+      "name": "Knife skills: julienne, brunoise, chiffonade",
+      "description": "A compact technique reel released under CC-BY-SA 4.0 by a culinary school.",
+      "type": "video",
+      "link": "https://vimeo.com/444555666",
+      "duration": 240,
+      "width": 1280,
+      "height": 720,
+      "language": "en",
+      "created_time": "2025-05-21T15:30:00Z",
+      "release_time": "2025-05-21T15:30:00Z",
+      "license": "by-sa",
+      "user": {"uri": "/users/1234", "name": "Culinary School Co-op"},
+      "tags": [
+        {"name": "cooking", "canonical": "cooking"},
+        {"name": "knife skills", "canonical": "knife-skills"},
+        {"name": "technique", "canonical": "technique"}
+      ],
+      "files": [
+        {"quality": "hd", "type": "video/mp4", "width": 1280, "height": 720, "link": "https://player.vimeo.com/progressive_redirect/playback/444555666/rendition/720p/file.mp4"}
+      ]
+    }
+  ]
+}
