@@ -48,12 +48,15 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
 
     total = next(r for r in rows if r.source == "__total__")
     per_source_total = sum(r.n_records for r in rows if r.source != "__total__")
-    assert total.n_records == per_source_total
     assert total.n_records > 0
+    # __total__ row is post-dedupe, so it never exceeds the pre-dedupe sum.
+    assert total.n_records <= per_source_total
+    assert total.n_duplicates_dropped == per_source_total - total.n_records
 
-    # License-clean count must be monotonically <= n_records.
+    # License-clean count must be monotonically <= n_records on every row.
     for row in rows:
         assert row.n_license_clean <= row.n_records
+        assert row.license_clean_hours >= 0.0
 
     # Persist a sample report to validate the JSON serialisation contract.
     payload = {

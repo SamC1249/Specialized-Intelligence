@@ -37,6 +37,7 @@ from __future__ import annotations
 import re
 from collections.abc import Iterable
 
+from specint.quality.language import detect_language
 from specint.records import VideoRecord
 
 WEIGHTS: dict[str, float] = {
@@ -154,5 +155,19 @@ def score_record(record: VideoRecord) -> float:
     return raw / total_weight if total_weight else 0.0
 
 
+def enrich_language(record: VideoRecord) -> VideoRecord:
+    """If the record has no language tag, infer one from title+description."""
+    if record.language:
+        return record
+    inferred = detect_language(f"{record.title} {record.description}".strip())
+    if not inferred:
+        return record
+    return record.model_copy(update={"language": inferred})
+
+
 def score_records(records: Iterable[VideoRecord]) -> list[VideoRecord]:
-    return [r.with_quality(score_record(r)) for r in records]
+    out: list[VideoRecord] = []
+    for r in records:
+        r2 = enrich_language(r)
+        out.append(r2.with_quality(score_record(r2)))
+    return out
