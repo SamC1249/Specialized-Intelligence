@@ -122,7 +122,8 @@ class PeerTubeSource(BaseSource):
                 resp.raise_for_status()
                 payload = resp.json()
                 payload["__instance__"] = instance
-            except Exception:
+            # Federated instances fail routinely; move on to the next one.
+            except Exception:  # nosec B112
                 continue
             all_records.extend(self.parse(payload, query))
         return all_records

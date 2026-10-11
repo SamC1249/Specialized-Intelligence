@@ -1,0 +1,160 @@
+{
+  "dedup": {
+    "deduped": 14,
+    "pooled": 14,
+    "removed": 0
+  },
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  },
+  "rows": [
+    {
+      "mean_quality": 0.3584791666666667,
+      "n_license_clean": 2,
+      "n_records": 3,
+      "notes": "fixture-baseline-2026-10-11",
+      "p50_quality": 0.48112499999999997,
+      "p90_quality": 0.497375,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "archive_org",
+      "total_duration_s": 1572.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.5309375000000001,
+      "n_license_clean": 0,
+      "n_records": 1,
+      "notes": "fixture-baseline-2026-10-11",
+      "p50_quality": 0.5309375000000001,
+      "p90_quality": 0.5309375000000001,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "common_crawl",
+      "total_duration_s": 270.0,
+      "unique_authors": 1
+    },
+    {
+      "mean_quality": 0.6200625000000001,
+      "n_license_clean": 3,
+      "n_records": 3,
+      "notes": "fixture-baseline-2026-10-11",
+      "p50_quality": 0.6138750000000001,
+      "p90_quality": 0.640375,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "flickr",
+      "total_duration_s": 1032.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.571875,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-baseline-2026-10-11",
+      "p50_quality": 0.4473125,
+      "p90_quality": 0.6964375,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "peertube",
+      "total_duration_s": 822.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.6880000000000001,
+      "n_license_clean": 3,
+      "n_records": 3,
+      "notes": "fixture-baseline-2026-10-11",
+      "p50_quality": 0.69825,
+      "p90_quality": 0.713625,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "vimeo",
+      "total_duration_s": 1752.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.6215229166666667,
+      "n_license_clean": 2,
+      "n_records": 2,
+      "notes": "fixture-baseline-2026-10-11",
+      "p50_quality": 0.537375,
+      "p90_quality": 0.7056708333333334,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "wikimedia",
+      "total_duration_s": 357.4,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.5655255952380952,
+      "n_license_clean": 12,
+      "n_records": 14,
+      "notes": "fixture-baseline-2026-10-11",
+      "p50_quality": 0.6059375,
+      "p90_quality": 0.7056708333333334,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "__total__",
+      "total_duration_s": 5805.4,
+      "unique_authors": 13
+    }
+  ],
+  "yield_projection_hours_per_day": [
+    {
+      "hours_per_day": 1191.33,
+      "notes": "gsrlimit=50; 50/min sustained for 8h",
+      "records_per_day": 24000.0,
+      "source": "wikimedia"
+    },
+    {
+      "hours_per_day": 2096.0,
+      "notes": "rows=50; licenseurl present ~60%",
+      "records_per_day": 14400.0,
+      "source": "archive_org"
+    },
+    {
+      "hours_per_day": 685.0,
+      "notes": "25/page; 240 pages/day across 3 instances",
+      "records_per_day": 6000.0,
+      "source": "peertube"
+    },
+    {
+      "hours_per_day": 22.5,
+      "notes": "VideoObject pages per CCF scan; permissive license ~30%",
+      "records_per_day": 300.0,
+      "source": "common_crawl"
+    },
+    {
+      "hours_per_day": 1946.67,
+      "notes": "filter=CC; per_page=50; 60 req/min * 4h",
+      "records_per_day": 12000.0,
+      "source": "vimeo"
+    },
+    {
+      "hours_per_day": 4586.67,
+      "notes": "per_page=100; 60 QPM sustained",
+      "records_per_day": 48000.0,
+      "source": "flickr"
+    }
+  ]
+}

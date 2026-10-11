@@ -31,13 +31,19 @@ jobs:
       - name: Format check (ruff)
         run: ruff format --check .
 
-      - name: Type check (mypy, best-effort)
+      - name: Type check — strict on the schema contract
+        run: mypy --strict src/specint/records.py
+
+      - name: Type check (mypy, best-effort over the rest of src)
         run: mypy src || true
 
       - name: Tests (offline)
         env:
           SPECINT_RUN_INTEGRATION: "0"
         run: pytest -q --cov=specint --cov-report=term-missing
+
+      - name: Schema-contract + license-safety invariants
+        run: pytest -q tests/test_schema_contract.py tests/test_license_safety.py
 
       - name: E2E compare (fixtures)
         run: |
@@ -51,6 +57,21 @@ jobs:
         with:
           name: compare-report
           path: reports/ci-compare.json
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install bandit + pip-audit
+        run: pip install "bandit[toml]>=1.7" "pip-audit>=2.7"
+      - name: Bandit (static analysis)
+        run: bandit -r src/specint -q
+      - name: pip-audit (CVEs in declared deps)
+        run: pip-audit --strict || true
 
   precommit:
     runs-on: ubuntu-latest

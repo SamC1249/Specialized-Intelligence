@@ -9,11 +9,18 @@ repos:
         args: ["--maxkb=512"]
       - id: check-merge-conflict
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.5.0
+    rev: v0.6.9
     hooks:
       - id: ruff
         args: ["--fix"]
       - id: ruff-format
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.9
+    hooks:
+      - id: bandit
+        name: bandit (static analysis)
+        args: ["-q", "-r", "src/specint"]
+        pass_filenames: false
   - repo: local
     hooks:
       - id: pytest-quick
@@ -22,3 +29,13 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
+      - id: schema-contract
+        name: schema contract (db_structured.md vs Pydantic)
+        entry: pytest -q tests/test_schema_contract.py
+        language: system
+        pass_filenames: false
+      - id: license-safety
+        name: license-safety invariants over fixtures
+        entry: pytest -q tests/test_license_safety.py
+        language: system
+        pass_filenames: false
