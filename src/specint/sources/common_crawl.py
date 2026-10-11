@@ -6,9 +6,14 @@ JSON-LD blocks from a single HTML page. A live `search()` implementation
 would feed this `parse` from a WARC iterator (out of scope for the seed
 PR — the unit tests cover the HTML-parsing path against a fixture).
 
-We assign `License.UNKNOWN` by default. A page-level license MUST be
-proven (e.g. CC-licensed Wikibooks recipes) before any record is treated
-as redistributable.
+Page-level license detection follows three signals, in order:
+  1. ``<link rel="license" href="...">`` — the HTML5 spec signal.
+  2. ``<meta name="dcterms.license"|"DC.rights" content="...">`` — Dublin Core.
+  3. Visible ``<a href="https://creativecommons.org/licenses/...">`` link in
+     the document body (page-level copyleft/badge convention).
+We ignore any CC badge that lives *inside* an embedded video player's
+own block, since those describe the video provider's own site chrome,
+not the page content we would legally be relying on.
 """
 
 from __future__ import annotations
@@ -82,8 +87,72 @@ def _parse_iso(value: str | None) -> datetime | None:
         return None
 
 
+_CC_URL_RE = re.compile(
+    r"https?://(?:creativecommons\.org/(?:licenses|publicdomain)/[^\s\"'<>]+)",
+    re.IGNORECASE,
+)
+
+
+def classify_cc_url(url: str) -> License:
+    """Map a creativecommons.org URL to the License enum.
+
+    Conservative: unknown license variants map to UNKNOWN rather than
+    being promoted into a redistributable tier.
+    """
+    if not url:
+        return License.UNKNOWN
+    u = url.lower()
+    if "publicdomain/zero" in u or "/cc0/" in u or u.endswith("/cc0"):
+        return License.CC0
+    if "publicdomain/mark" in u or "publicdomain" in u:
+        return License.PUBLIC_DOMAIN
+    if "by-nc" in u or "by-nd" in u:
+        return License.RESTRICTED
+    if "by-sa" in u:
+        return License.CC_BY_SA
+    if "/by/" in u or u.endswith("/by") or "licenses/by/" in u:
+        return License.CC_BY
+    return License.UNKNOWN
+
+
+def detect_page_license(soup: BeautifulSoup) -> tuple[License, str | None]:
+    """Return (License, license_url) inferred from HTML page-level signals.
+
+    Pure function on a parsed soup. Returns (UNKNOWN, None) when no
+    confident page-level signal is present.
+    """
+    for link in soup.find_all("link", attrs={"rel": True}):
+        rels = link.get("rel") or []
+        if isinstance(rels, str):
+            rels = [rels]
+        if "license" in [str(r).lower() for r in rels]:
+            href = (link.get("href") or "").strip()
+            cls = classify_cc_url(href)
+            if cls is not License.UNKNOWN or href:
+                return cls, (href or None)
+
+    for meta in soup.find_all("meta"):
+        name = (meta.get("name") or meta.get("property") or "").strip().lower()
+        if name in {"dcterms.license", "dc.rights", "dc.license", "license"}:
+            content = (meta.get("content") or "").strip()
+            cls = classify_cc_url(content)
+            if cls is not License.UNKNOWN or content:
+                return cls, (content or None)
+
+    body = soup.body or soup
+    for a in body.find_all("a", href=True):
+        href = str(a.get("href") or "").strip()
+        if _CC_URL_RE.match(href):
+            cls = classify_cc_url(href)
+            if cls is not License.UNKNOWN:
+                return cls, href
+
+    return License.UNKNOWN, None
+
+
 def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[VideoRecord]:
     soup = BeautifulSoup(html, "lxml")
+    page_license, page_license_url = detect_page_license(soup)
     blocks: list[dict[str, Any]] = []
     for tag in soup.find_all("script", attrs={"type": "application/ld+json"}):
         try:
@@ -132,8 +201,8 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             width=int(v["width"]) if isinstance(v.get("width"), (int, float)) else None,
             height=int(v["height"]) if isinstance(v.get("height"), (int, float)) else None,
             fps=None,
-            license=License.UNKNOWN,
-            license_url=None,
+            license=page_license,
+            license_url=page_license_url,
             author=_safe_str(
                 (v.get("author") or {}).get("name")
                 if isinstance(v.get("author"), dict)
