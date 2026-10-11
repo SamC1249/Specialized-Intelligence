@@ -33,7 +33,7 @@ specint = "specint.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-specint = ["py.typed"]
+specint = ["py.typed", "compare/sample_data/*.json", "compare/sample_data/*.html"]
 
 [tool.pytest.ini_options]
 addopts = "-ra --strict-markers"

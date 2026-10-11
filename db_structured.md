@@ -63,18 +63,23 @@ Emitted by `specint.compare.harness.run`. One row per `(source, query)`
 pair plus an aggregate `total` row. Stored under
 `reports/compare-YYYY-MM-DD.json`.
 
-| Field                   | Type      | Notes                                       |
-| ----------------------- | --------- | ------------------------------------------- |
-| `source`                | `str`     | Or `"__total__"` for the aggregate row.     |
-| `query_terms`           | `list[str]` |                                           |
-| `n_records`             | `int`     | Records returned.                           |
-| `n_license_clean`       | `int`     | License in {CC0, CC_BY, CC_BY_SA, PD, OTHER_FREE}. |
-| `total_duration_s`      | `float`   | Sum of `duration_s` (treats None as 0).     |
-| `mean_quality`          | `float`   | Mean of `quality_score`.                    |
-| `p50_quality`           | `float`   | Median quality.                             |
-| `p90_quality`           | `float`   |                                             |
-| `unique_authors`        | `int`     | Heuristic for diversity.                    |
-| `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
+| Field                   | Type         | Notes                                                                                           |
+| ----------------------- | ------------ | ----------------------------------------------------------------------------------------------- |
+| `source`                | `str`        | Or `"__total__"` for the aggregate row.                                                         |
+| `query_terms`           | `list[str]`  |                                                                                                 |
+| `n_records`             | `int`        | Records returned.                                                                               |
+| `n_license_clean`       | `int`        | License in {CC0, CC_BY, CC_BY_SA, PD, OTHER_FREE}.                                              |
+| `total_duration_s`      | `float`      | Sum of `duration_s` (treats None as 0).                                                         |
+| `license_clean_hours`   | `float`      | Sum of durations of license-clean records only, in hours (round-tripped to 6 decimal places).   |
+| `mean_quality`          | `float`      | Mean of `quality_score`.                                                                        |
+| `p50_quality`           | `float`      | Median quality.                                                                                 |
+| `p90_quality`           | `float`      |                                                                                                 |
+| `top10_mean_quality`    | `float`      | Mean of the top-10 quality scores — measures the tail we would actually ingest first.           |
+| `median_height`         | `int`/`None` | Median of non-null `height`; `None` when no records report a resolution.                        |
+| `unique_authors`        | `int`        | Heuristic for diversity.                                                                        |
+| `n_with_steps`          | `int`        | Count of records with non-empty `recipe_steps` (procedural supervision counter).                |
+| `n_duplicates_dropped`  | `int`        | On the `__total__` row only: number of records dedup'd across sources. Per-source rows report 0.|
+| `notes`                 | `str`        | Free-form, e.g. fixture name in CI runs.                                                        |
 
 ## Frontend / API contract (placeholder)
 

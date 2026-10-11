@@ -1,0 +1,46 @@
+{
+  "__instance__": "https://framatube.org",
+  "total": 2,
+  "data": [
+    {
+      "id": 9001,
+      "uuid": "abcd-1234",
+      "shortUUID": "abcd",
+      "name": "Open-Source Sourdough",
+      "description": "A community-made sourdough tutorial.",
+      "duration": 642,
+      "publishedAt": "2024-01-15T12:00:00Z",
+      "language": {"id": "en", "label": "English"},
+      "licence": {"id": 2, "label": "Attribution - Share Alike"},
+      "tags": ["sourdough", "bread"],
+      "resolution": {"id": 1080, "label": "1080p"},
+      "files": [
+        {"fileUrl": "https://framatube.org/static/webseed/abcd-1234.mp4"}
+      ],
+      "account": {"displayName": "Open Bakers", "host": "framatube.org"}
+    },
+    {
+      "id": 9002,
+      "uuid": "efgh-5678",
+      "name": "Non-Commercial Stew",
+      "description": "Should be filtered (NC).",
+      "duration": 480,
+      "licence": {"id": 4, "label": "Attribution - Non Commercial"},
+      "files": [],
+      "account": {"displayName": "Closed Cooks", "host": "framatube.org"}
+    },
+    {
+      "id": 9003,
+      "uuid": "ijkl-9012",
+      "name": "Public-Domain Pancakes",
+      "description": "CC0 pancake demo.",
+      "duration": 180,
+      "licence": {"id": 7, "label": "Public Domain Dedication"},
+      "tags": ["pancakes"],
+      "files": [
+        {"fileUrl": "https://framatube.org/static/webseed/ijkl-9012.mp4"}
+      ],
+      "account": {"displayName": "Free Kitchen", "host": "framatube.org"}
+    }
+  ]
+}

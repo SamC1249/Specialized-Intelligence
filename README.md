@@ -19,13 +19,33 @@ python -m pip install -e ".[dev]"
 pre-commit install
 pytest -q
 
-# Offline comparison harness (no network):
-python -m specint compare --fixtures --terms cooking recipe \
+# Offline comparison harness (no network, uses shipped sample fixtures):
+python -m specint compare --fixtures --language en \
   --output reports/example.json
+
+# Diff two reports to see per-source deltas (CI/PR friendly):
+python -m specint diff reports/baseline-2026-06-20.json reports/baseline-2026-10-11.json
+
+# Multilingual seed term sets:
+python -m specint languages
 
 # Live comparison (only with explicit opt-in):
 SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
 ```
+
+## Current baseline — `reports/baseline-2026-10-11.json`
+
+| source        | n_records | license-clean | license-clean hours | mean quality |
+| ------------- | --------- | ------------- | ------------------- | ------------ |
+| archive_org   | 3         | 2             | 0.387               | 0.355        |
+| common_crawl  | 2         | 1             | 0.103               | 0.630        |
+| peertube      | 2         | 2             | 0.228               | 0.569        |
+| wikimedia     | 2         | 2             | 0.099               | 0.620        |
+| **__total__** | **9**     | **7**         | **0.818**           | **0.522**    |
+
+Any PR touching a source adapter, quality scorer, or dedupe strategy
+should re-run `python -m specint compare --fixtures --output <new>` and
+include the diff vs this baseline in the PR description.
 
 ## Layout
 
