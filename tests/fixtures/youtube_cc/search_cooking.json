@@ -1,0 +1,84 @@
+{
+  "kind": "youtube#videoListResponse",
+  "etag": "fixture",
+  "items": [
+    {
+      "kind": "youtube#video",
+      "etag": "fixture-a",
+      "id": "ccVideoAAAA",
+      "snippet": {
+        "publishedAt": "2024-03-11T14:00:00Z",
+        "channelId": "UC_fixture_cc",
+        "title": "How to Make Garlic Butter Pasta from Scratch",
+        "description": "In this short demo we cook garlic butter pasta from scratch. First, boil the pasta in salted water. Then melt butter, add minced garlic, stir until fragrant, pour in cream, season with salt and pepper, and finally toss the drained pasta until coated.",
+        "channelTitle": "OpenKitchen",
+        "tags": ["pasta", "garlic butter", "weeknight dinner"],
+        "defaultAudioLanguage": "en"
+      },
+      "contentDetails": {
+        "duration": "PT6M12S",
+        "dimension": "2d",
+        "definition": "hd"
+      },
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "creativeCommon",
+        "embeddable": true,
+        "publicStatsViewable": true
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "fixture-b",
+      "id": "ccVideoBBBB",
+      "snippet": {
+        "publishedAt": "2023-08-02T09:15:00Z",
+        "channelId": "UC_fixture_cc_2",
+        "title": "Slow-Braised Beef Stew (Full Recipe Walkthrough)",
+        "description": "A long-form braise. Brown the beef, sweat the mirepoix, deglaze with stock, cover and simmer until the meat yields to a fork. Serve over mashed potatoes.",
+        "channelTitle": "SlowKitchen",
+        "tags": ["beef", "stew", "braise"],
+        "defaultAudioLanguage": "en"
+      },
+      "contentDetails": {
+        "duration": "PT52M3S",
+        "dimension": "2d",
+        "definition": "hd"
+      },
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "creativeCommon",
+        "embeddable": true,
+        "publicStatsViewable": true
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "fixture-c",
+      "id": "ytStandardCCC",
+      "snippet": {
+        "publishedAt": "2025-01-19T19:30:00Z",
+        "channelId": "UC_fixture_std",
+        "title": "Secret Family Pie Recipe",
+        "description": "A clickbait upload wrongly surfaced by the CC filter. The underlying license is actually the standard YouTube license.",
+        "channelTitle": "PieChannel",
+        "tags": ["pie", "dessert"],
+        "defaultAudioLanguage": "en"
+      },
+      "contentDetails": {
+        "duration": "PT3M44S",
+        "dimension": "2d",
+        "definition": "sd"
+      },
+      "status": {
+        "uploadStatus": "processed",
+        "privacyStatus": "public",
+        "license": "youtube",
+        "embeddable": true,
+        "publicStatsViewable": true
+      }
+    }
+  ]
+}
