@@ -12,7 +12,9 @@ from typing import Any
 from pydantic import AnyHttpUrl, BaseModel, ConfigDict, Field
 
 
-class License(str, Enum):  # noqa: UP042 - keep classic str+Enum for Pydantic compatibility
+class License(str, Enum):
+    # Keep the classic `str + Enum` pattern (not StrEnum) for broadest
+    # Pydantic v2 compatibility across the supported Python matrix.
     CC0 = "CC0"
     CC_BY = "CC-BY"
     CC_BY_SA = "CC-BY-SA"

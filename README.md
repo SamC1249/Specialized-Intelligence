@@ -19,12 +19,19 @@ python -m pip install -e ".[dev]"
 pre-commit install
 pytest -q
 
-# Offline comparison harness (no network):
+# Offline comparison harness (no network, reads tests/fixtures/):
 python -m specint compare --fixtures --terms cooking recipe \
   --output reports/example.json
 
+# Compare two reports deterministically (per-source deltas, added/removed sources):
+python -m specint diff reports/baseline-2026-06-20.json \
+  reports/baseline-2026-10-12.json --output reports/diff.json
+
 # Live comparison (only with explicit opt-in):
 SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
+# YouTube CC-only metadata search additionally requires:
+SPECINT_YOUTUBE_API_KEY=... SPECINT_RUN_INTEGRATION=1 \
+  python -m specint compare --only youtube_cc --terms cooking
 ```
 
 ## Layout
