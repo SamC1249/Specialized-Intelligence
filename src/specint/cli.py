@@ -8,12 +8,43 @@ import os
 import sys
 from datetime import date
 from pathlib import Path
+from typing import Any
 
-from specint.compare import run_comparison
-from specint.records import SourceQuery
+from specint.compare import diff_reports, run_comparison
+from specint.records import SourceQuery, VideoRecord
 from specint.sources import REGISTRY
 
 DEFAULT_TERMS = ["cooking", "recipe"]
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+FIXTURE_ROOT = REPO_ROOT / "tests" / "fixtures"
+
+FIXTURE_MAP: dict[str, dict[str, str]] = {
+    "wikimedia": {"kind": "json", "path": "wikimedia/search_pasta.json"},
+    "archive_org": {"kind": "json", "path": "archive_org/search_cooking.json"},
+    "peertube": {"kind": "json", "path": "peertube/search_cooking.json"},
+    "youtube_cc": {"kind": "json", "path": "youtube_cc/search_cooking.json"},
+    "common_crawl": {
+        "kind": "html",
+        "path": "common_crawl/recipe_page.html",
+        "url": "https://example.test/recipes/garlic-butter-pasta",
+    },
+}
+
+
+def _load_fixture_records(slug: str, query: SourceQuery) -> list[VideoRecord]:
+    spec = FIXTURE_MAP.get(slug)
+    if not spec:
+        return []
+    source = REGISTRY[slug]()
+    fixture_path = FIXTURE_ROOT / spec["path"]
+    if not fixture_path.exists():
+        return []
+    if spec["kind"] == "json":
+        raw: Any = json.loads(fixture_path.read_text())
+    else:
+        raw = {"html": fixture_path.read_text(), "url": spec["url"]}
+    return list(source.parse(raw, query))
 
 
 def _cmd_sources(_: argparse.Namespace) -> int:
@@ -32,8 +63,7 @@ def _cmd_compare(args: argparse.Namespace) -> int:
         for slug in REGISTRY:
             if only and slug not in only:
                 continue
-            by_source[slug] = []
-        # No live calls in --fixtures mode; the harness reports zeros so CI is reproducible.
+            by_source[slug] = _load_fixture_records(slug, query)
     elif os.environ.get("SPECINT_RUN_INTEGRATION") != "1":
         print(
             "refusing to hit live network without SPECINT_RUN_INTEGRATION=1; pass --fixtures for an offline dry run.",
@@ -68,6 +98,18 @@ def _cmd_compare(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_diff(args: argparse.Namespace) -> int:
+    a = json.loads(Path(args.a).read_text())
+    b = json.loads(Path(args.b).read_text())
+    report = diff_reports(a, b)
+    rendered = json.dumps(report, indent=2, sort_keys=True)
+    if args.output:
+        Path(args.output).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.output).write_text(rendered)
+    print(rendered)
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="specint")
     sub = p.add_subparsers(dest="command", required=True)
@@ -83,6 +125,12 @@ def build_parser() -> argparse.ArgumentParser:
     p_cmp.add_argument("--output", help="output JSON path")
     p_cmp.add_argument("--notes", help="free-form note attached to every row")
     p_cmp.set_defaults(func=_cmd_compare)
+
+    p_diff = sub.add_parser("diff", help="diff two compare-report JSON files")
+    p_diff.add_argument("a", help="baseline report path")
+    p_diff.add_argument("b", help="candidate report path")
+    p_diff.add_argument("--output", help="optional path to write the diff JSON to")
+    p_diff.set_defaults(func=_cmd_diff)
 
     return p
 
