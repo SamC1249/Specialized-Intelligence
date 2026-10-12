@@ -42,15 +42,24 @@ jobs:
       - name: E2E compare (fixtures)
         run: |
           python -m specint compare --fixtures --terms cooking recipe \
-            --output reports/ci-compare.json
+            --notes ci-compare --output reports/ci-compare.json
           test -s reports/ci-compare.json
+
+      - name: Diff vs. 2026-10-12 baseline (fixtures)
+        run: |
+          python -m specint diff \
+            reports/baseline-2026-10-12.json reports/ci-compare.json \
+            --output reports/ci-diff.json
+          test -s reports/ci-diff.json
 
       - name: Upload comparison report
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: compare-report
-          path: reports/ci-compare.json
+          path: |
+            reports/ci-compare.json
+            reports/ci-diff.json
 
   precommit:
     runs-on: ubuntu-latest
