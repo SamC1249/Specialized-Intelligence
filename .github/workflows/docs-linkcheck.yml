@@ -1,0 +1,30 @@
+name: docs-linkcheck
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  lychee:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Link check (docs + README)
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --no-progress
+            --max-concurrency 4
+            --accept 200..=299,403,429
+            --exclude-mail
+            README.md
+            AGENTS.md
+            db_structured.md
+            docs/**/*.md
+          fail: false
+          output: .lychee-report.md
