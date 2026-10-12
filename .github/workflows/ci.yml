@@ -31,6 +31,14 @@ jobs:
       - name: Format check (ruff)
         run: ruff format --check .
 
+      - name: Spellcheck (codespell)
+        run: |
+          pip install codespell
+          codespell \
+            --ignore-words-list=licence,licences,commoncrawl,crate,ro,nd,pre-select,unter \
+            --skip="reports,tests/fixtures,.git,*.egg-info" \
+            .
+
       - name: Type check (mypy, best-effort)
         run: mypy src || true
 
