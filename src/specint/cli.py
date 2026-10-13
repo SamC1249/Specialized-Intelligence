@@ -11,7 +11,7 @@ from datetime import date
 from pathlib import Path
 
 from specint._git import short_sha
-from specint.compare import run_comparison
+from specint.compare import run_comparison, run_fixture_harness, serialise
 from specint.records import SourceQuery, VideoRecord
 from specint.sources import REGISTRY
 
@@ -108,11 +108,19 @@ def _cmd_compare(args: argparse.Namespace) -> int:
 
     by_source: dict[str, list] = {}
     if args.fixtures:
-        for slug in REGISTRY:
-            if only and slug not in only:
-                continue
-            by_source[slug] = []
-        # No live calls in --fixtures mode; the harness reports zeros so CI is reproducible.
+        # Delegates to the shared fixture harness so CLI output, the regression
+        # gate, and the baseline-generation script can never drift apart.
+        fx_query, fx_rows = run_fixture_harness(terms=terms, notes=args.notes or "fixture-cli")
+        payload = serialise(fx_query, fx_rows)
+        out_path = (
+            Path(args.output)
+            if args.output
+            else Path("reports") / f"compare-{date.today().isoformat()}.json"
+        )
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(json.dumps(payload, indent=2, sort_keys=True))
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return 0
     elif os.environ.get("SPECINT_RUN_INTEGRATION") != "1":
         print(
             "refusing to hit live network without SPECINT_RUN_INTEGRATION=1; pass --fixtures for an offline dry run.",
