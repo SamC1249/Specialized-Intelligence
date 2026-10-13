@@ -5,9 +5,14 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+      - id: check-json
       - id: check-added-large-files
         args: ["--maxkb=512"]
       - id: check-merge-conflict
+      - id: check-ast
+      - id: detect-private-key
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.5.0
     hooks:
@@ -19,6 +24,12 @@ repos:
       - id: pytest-quick
         name: pytest (offline)
         entry: pytest -q
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+      - id: fixture-benchmark
+        name: deterministic fixture benchmark (regression gate)
+        entry: bash -c "python scripts/run_fixture_benchmark.py --output /tmp/specint-precommit-bench.json >/dev/null && python scripts/check_benchmark_regression.py --candidate /tmp/specint-precommit-bench.json --baseline reports/baseline-2026-06-20.json"
         language: system
         pass_filenames: false
         stages: [pre-push]
