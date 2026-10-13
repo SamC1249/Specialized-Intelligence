@@ -39,18 +39,70 @@ jobs:
           SPECINT_RUN_INTEGRATION: "0"
         run: pytest -q --cov=specint --cov-report=term-missing
 
-      - name: E2E compare (fixtures)
+      - name: E2E compare (fixtures, schema-only smoke)
         run: |
           python -m specint compare --fixtures --terms cooking recipe \
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
+
+      - name: Deterministic fixture benchmark
+        run: |
+          python scripts/run_fixture_benchmark.py \
+            --output reports/ci-fixture-benchmark.json \
+            --notes "ci-${{ matrix.python-version }}"
+          test -s reports/ci-fixture-benchmark.json
+
+      - name: Regression gate vs baseline
+        run: |
+          python scripts/check_benchmark_regression.py \
+            --candidate reports/ci-fixture-benchmark.json \
+            --baseline reports/baseline-2026-06-20.json
 
       - name: Upload comparison report
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: compare-report
-          path: reports/ci-compare.json
+          path: |
+            reports/ci-compare.json
+            reports/ci-fixture-benchmark.json
+
+  import-no-net:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Prove every module imports without network
+        env:
+          HTTPS_PROXY: http://127.0.0.1:1
+          HTTP_PROXY: http://127.0.0.1:1
+          NO_PROXY: ""
+        run: |
+          python - <<'PY'
+          import importlib
+          for name in (
+              "specint",
+              "specint.records",
+              "specint.cli",
+              "specint.compare",
+              "specint.quality",
+              "specint.sources",
+              "specint.sources.base",
+              "specint.sources.wikimedia",
+              "specint.sources.archive_org",
+              "specint.sources.peertube",
+              "specint.sources.common_crawl",
+          ):
+              importlib.import_module(name)
+              print("ok", name)
+          PY
 
   precommit:
     runs-on: ubuntu-latest
