@@ -27,3 +27,28 @@ def test_cli_compare_refuses_live_without_env(monkeypatch, tmp_path: Path):
     monkeypatch.delenv("SPECINT_RUN_INTEGRATION", raising=False)
     rc = main(["compare", "--terms", "cooking", "--output", str(tmp_path / "out.json")])
     assert rc == 2
+
+
+def test_cli_doctor_reports_green(capsys):
+    rc = main(["doctor"])
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert "extractor_git:" in out
+    assert "registered sources:" in out
+    for slug in ("wikimedia", "archive_org", "peertube", "common_crawl"):
+        assert slug in out
+        assert "FAIL" not in out
+
+
+def test_cli_doctor_json_payload(capsys):
+    import re
+
+    rc = main(["doctor", "--json"])
+    assert rc == 0
+    out = capsys.readouterr().out
+    # Extract the trailing JSON object from the mixed human + JSON output.
+    match = re.search(r"\{[\s\S]*\}\s*$", out)
+    assert match is not None, out
+    data = json.loads(match.group(0))
+    assert "extractor_git" in data
+    assert set(data["sources"].keys()) >= {"wikimedia", "archive_org", "peertube", "common_crawl"}
