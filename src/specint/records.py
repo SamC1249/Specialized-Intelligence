@@ -14,7 +14,7 @@ from pydantic import AnyHttpUrl, BaseModel, ConfigDict, Field
 from specint._git import short_sha
 
 
-class License(str, Enum):  # noqa: UP042 - keep classic str+Enum for Pydantic compatibility
+class License(str, Enum):  # - keep classic str+Enum for Pydantic compatibility
     CC0 = "CC0"
     CC_BY = "CC-BY"
     CC_BY_SA = "CC-BY-SA"

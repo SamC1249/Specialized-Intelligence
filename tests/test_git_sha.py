@@ -5,7 +5,6 @@ from __future__ import annotations
 import re
 
 import pytest
-
 from specint import _git
 from specint.records import Provenance
 

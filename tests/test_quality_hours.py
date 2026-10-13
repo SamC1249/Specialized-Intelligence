@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import pytest
-
 from specint.compare.harness import aggregate
 from specint.records import License, Provenance, VideoRecord
 
