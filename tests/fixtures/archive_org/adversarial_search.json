@@ -1,0 +1,29 @@
+{
+  "_comment": "Adversarial Archive.org payloads: no-derivs license, missing identifier (must skip), string runtime that is garbage, missing license.",
+  "response": {
+    "docs": [
+      {
+        "identifier": "NoDerivsRecipe",
+        "title": "ND Recipe",
+        "description": "No derivatives.",
+        "licenseurl": "https://creativecommons.org/licenses/by-nd/4.0/",
+        "runtime": "0:06:15"
+      },
+      {
+        "title": "Missing Identifier",
+        "licenseurl": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      {
+        "identifier": "GarbageRuntime",
+        "title": "Garbage Runtime",
+        "licenseurl": "https://creativecommons.org/licenses/by/4.0/",
+        "runtime": "not-a-time"
+      },
+      {
+        "identifier": "NoLicenseAtAll",
+        "title": "No License",
+        "runtime": "0:00:45"
+      }
+    ]
+  }
+}

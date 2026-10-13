@@ -66,9 +66,14 @@ class WikimediaCommonsSource(BaseSource):
                 continue
             info = infos[0]
             mime = (info.get("mime") or "").lower()
-            if not mime.startswith("video/") and not title.lower().endswith(
-                (".webm", ".ogv", ".mp4")
-            ):
+            title_ext_video = title.lower().endswith((".webm", ".ogv", ".mp4"))
+            if mime:
+                if not mime.startswith("video/"):
+                    # Audio files that happen to carry a video-sounding title
+                    # (e.g. `File:Chef_interview.ogv` with mime `audio/ogg`)
+                    # must be rejected on the authoritative MIME signal.
+                    continue
+            elif not title_ext_video:
                 continue
 
             ext = info.get("extmetadata") or {}

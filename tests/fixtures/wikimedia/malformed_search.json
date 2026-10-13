@@ -1,0 +1,4 @@
+{
+  "_comment": "Pathological payloads that must degrade to [] without raising.",
+  "query": null
+}
