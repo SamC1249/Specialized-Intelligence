@@ -74,6 +74,7 @@ pair plus an aggregate `total` row. Stored under
 | `p50_quality`           | `float`   | Median quality.                             |
 | `p90_quality`           | `float`   |                                             |
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
+| `quality_hours`         | `float`   | `sum(duration_s * quality_score) / 3600`; duration-weighted quality. |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
 
 ## Frontend / API contract (placeholder)
