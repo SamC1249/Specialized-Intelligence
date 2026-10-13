@@ -1,0 +1,50 @@
+name: Nightly integration (live network)
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 03:17 UTC — off-peak for Wikimedia / Archive.org
+    - cron: "17 3 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  live-smoke:
+    # Only runs when the repo var SPECINT_RUN_INTEGRATION == '1'. Set it
+    # via Settings → Secrets and variables → Actions → Variables so the
+    # fork of a drive-by contributor can never trigger live traffic.
+    if: ${{ vars.SPECINT_RUN_INTEGRATION == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Live compare (metadata-only, polite)
+        env:
+          SPECINT_RUN_INTEGRATION: "1"
+        run: |
+          mkdir -p reports/nightly
+          python -m specint compare \
+            --terms cooking recipe \
+            --max-results 5 \
+            --output "reports/nightly/live-$(date -u +%Y-%m-%d).json" \
+            --notes "nightly-live-$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+      - name: Upload live report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-live-report
+          path: reports/nightly/*.json
+          if-no-files-found: ignore
+      # Regression gate is intentionally omitted here: live yields vary
+      # day-to-day. The nightly job's purpose is to tell us when an
+      # upstream API shape changes (any traceback == alarm). Rank
+      # drift is tracked manually in the next Adversarial-Agent plan.
