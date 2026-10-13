@@ -90,7 +90,7 @@ class WikimediaCommonsSource(BaseSource):
                 id=f"wikimedia:{page_id}",
                 source="wikimedia",
                 source_native_id=str(page_id),
-                url=url,
+                url=url,  # type: ignore[arg-type]
                 media_url=media_url if license_enum.is_redistributable else None,
                 title=title,
                 description="",

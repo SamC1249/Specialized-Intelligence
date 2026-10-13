@@ -25,7 +25,9 @@ TOLERANCE = REPO_ROOT / "reports" / "baseline-latest.tolerance.json"
 
 
 def _load_json(path: Path) -> dict:
-    assert path.exists(), f"missing {path}; run `python -m specint compare --fixtures` or the baseline script"
+    assert path.exists(), (
+        f"missing {path}; run `python -m specint compare --fixtures` or the baseline script"
+    )
     return json.loads(path.read_text())
 
 

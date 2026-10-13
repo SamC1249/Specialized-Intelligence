@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 
 from specint.compare.harness import aggregate
-from specint.records import License, Provenance, SourceQuery, VideoRecord
+from specint.records import License, Provenance, VideoRecord
 
 
 def _rec(duration_s: float, quality: float, lic: License = License.CC_BY) -> VideoRecord:

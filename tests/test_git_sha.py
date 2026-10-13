@@ -9,7 +9,6 @@ import pytest
 from specint import _git
 from specint.records import Provenance
 
-
 SHA_RE = re.compile(r"^[0-9a-f]{7,40}$")
 
 

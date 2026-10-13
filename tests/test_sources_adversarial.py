@@ -22,7 +22,6 @@ from specint.sources.common_crawl import CommonCrawlRecipeSource
 from specint.sources.peertube import PeerTubeSource
 from specint.sources.wikimedia import WikimediaCommonsSource
 
-
 _QUERY = SourceQuery(terms=["adversarial"], max_results=10)
 
 

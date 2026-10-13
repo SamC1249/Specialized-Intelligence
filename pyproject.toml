@@ -56,5 +56,9 @@ quote-style = "double"
 [tool.mypy]
 python_version = "3.11"
 strict = false
+strict_optional = true
+no_implicit_optional = true
+warn_unused_ignores = true
+warn_redundant_casts = true
 ignore_missing_imports = true
 files = ["src"]

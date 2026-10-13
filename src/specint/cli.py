@@ -29,11 +29,11 @@ def _doctor_check_adapter(slug: str) -> tuple[bool, str]:
     """Confirm an adapter imports and can be instantiated without I/O."""
     cls = REGISTRY.get(slug)
     if cls is None:
-        return False, f"not registered"
+        return False, "not registered"
     try:
         importlib.import_module(cls.__module__)
         inst = cls()
-        _ = inst.slug  # noqa: F841
+        _ = inst.slug
     except Exception as exc:  # pragma: no cover - defensive
         return False, f"import/instantiate failed: {exc}"
     return True, "ok"
@@ -95,7 +95,9 @@ def _cmd_doctor(args: argparse.Namespace) -> int:
     if args.json:
         payload = {
             "extractor_git": short_sha(),
-            "sources": {slug: {"status": status, "detail": detail} for slug, status, detail in rows},
+            "sources": {
+                slug: {"status": status, "detail": detail} for slug, status, detail in rows
+            },
         }
         print(json.dumps(payload, indent=2, sort_keys=True))
     return 1 if hard_fail else 0
