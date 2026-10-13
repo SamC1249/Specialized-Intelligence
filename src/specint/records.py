@@ -11,8 +11,10 @@ from typing import Any
 
 from pydantic import AnyHttpUrl, BaseModel, ConfigDict, Field
 
+from specint._git import short_sha
 
-class License(str, Enum):  # noqa: UP042 - keep classic str+Enum for Pydantic compatibility
+
+class License(str, Enum):  # - keep classic str+Enum for Pydantic compatibility
     CC0 = "CC0"
     CC_BY = "CC-BY"
     CC_BY_SA = "CC-BY-SA"
@@ -36,7 +38,7 @@ class Provenance(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     extractor: str
-    extractor_git: str = "dev"
+    extractor_git: str = Field(default_factory=short_sha)
     fetched_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     query: str = ""
 
@@ -93,6 +95,11 @@ class BenchmarkResult(BaseModel):
     p50_quality: float
     p90_quality: float
     unique_authors: int
+    # Duration-weighted quality in hours: sum(duration_s * quality) / 3600.
+    # Captures that a 10-minute 0.8-quality tutorial is worth more than ten
+    # 20-second 0.8-quality clips for world-model training. Adversarial-Agent
+    # critique #5 in docs/plan-2026-10-12.md.
+    quality_hours: float = 0.0
     notes: str = ""
 
     @classmethod
@@ -107,6 +114,7 @@ class BenchmarkResult(BaseModel):
             p50_quality=0.0,
             p90_quality=0.0,
             unique_authors=0,
+            quality_hours=0.0,
             notes=notes,
         )
 

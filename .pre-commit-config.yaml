@@ -14,8 +14,21 @@ repos:
       - id: ruff
         args: ["--fix"]
       - id: ruff-format
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+        args:
+          - --ignore-words-list=crate,fo,nd,te,ser,hist
+        exclude: ^(reports/|tests/fixtures/).*$
   - repo: local
     hooks:
+      - id: mypy
+        name: mypy (src)
+        entry: mypy src
+        language: system
+        types: [python]
+        pass_filenames: false
       - id: pytest-quick
         name: pytest (offline)
         entry: pytest -q

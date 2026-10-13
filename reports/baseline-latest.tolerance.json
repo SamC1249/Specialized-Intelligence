@@ -1,0 +1,6 @@
+{
+  "_comment": "Regression tolerances used by tests/test_benchmark_regression.py. Loosely consistent with docs/plan-2026-10-12.md H4: 'no source may lose more than 5% mean_quality or 10% n_license_clean vs. the committed baseline'. mean_quality tolerance is absolute (0.05) because the baseline values are O(0.5); the n_license_clean budget is 1 absolute slot (10% of baseline rounded up) so a one-record license-classifier flip is flagged, and quality_hours is given a wider 15% absolute slack because adding fixtures routinely moves it.",
+  "mean_quality_abs": 0.05,
+  "n_license_clean_abs": 1,
+  "quality_hours_rel": 0.15
+}

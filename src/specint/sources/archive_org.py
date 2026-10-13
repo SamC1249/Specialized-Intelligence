@@ -77,7 +77,7 @@ class ArchiveOrgSource(BaseSource):
                     duration_s = parts[0] * 3600 + parts[1] * 60 + parts[2]
                 elif len(parts) == 2:
                     duration_s = parts[0] * 60 + parts[1]
-            elif isinstance(duration, (int, float)):
+            elif isinstance(duration, int | float):
                 duration_s = float(duration)
 
             keywords: list[str] = []
@@ -91,8 +91,8 @@ class ArchiveOrgSource(BaseSource):
                 id=f"archive_org:{identifier}",
                 source="archive_org",
                 source_native_id=str(identifier),
-                url=url,
-                media_url=media_url,
+                url=url,  # type: ignore[arg-type]
+                media_url=media_url,  # type: ignore[arg-type]
                 title=str(d.get("title") or identifier),
                 description=str(d.get("description") or ""),
                 language=d.get("language") if isinstance(d.get("language"), str) else None,
@@ -128,6 +128,6 @@ class ArchiveOrgSource(BaseSource):
             ("rows", str(min(query.max_results, 50))),
             ("output", "json"),
         ]
-        resp = self.client().get(SEARCH_URL, params=params)
+        resp = self.client().get(SEARCH_URL, params=params)  # type: ignore[arg-type]
         resp.raise_for_status()
         return self.parse(resp.json(), query)

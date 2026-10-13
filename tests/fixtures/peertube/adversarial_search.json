@@ -1,0 +1,35 @@
+{
+  "_comment": "Adversarial PeerTube payloads: ND license (must exclude), missing uuid (must skip), missing account host (must fall back to the __instance__ hostname), empty files list.",
+  "__instance__": "https://example.test",
+  "total": 3,
+  "data": [
+    {
+      "id": 7001,
+      "uuid": "nd-video-1",
+      "name": "No Derivatives Cake",
+      "description": "ND license: must be filtered.",
+      "duration": 300,
+      "licence": {"id": 3, "label": "Attribution - No Derivatives"},
+      "files": [{"fileUrl": "https://example.test/static/webseed/nd-1.mp4"}],
+      "account": {"displayName": "Closed Cooks", "host": "example.test"}
+    },
+    {
+      "name": "Anonymous Omelette",
+      "description": "Missing uuid, shortUUID, and id — must be skipped.",
+      "duration": 90,
+      "licence": {"id": 1, "label": "Attribution"},
+      "files": [{"fileUrl": "https://example.test/static/webseed/anon.mp4"}],
+      "account": {"displayName": "Anon Chef"}
+    },
+    {
+      "id": 7003,
+      "uuid": "no-host-pancakes",
+      "name": "Pancakes Without Host",
+      "description": "account.host missing — adapter must fall back to __instance__.",
+      "duration": 200,
+      "licence": {"id": 7, "label": "Public Domain Dedication"},
+      "files": [],
+      "account": {"displayName": "Rogue Kitchen"}
+    }
+  ]
+}

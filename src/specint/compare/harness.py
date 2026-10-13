@@ -44,6 +44,7 @@ def aggregate(
         1 for r in items if r.license is not License.UNKNOWN and r.license.is_redistributable
     )
     authors = {r.author for r in items if r.author}
+    quality_hours = sum((r.duration_s or 0.0) * (r.quality_score or 0.0) for r in items) / 3600.0
 
     return BenchmarkResult(
         source=source,
@@ -55,6 +56,7 @@ def aggregate(
         p50_quality=_percentile(qualities, 50),
         p90_quality=_percentile(qualities, 90),
         unique_authors=len(authors),
+        quality_hours=float(quality_hours),
         notes=notes,
     )
 

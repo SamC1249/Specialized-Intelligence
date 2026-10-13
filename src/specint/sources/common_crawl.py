@@ -68,7 +68,7 @@ def _safe_str(value: Any) -> str:
         return ""
     if isinstance(value, str):
         return value
-    if isinstance(value, (list, tuple)) and value:
+    if isinstance(value, list | tuple) and value:
         return _safe_str(value[0])
     return str(value)
 
@@ -80,6 +80,15 @@ def _parse_iso(value: str | None) -> datetime | None:
         return datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError:
         return None
+
+
+def _split_keywords(recipe: dict[str, Any] | None) -> list[str]:
+    if not recipe:
+        return []
+    raw = recipe.get("keywords")
+    if not isinstance(raw, str):
+        return []
+    return [k.strip() for k in raw.split(",") if k.strip()]
 
 
 def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[VideoRecord]:
@@ -121,7 +130,7 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             id=f"common_crawl:{native_id}",
             source="common_crawl",
             source_native_id=native_id,
-            url=page_url,
+            url=page_url,  # type: ignore[arg-type]
             media_url=None,
             title=_safe_str(v.get("name") or (recipe.get("name") if recipe else "")),
             description=_safe_str(
@@ -129,8 +138,8 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             ),
             language=None,
             duration_s=parse_iso8601_duration(v.get("duration")),
-            width=int(v["width"]) if isinstance(v.get("width"), (int, float)) else None,
-            height=int(v["height"]) if isinstance(v.get("height"), (int, float)) else None,
+            width=int(v["width"]) if isinstance(v.get("width"), int | float) else None,
+            height=int(v["height"]) if isinstance(v.get("height"), int | float) else None,
             fps=None,
             license=License.UNKNOWN,
             license_url=None,
@@ -141,15 +150,7 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             )
             or None,
             published_at=_parse_iso(_safe_str(v.get("uploadDate")) or None),
-            keywords=[
-                k
-                for k in (
-                    recipe.get("keywords").split(",")
-                    if recipe and isinstance(recipe.get("keywords"), str)
-                    else []
-                )
-                if k.strip()
-            ],
+            keywords=_split_keywords(recipe),
             recipe_steps=[s for s in steps if s],
             provenance=prov,
         )

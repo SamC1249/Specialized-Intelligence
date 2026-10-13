@@ -1,0 +1,60 @@
+{
+  "_comment": "Adversarial Wikimedia payloads: ND/NC license, audio-only file mis-classified by title, missing imageinfo, and a page_id with a non-string type on License.",
+  "query": {
+    "pages": {
+      "22222": {
+        "pageid": 22222,
+        "title": "File:Non_commercial_soup.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/x/x1/NC_soup.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Non_commercial_soup.webm",
+            "mime": "video/webm",
+            "duration": 120.0,
+            "width": 1280,
+            "height": 720,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY-NC 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by-nc/4.0"}
+            }
+          }
+        ]
+      },
+      "33333": {
+        "pageid": 33333,
+        "title": "File:Chef_interview.ogv",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/y/y1/Chef_interview.ogv",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Chef_interview.ogv",
+            "mime": "audio/ogg",
+            "duration": 540.0,
+            "extmetadata": {"LicenseShortName": {"value": "CC0"}}
+          }
+        ]
+      },
+      "44444": {
+        "pageid": 44444,
+        "title": "File:Broken_page.webm",
+        "imageinfo": []
+      },
+      "55555": {
+        "pageid": 55555,
+        "title": "File:Mystery_license.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/z/z1/Mystery.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Mystery_license.webm",
+            "mime": "video/webm",
+            "duration": 60.0,
+            "width": 854,
+            "height": 480,
+            "extmetadata": {
+              "LicenseShortName": {"value": "GPL"}
+            }
+          }
+        ]
+      }
+    }
+  }
+}
