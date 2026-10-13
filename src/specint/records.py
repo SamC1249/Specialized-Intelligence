@@ -11,6 +11,8 @@ from typing import Any
 
 from pydantic import AnyHttpUrl, BaseModel, ConfigDict, Field
 
+from specint._git import short_sha
+
 
 class License(str, Enum):  # noqa: UP042 - keep classic str+Enum for Pydantic compatibility
     CC0 = "CC0"
@@ -36,7 +38,7 @@ class Provenance(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     extractor: str
-    extractor_git: str = "dev"
+    extractor_git: str = Field(default_factory=short_sha)
     fetched_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     query: str = ""
 
