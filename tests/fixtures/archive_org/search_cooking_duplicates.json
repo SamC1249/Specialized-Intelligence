@@ -1,0 +1,28 @@
+{
+  "response": {
+    "docs": [
+      {
+        "identifier": "CookingPastaCarbonaraMirror",
+        "title": "Cooking pasta carbonara",
+        "description": "Mirror of a Wikimedia Commons cooking video.",
+        "creator": "Prelinger Archives",
+        "subject": ["cooking", "pasta", "mirror"],
+        "language": "eng",
+        "licenseurl": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "runtime": "0:05:10",
+        "publicdate": "2024-05-01T00:00:00Z"
+      },
+      {
+        "identifier": "KnifeSkillsDemoMirror",
+        "title": "Knife skills demo",
+        "description": "Mirror of the Wikimedia Commons knife skills demo.",
+        "creator": "Public Kitchen",
+        "subject": ["cooking", "knife", "mirror"],
+        "language": "eng",
+        "licenseurl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "runtime": "0:00:45",
+        "publicdate": "2024-06-01T00:00:00Z"
+      }
+    ]
+  }
+}
