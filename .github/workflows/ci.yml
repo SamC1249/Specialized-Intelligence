@@ -39,18 +39,59 @@ jobs:
           SPECINT_RUN_INTEGRATION: "0"
         run: pytest -q --cov=specint --cov-report=term-missing
 
-      - name: E2E compare (fixtures)
+      - name: E2E compare (fixtures, baseline)
         run: |
           python -m specint compare --fixtures --terms cooking recipe \
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
 
-      - name: Upload comparison report
+      - name: E2E compare (fixtures, all profiles)
+        run: |
+          python -m specint compare --fixtures --profile all \
+            --terms cooking recipe \
+            --output reports/ci-compare-profiles.json
+          test -s reports/ci-compare-profiles.json
+
+      - name: E2E dedupe (fixtures)
+        run: |
+          python -m specint dedupe --fixtures \
+            --output reports/ci-dedupe.json
+          test -s reports/ci-dedupe.json
+
+      - name: E2E yield (fixtures)
+        run: |
+          python -m specint yield --fixtures \
+            --output reports/ci-yield.json
+          test -s reports/ci-yield.json
+
+      - name: Regression guard — v2 must not regress baseline on __total__
+        run: |
+          python - <<'PY'
+          import json, sys
+          data = json.load(open("reports/ci-compare-profiles.json"))
+          by_profile = {}
+          for row in data["rows"]:
+              if row["source"] == "__total__":
+                  by_profile[row["profile"]] = row["mean_quality"]
+          assert "baseline" in by_profile and "v2" in by_profile, by_profile
+          if by_profile["v2"] < by_profile["baseline"]:
+              sys.exit(
+                  f"v2 regressed baseline on __total__: "
+                  f"v2={by_profile['v2']!r} baseline={by_profile['baseline']!r}"
+              )
+          print(f"OK: v2={by_profile['v2']:.4f} >= baseline={by_profile['baseline']:.4f}")
+          PY
+
+      - name: Upload comparison reports
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: compare-report
-          path: reports/ci-compare.json
+          path: |
+            reports/ci-compare.json
+            reports/ci-compare-profiles.json
+            reports/ci-dedupe.json
+            reports/ci-yield.json
 
   precommit:
     runs-on: ubuntu-latest
