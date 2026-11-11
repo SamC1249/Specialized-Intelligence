@@ -65,3 +65,9 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
     reloaded = json.loads(out.read_text())
     assert reloaded["query"]["terms"] == ["cooking", "recipe"]
     assert len(reloaded["rows"]) == 5
+
+    # Every row now carries a profile tag and an optional dedupe count.
+    for row in reloaded["rows"]:
+        assert row["profile"] == "baseline"
+        assert row["n_unique_after_dedupe"] is not None
+        assert row["n_unique_after_dedupe"] <= row["n_records"]
