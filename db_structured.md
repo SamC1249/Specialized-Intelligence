@@ -39,6 +39,7 @@ redefine them locally.**
 | `keywords`        | `list[str]`      | Free-form tags from upstream.                                                            |
 | `recipe_steps`    | `list[str]`      | Step-text if available (Common Crawl recipe schema).                                     |
 | `provenance`      | `Provenance`     | Always present, see below.                                                               |
+| `quality_score`   | `float \| None`  | Populated by `specint.quality.score_records`; `None` if un-scored.                       |
 
 ## `Provenance` (Pydantic model)
 
