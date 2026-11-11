@@ -1,0 +1,66 @@
+{
+  "query": {
+    "pages": {
+      "22001": {
+        "pageid": 22001,
+        "title": "File:Receta de paella valenciana.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Receta_de_paella_valenciana.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Receta_de_paella_valenciana.webm",
+            "mime": "video/webm",
+            "duration": 420.0,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by/4.0"},
+              "Artist": {"value": "Cocina Abierta"},
+              "DateTimeOriginal": {"value": "2024-11-02T09:00:00Z"}
+            }
+          }
+        ]
+      },
+      "22002": {
+        "pageid": 22002,
+        "title": "File:Recette de ratatouille maison.ogv",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Recette_de_ratatouille_maison.ogv",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Recette_de_ratatouille_maison.ogv",
+            "mime": "video/ogg",
+            "duration": 540.0,
+            "width": 1280,
+            "height": 720,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY-SA 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by-sa/4.0"},
+              "Artist": {"value": "Cuisine Libre"},
+              "DateTimeOriginal": {"value": "2024-08-11T14:00:00Z"}
+            }
+          }
+        ]
+      },
+      "22003": {
+        "pageid": 22003,
+        "title": "File:伝統的な寿司の料理レシピ.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Traditional_sushi_recipe.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Traditional_sushi_recipe.webm",
+            "mime": "video/webm",
+            "duration": 360.0,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/publicdomain/zero/1.0/"},
+              "Artist": {"value": "寿司職人"},
+              "DateTimeOriginal": {"value": "2025-02-20T08:00:00Z"}
+            }
+          }
+        ]
+      }
+    }
+  }
+}
