@@ -75,6 +75,24 @@ pair plus an aggregate `total` row. Stored under
 | `p90_quality`           | `float`   |                                             |
 | `unique_authors`        | `int`     | Heuristic for diversity.                    |
 | `notes`                 | `str`     | Free-form, e.g. fixture name in CI runs.    |
+| `profile`               | `str`     | Quality profile used (`baseline`, `v2`, …). Defaults to `baseline`. |
+| `n_unique_after_dedupe` | `int \| None` | Cluster count under `specint.dedupe`. Optional; `None` means dedupe wasn't computed. |
+
+## `YieldEstimate` (Pydantic model)
+
+Emitted by `specint.yield_estimator.estimate`. Stored under
+`reports/yield-YYYY-MM-DD.json` by the `python -m specint yield` CLI.
+
+| Field                     | Type      | Notes                                       |
+| ------------------------- | --------- | ------------------------------------------- |
+| `source`                  | `str`     | Source slug.                                |
+| `upstream_total_hits`     | `int`     | What the upstream listing API claims.       |
+| `records_parsed`          | `int`     | Records our adapter actually produced.      |
+| `records_license_clean`   | `int`     | Subset with a redistributable license.      |
+| `license_clean_rate`      | `float`   | `records_license_clean / records_parsed`.   |
+| `censored`                | `bool`    | True when `upstream_total_hits` hit a known listing cap (`>= 10_000`); treat the count as a floor, not a true total. |
+| `projected_daily_records` | `int`     | Extrapolation: `2_000 list_calls * batch_size * license_clean_rate`. |
+| `notes`                   | `str`     | Free-form.                                  |
 
 ## Frontend / API contract (placeholder)
 
