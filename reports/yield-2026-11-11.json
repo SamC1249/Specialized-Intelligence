@@ -1,0 +1,53 @@
+{
+  "batch_size": 50,
+  "estimates": [
+    {
+      "censored": false,
+      "license_clean_rate": 0.8,
+      "notes": "2026-11-11-yield",
+      "projected_daily_records": 80000,
+      "records_license_clean": 4,
+      "records_parsed": 5,
+      "source": "archive_org",
+      "upstream_total_hits": 5
+    },
+    {
+      "censored": false,
+      "license_clean_rate": 0.0,
+      "notes": "2026-11-11-yield",
+      "projected_daily_records": 0,
+      "records_license_clean": 0,
+      "records_parsed": 1,
+      "source": "common_crawl",
+      "upstream_total_hits": 1
+    },
+    {
+      "censored": false,
+      "license_clean_rate": 1.0,
+      "notes": "2026-11-11-yield",
+      "projected_daily_records": 100000,
+      "records_license_clean": 2,
+      "records_parsed": 2,
+      "source": "peertube",
+      "upstream_total_hits": 2
+    },
+    {
+      "censored": false,
+      "license_clean_rate": 1.0,
+      "notes": "2026-11-11-yield",
+      "projected_daily_records": 100000,
+      "records_license_clean": 5,
+      "records_parsed": 5,
+      "source": "wikimedia",
+      "upstream_total_hits": 5
+    }
+  ],
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  }
+}
