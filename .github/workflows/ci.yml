@@ -45,12 +45,41 @@ jobs:
             --output reports/ci-compare.json
           test -s reports/ci-compare.json
 
-      - name: Upload comparison report
+      - name: E2E ablate (fixtures)
+        run: |
+          python -m specint ablate --fixtures --terms cooking recipe \
+            --output reports/ci-ablate.json
+          test -s reports/ci-ablate.json
+
+      - name: E2E dedup (fixtures)
+        run: |
+          python -m specint dedup --fixtures --terms cooking recipe \
+            --output reports/ci-dedup.json
+          test -s reports/ci-dedup.json
+
+      - name: Validate committed report JSON
+        run: |
+          python - <<'EOF'
+          import glob, json, sys
+          failed = []
+          for path in glob.glob("reports/*.json"):
+              try:
+                  json.loads(open(path).read())
+              except Exception as exc:
+                  failed.append(f"{path}: {exc}")
+          if failed:
+              sys.exit("\n".join(failed))
+          EOF
+
+      - name: Upload comparison reports
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
-          name: compare-report
-          path: reports/ci-compare.json
+          name: compare-reports
+          path: |
+            reports/ci-compare.json
+            reports/ci-ablate.json
+            reports/ci-dedup.json
 
   precommit:
     runs-on: ubuntu-latest
