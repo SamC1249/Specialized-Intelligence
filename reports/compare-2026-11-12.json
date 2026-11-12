@@ -1,0 +1,88 @@
+{
+  "profile": "v1",
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  },
+  "rows": [
+    {
+      "mean_quality": 0.3584791666666667,
+      "n_license_clean": 2,
+      "n_records": 3,
+      "notes": "baseline-2026-11-12",
+      "p50_quality": 0.48112499999999997,
+      "p90_quality": 0.497375,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "archive_org",
+      "total_duration_s": 1572.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.5290312500000001,
+      "n_license_clean": 0,
+      "n_records": 2,
+      "notes": "baseline-2026-11-12",
+      "p50_quality": 0.527125,
+      "p90_quality": 0.5309375000000001,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "common_crawl",
+      "total_duration_s": 630.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.618375,
+      "n_license_clean": 3,
+      "n_records": 3,
+      "notes": "baseline-2026-11-12",
+      "p50_quality": 0.6964375,
+      "p90_quality": 0.711375,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "peertube",
+      "total_duration_s": 1362.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.6511208333333334,
+      "n_license_clean": 4,
+      "n_records": 4,
+      "notes": "baseline-2026-11-12",
+      "p50_quality": 0.7015625,
+      "p90_quality": 0.7056708333333334,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "wikimedia",
+      "total_duration_s": 1067.4,
+      "unique_authors": 4
+    },
+    {
+      "mean_quality": 0.5494256944444444,
+      "n_license_clean": 9,
+      "n_records": 12,
+      "notes": "baseline-2026-11-12",
+      "p50_quality": 0.537375,
+      "p90_quality": 0.7056708333333334,
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "__total__",
+      "total_duration_s": 4631.4,
+      "unique_authors": 12
+    }
+  ]
+}

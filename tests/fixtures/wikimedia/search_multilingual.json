@@ -1,0 +1,46 @@
+{
+  "query": {
+    "pages": {
+      "22222": {
+        "pageid": 22222,
+        "title": "File:Cocinar paella valenciana.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Cocinar_paella_valenciana.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Cocinar_paella_valenciana.webm",
+            "mime": "video/webm",
+            "duration": 420.0,
+            "width": 1920,
+            "height": 1080,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by/4.0"},
+              "Artist": {"value": "Chef Alicia"},
+              "DateTimeOriginal": {"value": "2024-10-05T12:00:00Z"}
+            }
+          }
+        ]
+      },
+      "33333": {
+        "pageid": 33333,
+        "title": "File:Pizza napoletana.webm",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Pizza_napoletana.webm",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Pizza_napoletana.webm",
+            "mime": "video/webm",
+            "duration": 290.0,
+            "width": 1280,
+            "height": 720,
+            "extmetadata": {
+              "LicenseShortName": {"value": "CC BY-SA 4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by-sa/4.0"},
+              "Artist": {"value": "Cucina Napoletana"},
+              "DateTimeOriginal": {"value": "2025-02-14T09:00:00Z"}
+            }
+          }
+        ]
+      }
+    }
+  }
+}

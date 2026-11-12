@@ -21,7 +21,13 @@ pytest -q
 
 # Offline comparison harness (no network):
 python -m specint compare --fixtures --terms cooking recipe \
-  --output reports/example.json
+  --profile v1 --output reports/example.json
+
+# Side-by-side ablation across every quality profile:
+python -m specint ablate --fixtures --output reports/ablate.json
+
+# Cross-source dedup stats over the fixture corpus:
+python -m specint dedup --fixtures --output reports/dedup.json
 
 # Live comparison (only with explicit opt-in):
 SPECINT_RUN_INTEGRATION=1 python -m specint compare --terms cooking
