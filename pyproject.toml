@@ -48,7 +48,10 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
-ignore = ["E501"]
+# UP038: isinstance(x, (A, B)) is runtime-faster than the X | Y form and is
+# still idiomatic; deprecated/removed in newer ruff, but the pre-commit
+# mirror pin at v0.5.0 still enforces it on legacy call sites.
+ignore = ["E501", "UP038"]
 
 [tool.ruff.format]
 quote-style = "double"

@@ -22,3 +22,15 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-push]
+      - id: sources-registry
+        name: sources registry consistency
+        entry: python3 scripts/check_sources_registry.py
+        language: system
+        pass_filenames: false
+        files: ^src/specint/sources/.*\.py$
+      - id: baseline-regression-gate
+        name: baseline regression gate (offline)
+        entry: python3 scripts/check_baseline_regression.py
+        language: system
+        pass_filenames: false
+        files: ^(src/specint/.*\.py|tests/fixtures/.*|reports/baseline-.*\.json)$
