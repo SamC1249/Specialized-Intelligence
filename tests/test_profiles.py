@@ -6,7 +6,6 @@ import json
 from pathlib import Path
 
 import pytest
-
 from specint.compare import run_comparison
 from specint.quality.profiles import COMPONENTS, PROFILES, score_with_profile
 from specint.records import SourceQuery
