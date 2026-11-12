@@ -1,0 +1,257 @@
+{
+  "profiles": [
+    "v1",
+    "v2",
+    "v2_cooking"
+  ],
+  "query": {
+    "language": null,
+    "max_results": 25,
+    "terms": [
+      "cooking",
+      "recipe"
+    ]
+  },
+  "rows": [
+    {
+      "mean_quality": 0.3584791666666667,
+      "n_license_clean": 2,
+      "n_records": 3,
+      "notes": "ablation-2026-11-12",
+      "p50_quality": 0.48112499999999997,
+      "p90_quality": 0.497375,
+      "profile": "v1",
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "archive_org",
+      "total_duration_s": 1572.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.5290312500000001,
+      "n_license_clean": 0,
+      "n_records": 2,
+      "notes": "ablation-2026-11-12",
+      "p50_quality": 0.527125,
+      "p90_quality": 0.5309375000000001,
+      "profile": "v1",
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "common_crawl",
+      "total_duration_s": 630.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.618375,
+      "n_license_clean": 3,
+      "n_records": 3,
+      "notes": "ablation-2026-11-12",
+      "p50_quality": 0.6964375,
+      "p90_quality": 0.711375,
+      "profile": "v1",
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "peertube",
+      "total_duration_s": 1362.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.6511208333333334,
+      "n_license_clean": 4,
+      "n_records": 4,
+      "notes": "ablation-2026-11-12",
+      "p50_quality": 0.7015625,
+      "p90_quality": 0.7056708333333334,
+      "profile": "v1",
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "wikimedia",
+      "total_duration_s": 1067.4,
+      "unique_authors": 4
+    },
+    {
+      "mean_quality": 0.5494256944444444,
+      "n_license_clean": 9,
+      "n_records": 12,
+      "notes": "ablation-2026-11-12",
+      "p50_quality": 0.537375,
+      "p90_quality": 0.7056708333333334,
+      "profile": "v1",
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "__total__",
+      "total_duration_s": 4631.4,
+      "unique_authors": 12
+    },
+    {
+      "mean_quality": 0.44454166666666667,
+      "n_license_clean": 2,
+      "n_records": 3,
+      "notes": "ablation-2026-11-12",
+      "p50_quality": 0.5040833333333333,
+      "p90_quality": 0.64825,
+      "profile": "v2",
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "archive_org",
+      "total_duration_s": 1572.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.5693541666666667,
+      "n_license_clean": 0,
+      "n_records": 2,
+      "notes": "ablation-2026-11-12",
+      "p50_quality": 0.5680833333333334,
+      "p90_quality": 0.570625,
+      "profile": "v2",
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "common_crawl",
+      "total_duration_s": 630.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.61225,
+      "n_license_clean": 3,
+      "n_records": 3,
+      "notes": "ablation-2026-11-12",
+      "p50_quality": 0.6642916666666666,
+      "p90_quality": 0.8075833333333333,
+      "profile": "v2",
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "peertube",
+      "total_duration_s": 1362.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.5990805555555556,
+      "n_license_clean": 4,
+      "n_records": 4,
+      "notes": "ablation-2026-11-12",
+      "p50_quality": 0.6177083333333333,
+      "p90_quality": 0.7537805555555556,
+      "profile": "v2",
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "wikimedia",
+      "total_duration_s": 1067.4,
+      "unique_authors": 4
+    },
+    {
+      "mean_quality": 0.5587837962962963,
+      "n_license_clean": 9,
+      "n_records": 12,
+      "notes": "ablation-2026-11-12",
+      "p50_quality": 0.570625,
+      "p90_quality": 0.7537805555555556,
+      "profile": "v2",
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "__total__",
+      "total_duration_s": 4631.4,
+      "unique_authors": 12
+    },
+    {
+      "mean_quality": 0.4629097222222222,
+      "n_license_clean": 2,
+      "n_records": 3,
+      "notes": "ablation-2026-11-12",
+      "p50_quality": 0.4822916666666667,
+      "p90_quality": 0.694125,
+      "profile": "v2_cooking",
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "archive_org",
+      "total_duration_s": 1572.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.6567604166666666,
+      "n_license_clean": 0,
+      "n_records": 2,
+      "notes": "ablation-2026-11-12",
+      "p50_quality": 0.6553125,
+      "p90_quality": 0.6582083333333333,
+      "profile": "v2_cooking",
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "common_crawl",
+      "total_duration_s": 630.0,
+      "unique_authors": 2
+    },
+    {
+      "mean_quality": 0.5689861111111111,
+      "n_license_clean": 3,
+      "n_records": 3,
+      "notes": "ablation-2026-11-12",
+      "p50_quality": 0.5940625,
+      "p90_quality": 0.8004583333333334,
+      "profile": "v2_cooking",
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "peertube",
+      "total_duration_s": 1362.0,
+      "unique_authors": 3
+    },
+    {
+      "mean_quality": 0.5438722222222222,
+      "n_license_clean": 4,
+      "n_records": 4,
+      "notes": "ablation-2026-11-12",
+      "p50_quality": 0.5488541666666666,
+      "p90_quality": 0.7517180555555556,
+      "profile": "v2_cooking",
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "wikimedia",
+      "total_duration_s": 1067.4,
+      "unique_authors": 4
+    },
+    {
+      "mean_quality": 0.5487247685185185,
+      "n_license_clean": 9,
+      "n_records": 12,
+      "notes": "ablation-2026-11-12",
+      "p50_quality": 0.5940625,
+      "p90_quality": 0.7517180555555556,
+      "profile": "v2_cooking",
+      "query_terms": [
+        "cooking",
+        "recipe"
+      ],
+      "source": "__total__",
+      "total_duration_s": 4631.4,
+      "unique_authors": 12
+    }
+  ]
+}
