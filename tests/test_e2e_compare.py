@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 
 from specint.compare import run_comparison
+from specint.fixtures import load_fixture_corpus
 from specint.records import SourceQuery
 from specint.sources.archive_org import ArchiveOrgSource
 from specint.sources.common_crawl import CommonCrawlRecipeSource
@@ -65,3 +66,16 @@ def test_e2e_offline_compare_across_all_sources(fixtures_dir: Path, tmp_path: Pa
     reloaded = json.loads(out.read_text())
     assert reloaded["query"]["terms"] == ["cooking", "recipe"]
     assert len(reloaded["rows"]) == 5
+
+
+def test_e2e_fixture_loader_matches_hand_rolled_corpus() -> None:
+    """The shared fixture loader must stay in sync with the per-adapter paths."""
+    query = SourceQuery(terms=["cooking", "recipe"], max_results=25)
+    loaded = load_fixture_corpus(query)
+    assert set(loaded) == {"wikimedia", "archive_org", "peertube", "common_crawl"}
+    for records in loaded.values():
+        assert isinstance(records, list)
+    # Multilingual + commercial-host fixtures should widen the corpus beyond
+    # the original 8-record baseline.
+    total = sum(len(v) for v in loaded.values())
+    assert total >= 8

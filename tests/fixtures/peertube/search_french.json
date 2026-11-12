@@ -1,0 +1,22 @@
+{
+  "__instance__": "https://peertube.fr",
+  "total": 1,
+  "data": [
+    {
+      "id": 9101,
+      "uuid": "mnop-3456",
+      "name": "Recette de la soupe à l'oignon",
+      "description": "Une recette traditionnelle française de soupe à l'oignon avec du pain et du fromage.",
+      "duration": 540,
+      "publishedAt": "2025-03-21T18:00:00Z",
+      "language": {"id": "fr", "label": "Français"},
+      "licence": {"id": 1, "label": "Attribution"},
+      "tags": ["soupe", "oignon", "recette"],
+      "resolution": {"id": 1080, "label": "1080p"},
+      "files": [
+        {"fileUrl": "https://peertube.fr/static/webseed/mnop-3456.mp4"}
+      ],
+      "account": {"displayName": "La Cuisine Libre", "host": "peertube.fr"}
+    }
+  ]
+}

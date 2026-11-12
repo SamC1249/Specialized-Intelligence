@@ -63,12 +63,17 @@ def run_comparison(
     query: SourceQuery,
     by_source: Mapping[str, list[VideoRecord]],
     notes: str = "",
+    profile: str = "v1",
 ) -> list[BenchmarkResult]:
-    """Score, aggregate per source, and append a `__total__` row."""
+    """Score, aggregate per source, and append a `__total__` row.
+
+    `profile` selects the quality weight profile (see
+    `specint.quality.profiles`). `v1` reproduces the 2026-06-20 baseline.
+    """
     rows: list[BenchmarkResult] = []
     all_scored: list[VideoRecord] = []
     for source, records in sorted(by_source.items()):
-        scored = score_records(records)
+        scored = score_records(records, profile=profile)
         all_scored.extend(scored)
         rows.append(aggregate(source, query.terms, scored, notes=notes))
     rows.append(aggregate("__total__", query.terms, all_scored, notes=notes))
