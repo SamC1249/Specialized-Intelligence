@@ -18,11 +18,49 @@ import re
 from collections.abc import Iterable
 from datetime import datetime
 from typing import Any
+from urllib.parse import urlparse
 
 from bs4 import BeautifulSoup
 
 from specint.records import License, Provenance, SourceQuery, VideoRecord, utcnow
 from specint.sources.base import BaseSource
+
+# Hosts whose embedded VideoObject.contentUrl is ~never redistributable
+# regardless of the recipe page's own license. If a schema.org VideoObject
+# points at one of these, we treat the record as RESTRICTED (URL-pointer
+# only, no media_url). See docs/plan-2026-11-12.md H3.
+COMMERCIAL_VIDEO_HOSTS: frozenset[str] = frozenset(
+    {
+        "youtube.com",
+        "www.youtube.com",
+        "m.youtube.com",
+        "youtu.be",
+        "vimeo.com",
+        "player.vimeo.com",
+        "facebook.com",
+        "www.facebook.com",
+        "fb.watch",
+        "instagram.com",
+        "www.instagram.com",
+        "tiktok.com",
+        "www.tiktok.com",
+        "dailymotion.com",
+        "www.dailymotion.com",
+        "twitch.tv",
+        "www.twitch.tv",
+    }
+)
+
+
+def _is_commercial_video_host(url: str | None) -> bool:
+    if not url:
+        return False
+    try:
+        host = (urlparse(url).hostname or "").lower()
+    except ValueError:
+        return False
+    return host in COMMERCIAL_VIDEO_HOSTS
+
 
 ISO8601_DURATION_RE = re.compile(
     r"^P(?:(?P<days>\d+)D)?T?(?:(?P<hours>\d+)H)?(?:(?P<minutes>\d+)M)?(?:(?P<seconds>\d+)S)?$"
@@ -68,7 +106,7 @@ def _safe_str(value: Any) -> str:
         return ""
     if isinstance(value, str):
         return value
-    if isinstance(value, (list, tuple)) and value:
+    if isinstance(value, list | tuple) and value:
         return _safe_str(value[0])
     return str(value)
 
@@ -105,6 +143,10 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
     for v in videos:
         embed = _safe_str(v.get("embedUrl") or v.get("contentUrl") or page_url)
         native_id = _safe_str(v.get("@id") or v.get("identifier") or embed)
+        commercial = _is_commercial_video_host(
+            _safe_str(v.get("contentUrl"))
+        ) or _is_commercial_video_host(_safe_str(v.get("embedUrl")))
+        record_license = License.RESTRICTED if commercial else License.UNKNOWN
         steps: list[str] = []
         if recipe:
             instructions = recipe.get("recipeInstructions")
@@ -129,10 +171,10 @@ def parse_recipe_html(html: str, page_url: str, query: SourceQuery) -> list[Vide
             ),
             language=None,
             duration_s=parse_iso8601_duration(v.get("duration")),
-            width=int(v["width"]) if isinstance(v.get("width"), (int, float)) else None,
-            height=int(v["height"]) if isinstance(v.get("height"), (int, float)) else None,
+            width=int(v["width"]) if isinstance(v.get("width"), int | float) else None,
+            height=int(v["height"]) if isinstance(v.get("height"), int | float) else None,
             fps=None,
-            license=License.UNKNOWN,
+            license=record_license,
             license_url=None,
             author=_safe_str(
                 (v.get("author") or {}).get("name")
